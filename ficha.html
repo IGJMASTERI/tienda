@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ficha de Mascota - Chapita NFC</title>
+    <style>
+        :root {
+            --primary-color: #ff5e6c;
+            --secondary-color: #ff9966;
+            --bg-color: #f9f9f9;
+            --text-color: #333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .report-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #ffffff;
+            color: #d9534f;
+            border: 1px solid #d9534f;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            text-decoration: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: background 0.2s, color 0.2s;
+            line-height: 1;
+            padding-left: 1px; 
+            padding-top: 1px;
+        }
+
+        .report-btn:hover {
+            background: #d9534f;
+            color: #fff;
+        }
+
+        .card-container {
+            background: #ffffff;
+            width: 100%;
+            max-width: 420px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            overflow: hidden;
+            text-align: center;
+            padding: 25px;
+            box-sizing: border-box;
+            margin: 15px;
+        }
+
+        .pet-photo-container {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 15px auto;
+        }
+
+        .pet-photo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+
+        .pet-photo:hover {
+            opacity: 0.9;
+            transform: scale(1.03);
+        }
+
+        h1 {
+            margin: 10px 0 5px 0;
+            font-size: 24px;
+            color: #222;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .info-section {
+            background: #fdfdfd;
+            border: 1px solid #eee;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .info-row {
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .info-row strong {
+            color: #444;
+        }
+
+        .btn-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .btn-action {
+            display: block;
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(255, 94, 108, 0.3);
+            transition: opacity 0.2s;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .btn-action:hover {
+            opacity: 0.9;
+        }
+
+        .btn-secondary {
+            background: #25d366;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+        }
+
+        .btn-call {
+            background: #007bff;
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+        }
+
+        #statusMessage {
+            margin-top: 12px;
+            font-size: 14px;
+            font-weight: bold;
+            display: none;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 85vh;
+            object-fit: contain;
+            border-radius: 12px;
+            box-shadow: 0 5px 30px rgba(255,255,255,0.1);
+        }
+
+        .custom-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .custom-modal-box {
+            background: #fff;
+            width: 100%;
+            max-width: 380px;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            text-align: left;
+        }
+
+        .custom-modal-box h3 {
+            margin-top: 0;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .custom-modal-box textarea {
+            width: 100%;
+            height: 90px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+            resize: none;
+            font-family: inherit;
+            margin-bottom: 15px;
+        }
+
+        .custom-modal-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .modal-btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn-cancel {
+            background: #ccc;
+            color: #333;
+        }
+
+        .btn-submit {
+            background: #d9534f;
+            color: #fff;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 25px;
+            right: 30px;
+            color: #fff;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <button id="reportProblemBtn" class="report-btn" title="Reportar problema">⚠️</button>
+
+    <div class="card-container">
+        <div class="pet-photo-container">
+            <img src="" alt="Foto de la Mascota" id="petImg" class="pet-photo clickable-img" title="Toca para ver en grande">
+        </div>
+
+        <h1 id="petName">Cargando...</h1>
+        <p class="subtitle" id="petSubtitle">Si me perdiste, por favor contacta a mi familia.</p>
+
+        <div class="info-section">
+            <div class="info-row"><strong>🐾 Detalle:</strong> <span id="petDetalle">--</span></div>
+            <div class="info-row"><strong>👤 Dueño/a:</strong> <span id="petDueno">--</span></div>
+            <div class="info-row"><strong>📞 Teléfono:</strong> <span id="petPhone">--</span></div>
+            <div class="info-row"><strong>⚠️ Alergias:</strong> <span id="petAlergias">--</span></div>
+        </div>
+
+        <div class="btn-container">
+            <a href="#" id="callBtn" class="btn-action btn-call" style="display:none;">📞 Llamar al Dueño</a>
+            <a href="#" id="wspBtn" class="btn-action btn-secondary" style="display:none;">💬 Chatear por WhatsApp</a>
+            <button id="ubicacionBtn" class="btn-action">📍 Avisar ubicación por WhatsApp</button>
+        </div>
+
+        <div id="statusMessage"></div>
+    </div>
+
+    <div id="imageModal" class="modal">
+        <span class="close-modal">&times;</span>
+        <img class="modal-content" id="modalImgFull" alt="Imagen ampliada">
+    </div>
+
+    <div id="reportModal" class="custom-modal">
+        <div class="custom-modal-box">
+            <h3>Reportar un problema</h3>
+            <p style="font-size: 13px; color: #666; margin-bottom: 10px;">¿Qué problema has encontrado con esta chapita o ficha?</p>
+            <textarea id="reportReason" placeholder="Ej: Chapita dañada, información incorrecta, etc."></textarea>
+            <div class="custom-modal-buttons">
+                <button id="cancelReport" class="modal-btn btn-cancel">Cancelar</button>
+                <button id="submitReport" class="modal-btn btn-submit">Enviar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let petDataGlobal = {};
+        let currentPetId = '';
+
+        async function loadPetData() {
+            try {
+                const urlParams = new URLSearchParams(window.location.search);
+                currentPetId = urlParams.get('id');
+
+                if (!currentPetId) {
+                    throw new Error('Falta el identificador de la chapita');
+                }
+
+                const response = await fetch(`/api?id=${currentPetId}`);
+                if (!response.ok) throw new Error('Ficha no encontrada o inactiva');
+                
+                petDataGlobal = await response.json();
+
+                document.getElementById('petName').textContent = `¡Hola, soy ${petDataGlobal.nombre}!`;
+                document.getElementById('petDetalle').textContent = petDataGlobal.detalle || 'No especificado';
+                document.getElementById('petDueno').textContent = petDataGlobal.dueno || 'No especificado';
+                document.getElementById('petPhone').textContent = petDataGlobal.telefono || 'No disponible';
+                document.getElementById('petAlergias').textContent = petDataGlobal.alergias || 'Ninguna';
+                
+                if (petDataGlobal.foto) {
+                    document.getElementById('petImg').src = petDataGlobal.foto;
+                }
+
+                if (petDataGlobal.telefono) {
+                    const callBtn = document.getElementById('callBtn');
+                    callBtn.href = `tel:${petDataGlobal.telefono}`;
+                    callBtn.style.display = 'block';
+                }
+
+                if (petDataGlobal.wsp) {
+                    const wspBtn = document.getElementById('wspBtn');
+                    wspBtn.href = `https://wa.me/${petDataGlobal.wsp}?text=¡Hola! Encontré a ${petDataGlobal.nombre} y quiero avisarles.`;
+                    wspBtn.style.display = 'block';
+                }
+
+            } catch (error) {
+                document.getElementById('petName').textContent = "Ficha no encontrada";
+                document.getElementById('petSubtitle').textContent = "El código de la chapita es inválido o se encuentra inactivo.";
+                console.error(error);
+            }
+        }
+
+        loadPetData();
+
+        const reportBtn = document.getElementById('reportProblemBtn');
+        const reportModal = document.getElementById('reportModal');
+        const cancelReport = document.getElementById('cancelReport');
+        const submitReport = document.getElementById('submitReport');
+        const reportReason = document.getElementById('reportReason');
+
+        reportBtn.onclick = function() {
+            reportReason.value = "";
+            reportModal.style.display = "flex";
+        }
+
+        cancelReport.onclick = function() {
+            reportModal.style.display = "none";
+        }
+
+        submitReport.onclick = async function() {
+            const motivo = reportReason.value.trim();
+            if (!motivo) {
+                alert("Por favor, escribe el motivo del problema.");
+                return;
+            }
+
+            reportModal.style.display = "none";
+            alert("Enviando reporte...");
+
+            try {
+                await fetch("https://api.web3forms.com/submit", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json"
+                    },
+                    body: JSON.stringify({
+                        access_key: "YOUR_WEB3FORMS_KEY", // Reemplaza con tu llave de Web3Forms
+                        subject: `⚠️ Reporte de problema en chapita ID: ${currentPetId || 'Desconocido'}`,
+                        email: "jv7276659@gmail.com",
+                        message: `Se ha reportado un problema:\n- ID Chapita: ${currentPetId}\n- Mascota: ${petDataGlobal.nombre || 'No cargada'}\n- Motivo: ${motivo}\n- URL: ${window.location.href}`
+                    })
+                });
+
+                alert("¡Reporte enviado con éxito! Gracias.");
+            } catch (err) {
+                alert("Hubo un error al enviar el reporte.");
+            }
+        };
+
+        const ubicacionBtn = document.getElementById('ubicacionBtn');
+        const statusMessage = document.getElementById('statusMessage');
+
+        ubicacionBtn.onclick = function() {
+            if (!navigator.geolocation) {
+                alert("Tu dispositivo no soporta geolocalización.");
+                return;
+            }
+
+            statusMessage.style.display = "block";
+            statusMessage.style.color = "#007bff";
+            statusMessage.textContent = "Obteniendo tu ubicación GPS...";
+            ubicacionBtn.disabled = true;
+
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    const mapsUrl = `https://maps.google.com/?q=${lat},${lon}`;
+                    const petName = petDataGlobal.nombre || "la mascota";
+                    const wspOwner = petDataGlobal.wsp;
+
+                    if (!wspOwner) {
+                        alert("No hay un número de WhatsApp registrado para esta mascota.");
+                        ubicacionBtn.disabled = false;
+                        statusMessage.style.display = "none";
+                        return;
+                    }
+
+                    statusMessage.style.color = "#28a745";
+                    statusMessage.textContent = "¡Ubicación lista! Abriendo WhatsApp...";
+                    
+                    const mensaje = encodeURIComponent(`¡Hola! Encontré a ${petName}. Mi ubicación actual es: ${mapsUrl}`);
+                    window.location.href = `https://wa.me/${wspOwner}?text=${mensaje}`;
+
+                    setTimeout(() => {
+                        ubicacionBtn.disabled = false;
+                        statusMessage.style.display = "none";
+                    }, 3000);
+                },
+                function(error) {
+                    statusMessage.style.color = "#dc3545";
+                    statusMessage.textContent = "No se pudo obtener la ubicación. Revisa los permisos de GPS.";
+                    ubicacionBtn.disabled = false;
+                },
+                { enableHighAccuracy: true, timeout: 10000 }
+            );
+        };
+
+        const modal = document.getElementById("imageModal");
+        const petImg = document.getElementById("petImg");
+        const modalImgFull = document.getElementById("modalImgFull");
+        const closeModal = document.getElementsByClassName("close-modal")[0];
+
+        petImg.onclick = function() {
+            if(petImg.src) {
+                modal.style.display = "flex";
+                modalImgFull.src = petImg.src;
+            }
+        }
+
+        closeModal.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        modal.onclick = function(event) {
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
