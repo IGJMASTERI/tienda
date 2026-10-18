@@ -24,7 +24,7 @@
         header {
             background-color: var(--primary-color);
             color: white;
-            padding: 15px 30px;
+            padding: 12px 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -32,56 +32,59 @@
             position: sticky;
             top: 0;
             z-index: 99;
+            gap: 8px;
         }
 
-        .header-left { display: flex; align-items: center; gap: 20px; }
-        .menu-toggle { background: none; border: none; color: white; font-size: 24px; cursor: pointer; }
-        .logo-area h1 { margin: 0; font-size: 22px; font-weight: 800; }
-        .logo-area p { margin: 0; font-size: 11px; opacity: 0.9; }
+        .header-left { display: flex; align-items: center; gap: 10px; min-width: 0; }
+        .menu-toggle { background: none; border: none; color: white; font-size: 22px; cursor: pointer; padding: 0; }
+        
+        .logo-area { min-width: 0; }
+        .logo-area h1 { margin: 0; font-size: 18px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .logo-area p { margin: 0; font-size: 10px; opacity: 0.9; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        .header-right { display: flex; align-items: center; gap: 15px; }
-        .btn-user-auth { background: white; color: var(--primary-color); border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; font-size: 13px; cursor: pointer; }
+        .header-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+        .btn-user-auth { background: white; color: var(--primary-color); border: none; padding: 6px 10px; border-radius: 20px; font-weight: bold; font-size: 11px; cursor: pointer; white-space: nowrap; }
 
-        /* --- CARRITO FLOTANTE Y DESPLEGABLE --- */
-        .cart-icon-container { position: relative; cursor: pointer; background: rgba(255,255,255,0.2); padding: 8px 12px; border-radius: 20px; display: flex; align-items: center; gap: 8px; color: white; font-weight: bold; font-size: 14px; }
-        .cart-badge { background: #fff; color: var(--primary-color); border-radius: 50%; padding: 2px 6px; font-size: 12px; font-weight: 800; }
+        /* --- CARRITO FLOTANTE Y DESPLEGABLE ADAPTABLE --- */
+        .cart-icon-container { position: relative; cursor: pointer; background: rgba(255,255,255,0.25); padding: 6px 10px; border-radius: 20px; display: flex; align-items: center; gap: 5px; color: white; font-weight: bold; font-size: 12px; white-space: nowrap; }
+        .cart-badge { background: #fff; color: var(--primary-color); border-radius: 50%; padding: 1px 5px; font-size: 11px; font-weight: 800; }
         
         .cart-dropdown {
             display: none;
             position: absolute;
             right: 0;
-            top: 45px;
+            top: 40px;
             background: white;
             color: #333;
-            width: 300px;
+            width: 260px;
             border-radius: 15px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            padding: 20px;
+            padding: 15px;
             z-index: 1000;
             text-align: left;
         }
-        .cart-dropdown h4 { margin-top: 0; border-bottom: 2px solid #f0f0f0; padding-bottom: 8px; font-size: 15px; }
-        .cart-dropdown-items { list-style: none; padding: 0; margin: 0 0 15px 0; max-height: 150px; overflow-y: auto; }
-        .cart-dropdown-items li { display: flex; justify-content: space-between; align-items: center; font-size: 12px; margin-bottom: 8px; border-bottom: 1px dashed #eee; padding-bottom: 5px; }
-        .btn-remove-item { background: none; border: none; color: #ff334b; cursor: pointer; font-weight: bold; font-size: 14px; }
-        .cart-dropdown-total { font-weight: 800; font-size: 14px; text-align: right; margin-bottom: 12px; }
-        .btn-go-checkout { background: var(--primary-color); color: white; border: none; padding: 10px; border-radius: 8px; width: 100%; font-weight: bold; text-align: center; text-decoration: none; display: block; box-sizing: border-box; }
+        .cart-dropdown h4 { margin-top: 0; border-bottom: 2px solid #f0f0f0; padding-bottom: 8px; font-size: 14px; }
+        .cart-dropdown-items { list-style: none; padding: 0; margin: 0 0 12px 0; max-height: 140px; overflow-y: auto; }
+        .cart-dropdown-items li { display: flex; justify-content: space-between; align-items: center; font-size: 11px; margin-bottom: 6px; border-bottom: 1px dashed #eee; padding-bottom: 4px; }
+        .btn-remove-item { background: none; border: none; color: #ff334b; cursor: pointer; font-weight: bold; font-size: 13px; }
+        .cart-dropdown-total { font-weight: 800; font-size: 13px; text-align: right; margin-bottom: 10px; }
+        .btn-go-checkout { background: var(--primary-color); color: white; border: none; padding: 8px; border-radius: 8px; width: 100%; font-weight: bold; text-align: center; text-decoration: none; display: block; box-sizing: border-box; font-size: 12px; }
 
         /* --- NOTIFICACIÓN TOAST INFERIOR --- */
         #toastNotification {
             visibility: hidden;
-            min-width: 250px;
+            min-width: 220px;
             background-color: #2ec4b6;
             color: white;
             text-align: center;
             border-radius: 10px;
-            padding: 12px;
+            padding: 10px;
             position: fixed;
             z-index: 3000;
             left: 50%;
             bottom: 30px;
             transform: translateX(-50%);
-            font-size: 14px;
+            font-size: 13px;
             font-weight: bold;
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
             transition: visibility 0.5s, opacity 0.5s;
@@ -94,62 +97,49 @@
         .sidebar a { padding: 12px 25px; text-decoration: none; font-size: 16px; font-weight: 600; color: var(--text-color); display: block; border-bottom: 1px solid #f0f0f0; }
         .sidebar .close-btn { position: absolute; top: 15px; right: 20px; font-size: 25px; background: none; border: none; cursor: pointer; }
 
-        .hero-banner { background: linear-gradient(135deg, #5a189a, #7b2cbf, #ff334b); color: white; text-align: center; padding: 50px 20px; margin-bottom: 30px; }
-        .hero-banner h2 { margin: 0 0 10px 0; font-size: 34px; font-weight: 800; }
+        .hero-banner { background: linear-gradient(135deg, #5a189a, #7b2cbf, #ff334b); color: white; text-align: center; padding: 35px 15px; margin-bottom: 25px; }
+        .hero-banner h2 { margin: 0 0 8px 0; font-size: 24px; font-weight: 800; }
+        .hero-banner p { font-size: 13px; margin: 0; opacity: 0.95; }
 
-        .catalog-container { max-width: 1100px; margin: 0 auto 40px auto; padding: 0 20px; }
-        .catalog-container h2 { font-size: 22px; margin-bottom: 20px; border-bottom: 2px solid #ddd; padding-bottom: 10px; }
-        .product-grid-main { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
-        .product-card-main { background: white; border-radius: 15px; padding: 20px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border: 2px solid #f0f0f0; }
-        .product-card-main h3 { margin: 10px 0; font-size: 18px; }
-        .price-main { font-size: 18px; font-weight: 800; color: var(--primary-color); margin-bottom: 15px; }
-        .btn-view { background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white; border: none; padding: 10px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; width: 100%; text-decoration: none; display: inline-block; box-sizing: border-box; }
+        .catalog-container { max-width: 1100px; margin: 0 auto 40px auto; padding: 0 15px; }
+        .catalog-container h2 { font-size: 20px; margin-bottom: 15px; border-bottom: 2px solid #ddd; padding-bottom: 8px; }
+        .product-grid-main { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; }
+        .product-card-main { background: white; border-radius: 15px; padding: 15px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border: 2px solid #f0f0f0; }
+        .product-card-main h3 { margin: 8px 0; font-size: 16px; }
+        .product-card-main p { font-size: 12px; color: #666; margin-bottom: 12px; }
+        .price-main { font-size: 16px; font-weight: 800; color: var(--primary-color); margin-bottom: 12px; }
+        .btn-view { background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white; border: none; padding: 8px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%; text-decoration: none; display: inline-block; box-sizing: border-box; font-size: 13px; }
 
         /* --- FOOTER INFERIOR COMPLETO --- */
         footer {
             background-color: #ffffff;
             border-top: 1px solid #e9ecef;
-            padding: 40px 20px 20px 20px;
-            margin-top: 50px;
+            padding: 30px 15px 15px 15px;
+            margin-top: 40px;
         }
         .footer-container {
             max-width: 1100px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 30px;
-            margin-bottom: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            margin-bottom: 25px;
         }
         .footer-col h4 {
             color: var(--primary-color);
-            font-size: 16px;
-            margin-bottom: 15px;
+            font-size: 15px;
+            margin-bottom: 12px;
             font-weight: 800;
         }
-        .footer-col ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        .footer-col ul li {
-            margin-bottom: 10px;
-            font-size: 13px;
-            color: #555;
-            cursor: pointer;
-        }
+        .footer-col ul { list-style: none; padding: 0; margin: 0; }
+        .footer-col ul li { margin-bottom: 8px; font-size: 12px; color: #555; cursor: pointer; }
         .footer-col ul li:hover { color: var(--primary-color); }
-        .footer-bottom {
-            text-align: center;
-            font-size: 12px;
-            color: #888;
-            border-top: 1px solid #f0f0f0;
-            padding-top: 20px;
-        }
+        .footer-bottom { text-align: center; font-size: 11px; color: #888; border-top: 1px solid #f0f0f0; padding-top: 15px; }
 
-        .modal-overlay { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; }
-        .modal-box { background: #fff; width: 100%; max-width: 450px; padding: 30px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); position: relative; text-align: left; }
-        .btn-modal-action { background: var(--primary-color); color: white; border: none; padding: 10px; border-radius: 10px; font-weight: bold; width: 100%; margin-top: 20px; cursor: pointer; }
-        .close-x { position: absolute; top: 15px; right: 20px; font-size: 20px; cursor: pointer; color: #888; }
+        .modal-overlay { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); justify-content: center; align-items: center; padding: 15px; box-sizing: border-box; }
+        .modal-box { background: #fff; width: 100%; max-width: 400px; padding: 25px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); position: relative; text-align: left; }
+        .btn-modal-action { background: var(--primary-color); color: white; border: none; padding: 10px; border-radius: 10px; font-weight: bold; width: 100%; margin-top: 15px; cursor: pointer; }
+        .close-x { position: absolute; top: 12px; right: 15px; font-size: 20px; cursor: pointer; color: #888; }
     </style>
 </head>
 <body>
@@ -173,13 +163,13 @@
             <button class="menu-toggle" onclick="abrirMenu()">☰</button>
             <div class="logo-area">
                 <h1>Chapitas NFC</h1>
-                <p>Seguridad inteligente para ti y los tuyos</p>
+                <p>Seguridad inteligente</p>
             </div>
         </div>
         <div class="header-right">
             <!-- Icono de Carrito Flotante con Desplegable -->
             <div class="cart-icon-container" onclick="toggleCartDropdown()">
-                🛒 Carrito <span class="cart-badge" id="cartBadge">0</span>
+                🛒 <span class="cart-badge" id="cartBadge">0</span>
                 <div class="cart-dropdown" id="cartDropdown" onclick="event.stopPropagation()">
                     <h4>Tus Productos Seleccionados</h4>
                     <ul class="cart-dropdown-items" id="cartDropdownItems">
@@ -189,13 +179,13 @@
                     <a href="checkout.html" class="btn-go-checkout">Ir a Pagar 💳</a>
                 </div>
             </div>
-            <button class="btn-user-auth" onclick="abrirLoginModal()">👤 Mi Cuenta</button>
+            <button class="btn-user-auth" onclick="abrirLoginModal()">👤 Cuenta</button>
         </div>
     </header>
 
     <div class="hero-banner">
-        <h2>Protege a tus seres queridos con tecnología NFC</h2>
-        <p>Selecciona un producto para ver su descripción detallada y agrégalo a tu carrito.</p>
+        <h2>Protege a tus seres queridos con NFC</h2>
+        <p>Selecciona un producto para ver su descripción detallada.</p>
     </div>
 
     <div class="catalog-container">
@@ -228,7 +218,6 @@
         </div>
     </div>
 
-    <!-- PIE DE PÁGINA (FOOTER) INFERIOR -->
     <footer>
         <div class="footer-container">
             <div class="footer-col">
@@ -255,12 +244,11 @@
             </div>
             <div class="footer-col">
                 <h4>Síguenos</h4>
-                <ul style="display: flex; gap: 10px; font-size: 20px;">
+                <ul style="display: flex; gap: 8px; font-size: 18px;">
                     <li title="Instagram">📷</li>
                     <li title="Facebook">📘</li>
                     <li title="YouTube">▶️</li>
                     <li title="WhatsApp">💬</li>
-                    <li title="TikTok">🎵</li>
                 </ul>
             </div>
         </div>
@@ -274,20 +262,20 @@
         <div class="modal-box">
             <span class="close-x" onclick="cerrarLoginModal()">&times;</span>
             <div id="authContent">
-                <h3>Mi Cuenta - Chapitas NFC</h3>
+                <h3>Mi Cuenta</h3>
                 <p>Inicia sesión con tu correo para revisar tus compras y preferencias.</p>
-                <form onsubmit="manejarLogin(event)" style="display: flex; flex-direction: column; gap: 12px; margin-top: 15px;">
+                <form onsubmit="manejarLogin(event)" style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
                     <label style="font-size: 11px; font-weight: 700; color: #666;">CORREO ELECTRÓNICO</label>
-                    <input type="email" id="loginEmail" required placeholder="tucorreo@gmail.com" style="padding: 10px; border: 2px solid #ddd; border-radius: 8px;">
+                    <input type="email" id="loginEmail" required placeholder="tucorreo@gmail.com" style="padding: 10px; border: 2px solid #ddd; border-radius: 8px; font-size: 13px;">
                     <button type="submit" class="btn-modal-action">Ingresar</button>
                 </form>
             </div>
             <div id="userDashboard" style="display: none;">
-                <h3>¡Bienvenido/a de nuevo!</h3>
+                <h3>¡Bienvenido/a!</h3>
                 <p><strong>Correo:</strong> <span id="userProfileEmail"></span></p>
-                <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin-top: 15px;">
-                    <h4 style="margin: 0 0 10px 0; font-size: 14px;">📦 Tus Pedidos:</h4>
-                    <p style="font-size: 12px; color: #666;" id="userOrdersList">No hay pedidos registrados.</p>
+                <div style="background: #f8f9fa; padding: 12px; border-radius: 10px; margin-top: 10px;">
+                    <h4 style="margin: 0 0 8px 0; font-size: 13px;">📦 Tus Pedidos:</h4>
+                    <p style="font-size: 11px; color: #666;" id="userOrdersList">No hay pedidos registrados.</p>
                 </div>
                 <button class="btn-modal-action" style="background: #6c757d;" onclick="cerrarSesion()">Cerrar Sesión</button>
             </div>
