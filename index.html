@@ -42,7 +42,7 @@
         .header-right { display: flex; align-items: center; gap: 15px; }
         .btn-user-auth { background: white; color: var(--primary-color); border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; font-size: 13px; cursor: pointer; }
 
-        /* --- BOTÓN DE CARRITO FLOTANTE Y DESPLEGABLE --- */
+        /* --- CARRITO FLOTANTE Y DESPLEGABLE --- */
         .cart-icon-container { position: relative; cursor: pointer; background: rgba(255,255,255,0.2); padding: 8px 12px; border-radius: 20px; display: flex; align-items: center; gap: 8px; color: white; font-weight: bold; font-size: 14px; }
         .cart-badge { background: #fff; color: var(--primary-color); border-radius: 50%; padding: 2px 6px; font-size: 12px; font-weight: 800; }
         
@@ -105,7 +105,47 @@
         .price-main { font-size: 18px; font-weight: 800; color: var(--primary-color); margin-bottom: 15px; }
         .btn-view { background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white; border: none; padding: 10px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; width: 100%; text-decoration: none; display: inline-block; box-sizing: border-box; }
 
-        footer { background: white; border-top: 1px solid #e9ecef; padding: 40px 20px 20px 20px; margin-top: 50px; text-align: center; font-size: 12px; color: #888; }
+        /* --- FOOTER INFERIOR COMPLETO --- */
+        footer {
+            background-color: #ffffff;
+            border-top: 1px solid #e9ecef;
+            padding: 40px 20px 20px 20px;
+            margin-top: 50px;
+        }
+        .footer-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        .footer-col h4 {
+            color: var(--primary-color);
+            font-size: 16px;
+            margin-bottom: 15px;
+            font-weight: 800;
+        }
+        .footer-col ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .footer-col ul li {
+            margin-bottom: 10px;
+            font-size: 13px;
+            color: #555;
+            cursor: pointer;
+        }
+        .footer-col ul li:hover { color: var(--primary-color); }
+        .footer-bottom {
+            text-align: center;
+            font-size: 12px;
+            color: #888;
+            border-top: 1px solid #f0f0f0;
+            padding-top: 20px;
+        }
+
         .modal-overlay { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; }
         .modal-box { background: #fff; width: 100%; max-width: 450px; padding: 30px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); position: relative; text-align: left; }
         .btn-modal-action { background: var(--primary-color); color: white; border: none; padding: 10px; border-radius: 10px; font-weight: bold; width: 100%; margin-top: 20px; cursor: pointer; }
@@ -143,7 +183,7 @@
                 <div class="cart-dropdown" id="cartDropdown" onclick="event.stopPropagation()">
                     <h4>Tus Productos Seleccionados</h4>
                     <ul class="cart-dropdown-items" id="cartDropdownItems">
-                        <li style="color: #888;">El carrito está vacío</li>
+                        <li style="color: #888; text-align: center;">El carrito está vacío</li>
                     </ul>
                     <div class="cart-dropdown-total">Subtotal: $<span id="cartSubtotal">0</span></div>
                     <a href="checkout.html" class="btn-go-checkout">Ir a Pagar 💳</a>
@@ -188,8 +228,45 @@
         </div>
     </div>
 
+    <!-- PIE DE PÁGINA (FOOTER) INFERIOR -->
     <footer>
-        <p>© 2026 Chapitas NFC. Todos los derechos reservados. Ley Chilena N° 19.628.</p>
+        <div class="footer-container">
+            <div class="footer-col">
+                <h4>Tienda</h4>
+                <ul>
+                    <li onclick="location.href='producto.html?id=estandar'">Chapitas NFC</li>
+                    <li onclick="location.href='producto.html?id=collar'">Collares Inteligentes</li>
+                    <li onclick="location.href='producto.html?id=bicicleta'">Placas para Bicicletas</li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Acceso Clientes</h4>
+                <ul>
+                    <li onclick="abrirLoginModal()">Iniciar Sesión</li>
+                    <li onclick="abrirLoginModal()">Estado de mis pedidos</li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>¿Necesitas ayuda?</h4>
+                <ul>
+                    <li>Contacto y Ayuda</li>
+                    <li>Despachos y Envíos en Chile</li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Síguenos</h4>
+                <ul style="display: flex; gap: 10px; font-size: 20px;">
+                    <li title="Instagram">📷</li>
+                    <li title="Facebook">📘</li>
+                    <li title="YouTube">▶️</li>
+                    <li title="WhatsApp">💬</li>
+                    <li title="TikTok">🎵</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 Chapitas NFC. Todos los derechos reservados. Ley Chilena N° 19.628.</p>
+        </div>
     </footer>
 
     <!-- MODAL LOGIN -->
@@ -265,12 +342,6 @@
             carrito.splice(index, 1);
             localStorage.setItem('chapitas_carrito', JSON.stringify(carrito));
             actualizarCarritoGlobalUI();
-        }
-
-        function mostrarToast() {
-            const toast = document.getElementById('toastNotification');
-            toast.className = "show";
-            setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 3000);
         }
 
         function abrirLoginModal() {
