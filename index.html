@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chapitas NFC - Tienda Oficial y Seguridad para Mascotas</title>
+    <title>Chapitas NFC - Tienda Oficial y Seguridad Inteligente</title>
     <style>
         :root {
             --primary-color: #ff334b;
@@ -22,7 +22,7 @@
             box-sizing: border-box;
         }
 
-        /* --- CABECERA TIPO E-COMMERCE GRANDE --- */
+        /* --- CABECERA PRINCIPAL TIPO E-COMMERCE --- */
         header {
             background-color: var(--primary-color);
             color: white;
@@ -31,18 +31,34 @@
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 99;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .menu-toggle {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
         }
 
         .logo-area h1 {
             margin: 0;
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 800;
-            letter-spacing: 0.5px;
         }
 
         .logo-area p {
             margin: 0;
-            font-size: 12px;
+            font-size: 11px;
             opacity: 0.9;
         }
 
@@ -69,14 +85,55 @@
             background: #fff0f1;
         }
 
-        /* --- HERO BANNER PRINCIPAL --- */
+        /* --- MENÚ LATERAL DESPLEGABLE (SIDEBAR) --- */
+        .sidebar {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            background-color: #ffffff;
+            overflow-x: hidden;
+            transition: 0.3s;
+            padding-top: 60px;
+            box-shadow: 5px 0 15px rgba(0,0,0,0.1);
+        }
+
+        .sidebar a {
+            padding: 12px 25px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-color);
+            display: block;
+            transition: 0.2s;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .sidebar a:hover {
+            background-color: #fff0f1;
+            color: var(--primary-color);
+        }
+
+        .sidebar .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 25px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #333;
+        }
+
+        /* --- HERO BANNER & OFERTAS --- */
         .hero-banner {
             background: linear-gradient(135deg, #5a189a, #7b2cbf, #ff334b);
             color: white;
             text-align: center;
             padding: 40px 20px;
             margin-bottom: 30px;
-            box-shadow: inset 0 -10px 20px rgba(0,0,0,0.1);
         }
 
         .hero-banner h2 {
@@ -91,7 +148,7 @@
             opacity: 0.95;
         }
 
-        /* --- CONTENEDOR PRINCIPAL DE LA TIENDA --- */
+        /* --- CONTENEDOR DE TIENDA Y CONFIGURACIÓN --- */
         .store-container {
             max-width: 1200px;
             margin: 0 auto 40px auto;
@@ -121,19 +178,23 @@
             color: #1a1a1a;
             border-bottom: 2px solid #f0f0f0;
             padding-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
 
-        /* --- PRODUCTOS Y CARRITO --- */
+        /* --- PRODUCTOS AMPLIADOS --- */
+        .product-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
         .product-card {
             border: 2px solid #f0f0f0;
-            border-radius: 15px;
-            padding: 15px;
-            margin-bottom: 15px;
+            border-radius: 12px;
+            padding: 12px;
             text-align: center;
             transition: all 0.3s ease;
+            background: #fff;
         }
 
         .product-card:hover {
@@ -143,26 +204,26 @@
 
         .product-card h3 {
             margin: 5px 0;
-            font-size: 16px;
+            font-size: 14px;
         }
 
         .price {
-            font-size: 18px;
+            font-size: 15px;
             font-weight: 800;
             color: var(--primary-color);
-            margin: 10px 0;
+            margin: 8px 0;
         }
 
         .btn-add {
             background: #2ec4b6;
             color: white;
             border: none;
-            padding: 10px;
-            border-radius: 10px;
+            padding: 8px;
+            border-radius: 8px;
             font-weight: bold;
+            font-size: 12px;
             cursor: pointer;
             width: 100%;
-            transition: background 0.2s;
         }
 
         .btn-add:hover {
@@ -173,7 +234,7 @@
             list-style: none;
             padding: 0;
             margin: 0 0 15px 0;
-            max-height: 140px;
+            max-height: 120px;
             overflow-y: auto;
         }
 
@@ -191,19 +252,13 @@
             font-size: 16px;
             text-align: right;
             margin-bottom: 20px;
-            color: #1a1a1a;
         }
 
-        /* --- CAMPOS DE FORMULARIO LLAMATIVOS Y MODERNOS --- */
+        /* --- FORMULARIO Y CAMPOS LLAMATIVOS --- */
         .checkout-form {
             display: flex;
             flex-direction: column;
             gap: 12px;
-        }
-
-        .input-group {
-            position: relative;
-            margin-bottom: 2px;
         }
 
         .checkout-form label {
@@ -213,17 +268,15 @@
             color: #6c757d;
             margin-bottom: 4px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
 
         .checkout-form input, .checkout-form textarea {
             width: 100%;
-            padding: 12px 14px;
+            padding: 11px 14px;
             border: 2px solid #e9ecef;
             border-radius: 12px;
-            font-size: 14px;
+            font-size: 13px;
             box-sizing: border-box;
-            font-family: inherit;
             background-color: #f8f9fa;
             transition: all 0.3s;
         }
@@ -237,7 +290,7 @@
 
         .checkout-form textarea {
             resize: none;
-            height: 60px;
+            height: 55px;
         }
 
         .error-msg {
@@ -253,7 +306,7 @@
             align-items: center;
             gap: 10px;
             font-size: 13px;
-            margin-top: 10px;
+            margin-top: 8px;
             cursor: pointer;
             background: #f8f9fa;
             padding: 10px;
@@ -274,20 +327,19 @@
             border: none;
             padding: 14px;
             border-radius: 12px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 800;
             cursor: pointer;
             box-shadow: 0 6px 15px rgba(255, 51, 75, 0.3);
             margin-top: 10px;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: transform 0.2s;
         }
 
         .btn-checkout:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(255, 51, 75, 0.4);
         }
 
-        /* --- PREVISUALIZACIÓN DE LA TARJETA --- */
+        /* --- PREVISUALIZACIÓN DE TARJETA --- */
         .preview-card {
             background: #ffffff;
             border-radius: 20px;
@@ -322,7 +374,6 @@
             object-fit: cover;
             border-radius: 50%;
             border: 4px solid #f0f0f0;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
         .preview-card h3 {
@@ -350,11 +401,61 @@
             margin-bottom: 8px;
         }
 
-        /* --- VENTANAS MODALES (Términos, Login y Mi Cuenta) --- */
+        /* --- FOOTER INFERIOR (ESTILO REFERENCIA) --- */
+        footer {
+            background-color: #ffffff;
+            border-top: 1px solid #e9ecef;
+            padding: 40px 20px 20px 20px;
+            margin-top: 40px;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .footer-col h4 {
+            color: var(--primary-color);
+            font-size: 16px;
+            margin-bottom: 15px;
+            font-weight: 800;
+        }
+
+        .footer-col ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 10px;
+            font-size: 13px;
+            color: #555;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .footer-col ul li:hover {
+            color: var(--primary-color);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            font-size: 12px;
+            color: #888;
+            border-top: 1px solid #f0f0f0;
+            padding-top: 20px;
+        }
+
+        /* --- MODALES --- */
         .modal-overlay {
             display: none;
             position: fixed;
-            z-index: 1000;
+            z-index: 2000;
             left: 0;
             top: 0;
             width: 100%;
@@ -415,38 +516,64 @@
 </head>
 <body>
 
-    <!-- Cabecera Estilo E-commerce -->
+    <!-- MENÚ LATERAL DESPLEGABLE (SIDEBAR) -->
+    <div id="mySidebar" class="sidebar">
+        <button class="close-btn" onclick="cerrarMenu()">×</button>
+        <h3 style="padding: 0 25px; color: var(--primary-color); margin-bottom: 10px;">Menú Principal</h3>
+        <a href="#" onclick="cerrarMenu()">🏠 Inicio</a>
+        <a href="#" onclick="cerrarMenu()">🏷️ Chapitas NFC</a>
+        <a href="#" onclick="cerrarMenu()">🔗 Collares Inteligentes</a>
+        <a href="#" onclick="cerrarMenu()">🚲 Placas para Bicicletas</a>
+        <a href="#" onclick="cerrarMenu()">📦 Accesorios y Combos</a>
+        <a href="#" onclick="abrirLoginModal(); cerrarMenu();">👤 Mi Cuenta y Pedidos</a>
+    </div>
+
+    <!-- CABECERA TIPO E-COMMERCE -->
     <header>
-        <div class="logo-area">
-            <h1>Chapitas NFC</h1>
-            <p>Seguridad inteligente y placas interactivas</p>
+        <div class="header-left">
+            <button class="menu-toggle" onclick="abrirMenu()">☰</button>
+            <div class="logo-area">
+                <h1>Chapitas NFC</h1>
+                <p>Seguridad inteligente para ti y los tuyos</p>
+            </div>
         </div>
         <div class="user-nav-area">
-            <button class="btn-user-auth" onclick="abrirLoginModal()">👤 Iniciar Sesión / Registrarse</button>
+            <button class="btn-user-auth" onclick="abrirLoginModal()">👤 Mi Cuenta</button>
         </div>
     </header>
 
-    <!-- Banner Principal -->
+    <!-- BANNER PRINCIPAL DE OFERTAS -->
     <div class="hero-banner">
-        <h2>Protege a tu compañero con tecnología NFC</h2>
-        <p>Crea su ficha digital inteligente, vincúlala a su placa y mantén su información segura en todo momento.</p>
+        <h2>Tecnología NFC al servicio de tu seguridad</h2>
+        <p>Protege a tus mascotas y pertenencias con fichas digitales interactivas instantáneas.</p>
     </div>
 
+    <!-- CONTENEDOR PRINCIPAL -->
     <div class="store-container">
-        <!-- Columna 1: Productos y Carrito -->
+        <!-- Columna 1: Productos y Vitrina de Ejemplos -->
         <div class="panel">
-            <h2>🛒 1. Elige tu Placa</h2>
-            <div class="product-card">
-                <h3>Placa Estándar</h3>
-                <p>Resistente al agua y golpes con chip NFC.</p>
-                <div class="price">$8.990</div>
-                <button class="btn-add" onclick="agregarAlCarrito('Placa Estándar', 8990)">Agregar al Carrito</button>
-            </div>
-            <div class="product-card">
-                <h3>Placa Premium Metálica</h3>
-                <p>Aleación de zinc elegante y alta durabilidad.</p>
-                <div class="price">$12.990</div>
-                <button class="btn-add" onclick="agregarAlCarrito('Placa Premium Metálica', 12990)">Agregar al Carrito</button>
+            <h2>🛒 1. Catálogo y Ofertas</h2>
+            <div class="product-grid">
+                <div class="product-card">
+                    <h3>Placa Estándar</h3>
+                    <div class="price">$8.990</div>
+                    <button class="btn-add" onclick="agregarAlCarrito('Placa Estándar', 8990)">Agregar</button>
+                </div>
+                <div class="product-card">
+                    <h3>Placa Premium</h3>
+                    <div class="price">$12.990</div>
+                    <button class="btn-add" onclick="agregarAlCarrito('Placa Premium Metálica', 12990)">Agregar</button>
+                </div>
+                <div class="product-card">
+                    <h3>Collar Inteligente</h3>
+                    <div class="price">$15.990</div>
+                    <button class="btn-add" onclick="agregarAlCarrito('Collar Inteligente NFC', 15990)">Agregar</button>
+                </div>
+                <div class="product-card">
+                    <h3>Placa Bicicleta</h3>
+                    <div class="price">$9.990</div>
+                    <button class="btn-add" onclick="agregarAlCarrito('Placa Bicicleta NFC', 9990)">Agregar</button>
+                </div>
             </div>
 
             <h2>🛍️ Tu Carrito</h2>
@@ -456,47 +583,47 @@
             <div class="cart-total">Total: $<span id="cartTotal">0</span></div>
         </div>
 
-        <!-- Columna 2: Formulario de Registro de Mascota -->
+        <!-- Columna 2: Formulario de Registro de Mascota / Producto -->
         <div class="panel">
-            <h2>🐾 2. Datos de la Mascota</h2>
+            <h2>🐾 2. Personalizar Ficha</h2>
             <form id="orderForm" class="checkout-form" novalidate>
-                <div class="input-group">
+                <div>
                     <label>Tu Correo Electrónico</label>
                     <input type="email" id="email" placeholder="tucorreo@gmail.com">
                     <span id="err-email" class="error-msg">Debe rellenar esta información</span>
                 </div>
 
-                <div class="input-group">
-                    <label>Nombre de la Mascota</label>
+                <div>
+                    <label>Nombre de la Mascota / Ítem</label>
                     <input type="text" id="nombre" placeholder="Ej: Bruno" oninput="actualizarPreview()">
                     <span id="err-nombre" class="error-msg">Debe rellenar esta información</span>
                 </div>
 
-                <div class="input-group">
+                <div>
                     <label>Detalle / Raza / Edad</label>
                     <input type="text" id="detalle" placeholder="Ej: Pincher, 3 años" oninput="actualizarPreview()">
                     <span id="err-detalle" class="error-msg">Debe rellenar esta información</span>
                 </div>
 
-                <div class="input-group">
+                <div>
                     <label>Dueño/a y Teléfono</label>
                     <input type="text" id="dueno" placeholder="Nombre y Teléfono" oninput="actualizarPreview()">
                     <span id="err-dueno" class="error-msg">Debe rellenar esta información</span>
                 </div>
 
-                <div class="input-group">
+                <div>
                     <label>Número WhatsApp (para alertas)</label>
                     <input type="tel" id="wsp" placeholder="56912345678">
                     <span id="err-wsp" class="error-msg">Debe rellenar esta información</span>
                 </div>
 
-                <div class="input-group">
+                <div>
                     <label>Alergias o Cuidados Especiales</label>
                     <textarea id="alergias" placeholder="Ej: Alérgico al pollo" oninput="actualizarPreview()"></textarea>
                 </div>
 
-                <div class="input-group">
-                    <label>Subir Foto de la Mascota (Seguro - Max 3MB)</label>
+                <div>
+                    <label>Subir Foto (Seguro - Max 3MB)</label>
                     <input type="file" id="fotoFile" accept="image/jpeg, image/png, image/webp" onchange="validarYPrevisualizarFoto(event)">
                     <span id="err-foto" class="error-msg">Debe rellenar esta información</span>
                 </div>
@@ -531,7 +658,55 @@
         </div>
     </div>
 
-    <!-- Modal: Términos y Condiciones -->
+    <!-- PIE DE PÁGINA (FOOTER) INFERIOR -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-col">
+                <h4>Tienda</h4>
+                <ul>
+                    <li>Chapitas NFC</li>
+                    <li>Collares Inteligentes</li>
+                    <li>Placas para Bicicletas</li>
+                    <li>Combos de Seguridad</li>
+                    <li>Accesorios y Soportes</li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Acceso Clientes</h4>
+                <ul>
+                    <li onclick="abrirLoginModal()">Iniciar Sesión</li>
+                    <li onclick="abrirLoginModal()">Carrito de compras</li>
+                    <li>Estado de mis pedidos</li>
+                    <li>Mis Mascotas Registradas</li>
+                    <li>Soporte Técnico NFC</li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>¿Necesitas ayuda?</h4>
+                <ul>
+                    <li>Contacto y Ayuda</li>
+                    <li>Despachos y Envíos en Chile</li>
+                    <li>Escribe al WhatsApp Directo</li>
+                    <li>Preguntas Frecuentes</li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Síguenos</h4>
+                <ul style="display: flex; gap: 10px; font-size: 20px;">
+                    <li title="Instagram">📷</li>
+                    <li title="Facebook">📘</li>
+                    <li title="YouTube">▶️</li>
+                    <li title="WhatsApp">💬</li>
+                    <li title="TikTok">🎵</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 Chapitas NFC. Todos los derechos reservados. Desarrollado bajo normativas de la Ley Chilena N° 19.628.</p>
+        </div>
+    </footer>
+
+    <!-- MODAL: Términos y Condiciones -->
     <div id="termsModal" class="modal-overlay">
         <div class="modal-box">
             <span class="close-x" onclick="cerrarTermsModal()">&times;</span>
@@ -542,7 +717,7 @@
         </div>
     </div>
 
-    <!-- Modal: Iniciar Sesión / Cuenta de Usuario -->
+    <!-- MODAL: Iniciar Sesión / Cuenta de Usuario -->
     <div id="loginModal" class="modal-overlay">
         <div class="modal-box">
             <span class="close-x" onclick="cerrarLoginModal()">&times;</span>
@@ -576,209 +751,8 @@
         let total = 0;
         let fotoBase64Segura = '';
 
-        function agregarAlCarrito(nombreProducto, precio) {
-            carrito.push({ producto: nombreProducto, precio: precio });
-            actualizarCarrito();
+        // Control del Menú Lateral (Sidebar)
+        function abrirMenu() {
+            document.getElementById("mySidebar").style.width = "280px";
         }
-
-        function actualizarCarrito() {
-            const lista = document.getElementById('cartItems');
-            const totalSpan = document.getElementById('cartTotal');
-            
-            lista.innerHTML = '';
-            total = 0;
-
-            if (carrito.length === 0) {
-                lista.innerHTML = '<li style="color: #888;">Tu carrito está vacío</li>';
-                totalSpan.textContent = '0';
-                return;
-            }
-
-            carrito.forEach(item => {
-                total += item.precio;
-                const li = document.createElement('li');
-                li.innerHTML = `<span>${item.producto}</span> <span>$${item.precio}</span>`;
-                lista.appendChild(li);
-            });
-
-            totalSpan.textContent = total.toLocaleString('es-CL');
-        }
-
-        // Modales de Términos
-        function abrirTermsModal(e) {
-            e.preventDefault();
-            document.getElementById('termsModal').style.display = 'flex';
-        }
-        function cerrarTermsModal() {
-            document.getElementById('termsModal').style.display = 'none';
-        }
-
-        // Modales de Autenticación de Usuario
-        function abrirLoginModal() {
-            const userGuardado = localStorage.getItem('chapitas_user');
-            if (userGuardado) {
-                document.getElementById('authContent').style.display = 'none';
-                document.getElementById('userDashboard').style.display = 'block';
-                document.getElementById('userProfileEmail').textContent = userGuardado;
-                
-                // Cargar pedidos simulados del localStorage
-                const pedidos = JSON.parse(localStorage.getItem('chapitas_pedidos') || '[]');
-                if (pedidos.length > 0) {
-                    document.getElementById('userOrdersList').innerHTML = pedidos.map(p => `• Pedido #${p.id} (${p.mascota}) - <b>Estado: En producción</b>`).join('<br>');
-                }
-            } else {
-                document.getElementById('authContent').style.display = 'block';
-                document.getElementById('userDashboard').style.display = 'none';
-            }
-            document.getElementById('loginModal').style.display = 'flex';
-        }
-        function cerrarLoginModal() {
-            document.getElementById('loginModal').style.display = 'none';
-        }
-
-        function manejarLogin(e) {
-            e.preventDefault();
-            const email = document.getElementById('loginEmail').value;
-            localStorage.setItem('chapitas_user', email);
-            alert("¡Sesión iniciada con éxito!");
-            cerrarLoginModal();
-        }
-
-        function cerrarSesion() {
-            localStorage.removeItem('chapitas_user');
-            alert("Has cerrado sesión.");
-            cerrarLoginModal();
-        }
-
-        // Subida y seguridad de fotos
-        function validarYPrevisualizarFoto(event) {
-            const archivo = event.target.files[0];
-            if (!archivo) return;
-
-            const tiposPermitidos = ['image/jpeg', 'image/png', 'image/webp'];
-            if (!tiposPermitidos.includes(archivo.type)) {
-                alert("⚠️ Formato no permitido. Solo se aceptan imágenes JPG, PNG o WEBP.");
-                event.target.value = '';
-                return;
-            }
-
-            const tamanioMaximoBytes = 3 * 1024 * 1024; 
-            if (archivo.size > tamanioMaximoBytes) {
-                alert("⚠️ La imagen excede el tamaño máximo permitido de 3 MB.");
-                event.target.value = '';
-                return;
-            }
-
-            const lector = new FileReader();
-            lector.onload = function(e) {
-                fotoBase64Segura = e.target.result;
-                document.getElementById('prevFoto').src = fotoBase64Segura;
-                document.getElementById('err-foto').style.display = 'none';
-            };
-            lector.readAsDataURL(archivo);
-        }
-
-        function actualizarPreview() {
-            const nombre = document.getElementById('nombre').value;
-            const detalle = document.getElementById('detalle').value;
-            const dueno = document.getElementById('dueno').value;
-            const alergias = document.getElementById('alergias').value;
-
-            document.getElementById('prevNombre').textContent = nombre ? `¡Hola, soy ${nombre}!` : "¡Hola, soy ...!";
-            document.getElementById('prevDetalle').textContent = detalle || "--";
-            document.getElementById('prevDueno').textContent = dueno || "--";
-            document.getElementById('prevAlergias').textContent = alergias || "Ninguna";
-        }
-
-        // Envío de formulario y validaciones
-        const orderForm = document.getElementById('orderForm');
-        orderForm.onsubmit = async function(e) {
-            e.preventDefault();
-
-            document.querySelectorAll('.error-msg').forEach(el => el.style.display = 'none');
-
-            if (carrito.length === 0) {
-                alert("Para poder gestionar tu pedido debes de rellenar todos los datos solicitados");
-                return;
-            }
-
-            let isValid = true;
-            const email = document.getElementById('email').value.trim();
-            const nombre = document.getElementById('nombre').value.trim();
-            const detalle = document.getElementById('detalle').value.trim();
-            const dueno = document.getElementById('dueno').value.trim();
-            const wsp = document.getElementById('wsp').value.trim();
-            const termsChecked = document.getElementById('termsCheck').checked;
-
-            if (!email) { document.getElementById('err-email').style.display = 'block'; isValid = false; }
-            if (!nombre) { document.getElementById('err-nombre').style.display = 'block'; isValid = false; }
-            if (!detalle) { document.getElementById('err-detalle').style.display = 'block'; isValid = false; }
-            if (!dueno) { document.getElementById('err-dueno').style.display = 'block'; isValid = false; }
-            if (!wsp) { document.getElementById('err-wsp').style.display = 'block'; isValid = false; }
-            if (!fotoBase64Segura) { document.getElementById('err-foto').style.display = 'block'; isValid = false; }
-            if (!termsChecked) { document.getElementById('err-terms').style.display = 'block'; isValid = false; }
-
-            if (!isValid) {
-                alert("Para poder gestionar tu pedido debes de rellenar todos los datos solicitados");
-                return;
-            }
-
-            const uniqueId = 'chip_' + Math.random().toString(36).substring(2, 10);
-            const productosComprados = carrito.map(i => i.producto).join(', ');
-
-            const datosOrden = {
-                id: uniqueId,
-                email: email,
-                nombre: nombre,
-                detalle: detalle,
-                dueno: dueno,
-                telefono: wsp,
-                wsp: wsp,
-                alergias: document.getElementById('alergias').value,
-                foto: fotoBase64Segura,
-                estado: 'inactivo'
-            };
-
-            alert("Procesando orden de compra de forma segura...");
-
-            try {
-                const response = await fetch('/api/registrar', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(datosOrden)
-                });
-
-                if (!response.ok) throw new Error("Error al guardar en la base de datos");
-
-                // Enviar correo a través de tu clave Web3Forms
-                await fetch("https://api.web3forms.com/submit", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Accept": "application/json"
-                    },
-                    body: JSON.stringify({
-                        access_key: "540aca10-b3dc-4f3a-9127-8b6aad8bbeea",
-                        subject: `🛒 ¡Nueva Orden en Chapitas NFC - ${datosOrden.nombre}!`,
-                        email: "jv7276659@gmail.com",
-                        message: `¡Has recibido una nueva orden!\n\n- Productos: ${productosComprados}\n- Total: $${total}\n- ID Chapita: ${uniqueId}\n- Cliente: ${datosOrden.email}\n- Mascota: ${datosOrden.nombre}\n- Teléfono: ${datosOrden.wsp}`
-                    })
-                });
-
-                // Guardar localmente el pedido para que el usuario lo vea en "Mi Cuenta"
-                let misPedidos = JSON.parse(localStorage.getItem('chapitas_pedidos') || '[]');
-                misPedidos.push({ id: uniqueId, mascota: nombre });
-                localStorage.setItem('chapitas_pedidos', JSON.stringify(misPedidos));
-                localStorage.setItem('chapitas_user', email);
-
-                alert("¡Pedido realizado con éxito!");
-                window.location.href = `/ficha.html?id=${uniqueId}`;
-
-            } catch (err) {
-                alert("Hubo un problema al procesar tu orden. Inténtalo de nuevo.");
-                console.error(err);
-            }
-        };
-    </script>
-</body>
-</html>
+        function cerrarMenu() {
