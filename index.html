@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tienda - Chapitas Inteligentes NFC</title>
+    <title>JV Redes y Seguridad - Tienda Chapitas NFC</title>
     <style>
         :root {
             --primary-color: #ff5e6c;
@@ -295,7 +295,6 @@
                 return;
             }
 
-            // Generar ID único para la chapita
             const uniqueId = 'chip_' + Math.random().toString(36).substring(2, 10);
             const productosComprados = carrito.map(i => i.producto).join(', ');
 
@@ -305,17 +304,16 @@
                 nombre: document.getElementById('nombre').value,
                 detalle: document.getElementById('detalle').value,
                 dueno: document.getElementById('dueno').value,
-                telefono: document.getElementById('wsp').value, // Usamos el wsp como contacto
+                telefono: document.getElementById('wsp').value,
                 wsp: document.getElementById('wsp').value,
                 alergias: document.getElementById('alergias').value,
                 foto: document.getElementById('foto').value,
-                estado: 'inactivo' // Inactivo hasta que se confirme el pago
+                estado: 'inactivo'
             };
 
             alert("Procesando orden...");
 
             try {
-                // 1. Guardar en la base de datos Cloudflare D1
                 const response = await fetch('/api/registrar', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -324,7 +322,6 @@
 
                 if (!response.ok) throw new Error("Error al guardar en la base de datos");
 
-                // 2. Enviar notificación directa a tu correo personal mediante Web3Forms
                 await fetch("https://api.web3forms.com/submit", {
                     method: "POST",
                     headers: {
@@ -334,15 +331,15 @@
                     body: JSON.stringify({
                         access_key: "YOUR_WEB3FORMS_KEY", // Reemplaza con tu llave de Web3Forms
                         subject: `🛒 ¡Nueva Orden de Compra - ${datosOrden.nombre}!`,
-                        email: "jv7276659@gmail.com", // Tu correo personal
+                        email: "jv7276659@gmail.com",
                         message: `¡Has recibido una nueva orden en tu tienda!\n\n- Productos: ${productosComprados}\n- Total a Pagar: $${total}\n- ID de Chapita Asignado: ${uniqueId}\n- Cliente Correo: ${datosOrden.email}\n- Mascota: ${datosOrden.nombre}\n- Detalle: ${datosOrden.detalle}\n- Dueño: ${datosOrden.dueno}\n- WhatsApp: ${datosOrden.wsp}`
                     })
                 });
 
-                alert("¡Pedido realizado con éxito! Te redirigiremos al pago.");
+                alert("¡Pedido realizado con éxito! Te redirigiremos a la ficha de prueba.");
                 
-                // Redirección de prueba (puedes cambiarlo por tu enlace de MercadoPago o Webpay)
-                window.location.href = `/?id=${uniqueId}`;
+                // Redirige a la ficha generada (aquí puedes cambiarlo por tu pasarela de pago cuando la configures)
+                window.location.href = `/ficha.html?id=${uniqueId}`;
 
             } catch (err) {
                 alert("Hubo un problema al procesar tu orden. Inténtalo de nuevo.");
