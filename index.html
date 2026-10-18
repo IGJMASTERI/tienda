@@ -756,3 +756,210 @@
             document.getElementById("mySidebar").style.width = "280px";
         }
         function cerrarMenu() {
+            document.getElementById("mySidebar").style.width = "0";
+        }
+
+        function agregarAlCarrito(nombreProducto, precio) {
+            carrito.push({ producto: nombreProducto, precio: precio });
+            actualizarCarrito();
+        }
+
+        function actualizarCarrito() {
+            const lista = document.getElementById('cartItems');
+            const totalSpan = document.getElementById('cartTotal');
+            
+            lista.innerHTML = '';
+            total = 0;
+
+            if (carrito.length === 0) {
+                lista.innerHTML = '<li style="color: #888;">Tu carrito está vacío</li>';
+                totalSpan.textContent = '0';
+                return;
+            }
+
+            carrito.forEach(item => {
+                total += item.precio;
+                const li = document.createElement('li');
+                li.innerHTML = `<span>${item.producto}</span> <span>$${item.precio}</span>`;
+                lista.appendChild(li);
+            });
+
+            totalSpan.textContent = total.toLocaleString('es-CL');
+        }
+
+        // Modales de Términos
+        function abrirTermsModal(e) {
+            e.preventDefault();
+            document.getElementById('termsModal').style.display = 'flex';
+        }
+        function cerrarTermsModal() {
+            document.getElementById('termsModal').style.display = 'none';
+        }
+
+        // Modales de Autenticación de Usuario
+        function abrirLoginModal() {
+            const userGuardado = localStorage.getItem('chapitas_user');
+            if (userGuardado) {
+                document.getElementById('authContent').style.display = 'none';
+                document.getElementById('userDashboard').style.display = 'block';
+                document.getElementById('userProfileEmail').textContent = userGuardado;
+                
+                const pedidos = JSON.parse(localStorage.getItem('chapitas_pedidos') || '[]');
+                if (pedidos.length > 0) {
+                    document.getElementById('userOrdersList').innerHTML = pedidos.map(p => `• Pedido #${p.id} (${p.mascota}) - <b>Estado: En producción</b>`).join('<br>');
+                }
+            } else {
+                document.getElementById('authContent').style.display = 'block';
+                document.getElementById('userDashboard').style.display = 'none';
+            }
+            document.getElementById('loginModal').style.display = 'flex';
+        }
+        function cerrarLoginModal() {
+            document.getElementById('loginModal').style.display = 'none';
+        }
+
+        function manejarLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            localStorage.setItem('chapitas_user', email);
+            alert("¡Sesión iniciada con éxito!");
+            cerrarLoginModal();
+        }
+
+        function cerrarSesion() {
+            localStorage.removeItem('chapitas_user');
+            alert("Has cerrado sesión.");
+            cerrarLoginModal();
+        }
+
+        // Subida y seguridad de fotos
+        function validarYPrevisualizarFoto(event) {
+            const archivo = event.target.files[0];
+            if (!archivo) return;
+
+            const tiposPermitidos = ['image/jpeg', 'image/png', 'image/webp'];
+            if (!tiposPermitidos.includes(archivo.type)) {
+                alert("⚠️ Formato no permitido. Solo se aceptan imágenes JPG, PNG o WEBP.");
+                event.target.value = '';
+                return;
+            }
+
+            const tamanioMaximoBytes = 3 * 1024 * 1024; 
+            if (archivo.size > tamanioMaximoBytes) {
+                alert("⚠️ La imagen excede el tamaño máximo permitido de 3 MB.");
+                event.target.value = '';
+                return;
+            }
+
+            const lector = new FileReader();
+            lector.onload = function(e) {
+                fotoBase64Segura = e.target.result;
+                document.getElementById('prevFoto').src = fotoBase64Segura;
+                document.getElementById('err-foto').style.display = 'none';
+            };
+            lector.readAsDataURL(archivo);
+        }
+
+        function actualizarPreview() {
+            const nombre = document.getElementById('nombre').value;
+            const detalle = document.getElementById('detalle').value;
+            const dueno = document.getElementById('dueno').value;
+            const alergias = document.getElementById('alergias').value;
+
+            document.getElementById('prevNombre').textContent = nombre ? `¡Hola, soy ${nombre}!` : "¡Hola, soy ...!";
+            document.getElementById('prevDetalle').textContent = detalle || "--";
+            document.getElementById('prevDueno').textContent = dueno || "--";
+            document.getElementById('prevAlergias').textContent = alergias || "Ninguna";
+        }
+
+        // Envío de formulario y validaciones
+        const orderForm = document.getElementById('orderForm');
+        orderForm.onsubmit = async function(e) {
+            e.preventDefault();
+
+            document.querySelectorAll('.error-msg').forEach(el => el.style.display = 'none');
+
+            if (carrito.length === 0) {
+                alert("Para poder gestionar tu pedido debes de rellenar todos los datos solicitados");
+                return;
+            }
+
+            let isValid = true;
+            const email = document.getElementById('email').value.trim();
+            const nombre = document.getElementById('nombre').value.trim();
+            const detalle = document.getElementById('detalle').value.trim();
+            const dueno = document.getElementById('dueno').value.trim();
+            const wsp = document.getElementById('wsp').value.trim();
+            const termsChecked = document.getElementById('termsCheck').checked;
+
+            if (!email) { document.getElementById('err-email').style.display = 'block'; isValid = false; }
+            if (!nombre) { document.getElementById('err-nombre').style.display = 'block'; isValid = false; }
+            if (!detalle) { document.getElementById('err-detalle').style.display = 'block'; isValid = false; }
+            if (!dueno) { document.getElementById('err-dueno').style.display = 'block'; isValid = false; }
+            if (!wsp) { document.getElementById('err-wsp').style.display = 'block'; isValid = false; }
+            if (!fotoBase64Segura) { document.getElementById('err-foto').style.display = 'block'; isValid = false; }
+            if (!termsChecked) { document.getElementById('err-terms').style.display = 'block'; isValid = false; }
+
+            if (!isValid) {
+                alert("Para poder gestionar tu pedido debes de rellenar todos los datos solicitados");
+                return;
+            }
+
+            const uniqueId = 'chip_' + Math.random().toString(36).substring(2, 10);
+            const productosComprados = carrito.map(i => i.producto).join(', ');
+
+            const datosOrden = {
+                id: uniqueId,
+                email: email,
+                nombre: nombre,
+                detalle: detalle,
+                dueno: dueno,
+                telefono: wsp,
+                wsp: wsp,
+                alergias: document.getElementById('alergias').value,
+                foto: fotoBase64Segura,
+                estado: 'inactivo'
+            };
+
+            alert("Procesando orden de compra de forma segura...");
+
+            try {
+                const response = await fetch('/api/registrar', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(datosOrden)
+                });
+
+                if (!response.ok) throw new Error("Error al guardar en la base de datos");
+
+                // Enviar correo a través de tu clave Web3Forms
+                await fetch("https://api.web3forms.com/submit", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json"
+                    },
+                    body: JSON.stringify({
+                        access_key: "540aca10-b3dc-4f3a-9127-8b6aad8bbeea",
+                        subject: `🛒 ¡Nueva Orden en Chapitas NFC - ${datosOrden.nombre}!`,
+                        email: "jv7276659@gmail.com",
+                        message: `¡Has recibido una nueva orden!\n\n- Productos: ${productosComprados}\n- Total: $${total}\n- ID Chapita: ${uniqueId}\n- Cliente: ${datosOrden.email}\n- Mascota: ${datosOrden.mascota || datosOrden.nombre}\n- Teléfono: ${datosOrden.wsp}`
+                    })
+                });
+
+                let misPedidos = JSON.parse(localStorage.getItem('chapitas_pedidos') || '[]');
+                misPedidos.push({ id: uniqueId, mascota: nombre });
+                localStorage.setItem('chapitas_pedidos', JSON.stringify(misPedidos));
+                localStorage.setItem('chapitas_user', email);
+
+                alert("¡Pedido realizado con éxito!");
+                window.location.href = `/ficha.html?id=${uniqueId}`;
+
+            } catch (err) {
+                alert("Hubo un problema al procesar tu orden. Inténtalo de nuevo.");
+                console.error(err);
+            }
+        };
+    </script>
+</body>
+</html>
