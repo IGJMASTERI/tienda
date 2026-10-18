@@ -21,6 +21,56 @@
             box-sizing: border-box;
         }
 
+        .top-nav { max-width: 900px; margin: 0 auto 20px auto; display: flex; justify-content: space-between; align-items: center; }
+        .back-link { color: var(--primary-color); text-decoration: none; font-weight: bold; }
+
+        /* --- CARRITO FLOTANTE Y DESPLEGABLE --- */
+        .cart-icon-container { position: relative; cursor: pointer; background: var(--primary-color); padding: 8px 15px; border-radius: 20px; display: flex; align-items: center; gap: 8px; color: white; font-weight: bold; font-size: 14px; box-shadow: 0 4px 10px rgba(255,51,75,0.3); }
+        .cart-badge { background: #fff; color: var(--primary-color); border-radius: 50%; padding: 2px 6px; font-size: 12px; font-weight: 800; }
+        
+        .cart-dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 45px;
+            background: white;
+            color: #333;
+            width: 300px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            padding: 20px;
+            z-index: 1000;
+            text-align: left;
+        }
+        .cart-dropdown h4 { margin-top: 0; border-bottom: 2px solid #f0f0f0; padding-bottom: 8px; font-size: 15px; }
+        .cart-dropdown-items { list-style: none; padding: 0; margin: 0 0 15px 0; max-height: 150px; overflow-y: auto; }
+        .cart-dropdown-items li { display: flex; justify-content: space-between; align-items: center; font-size: 12px; margin-bottom: 8px; border-bottom: 1px dashed #eee; padding-bottom: 5px; }
+        .btn-remove-item { background: none; border: none; color: #ff334b; cursor: pointer; font-weight: bold; font-size: 14px; }
+        .cart-dropdown-total { font-weight: 800; font-size: 14px; text-align: right; margin-bottom: 12px; }
+        .btn-go-checkout { background: var(--primary-color); color: white; border: none; padding: 10px; border-radius: 8px; width: 100%; font-weight: bold; text-align: center; text-decoration: none; display: block; box-sizing: border-box; }
+
+        /* --- NOTIFICACIÓN TOAST INFERIOR --- */
+        #toastNotification {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #2ec4b6;
+            color: white;
+            text-align: center;
+            border-radius: 10px;
+            padding: 12px;
+            position: fixed;
+            z-index: 3000;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            font-size: 14px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: visibility 0.5s, opacity 0.5s;
+            opacity: 0;
+        }
+        #toastNotification.show { visibility: visible; opacity: 1; }
+
         .container {
             max-width: 900px;
             margin: 0 auto;
@@ -29,20 +79,8 @@
             border-radius: 20px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.05);
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr;
             gap: 30px;
-        }
-
-        @media(max-width: 768px) {
-            .container { grid-template-columns: 1fr; }
-        }
-
-        .back-link {
-            display: inline-block;
-            margin-bottom: 20px;
-            color: var(--primary-color);
-            text-decoration: none;
-            font-weight: bold;
         }
 
         .product-info h2 { margin-top: 0; font-size: 26px; }
@@ -62,45 +100,32 @@
             margin-top: 20px;
             box-shadow: 0 4px 10px rgba(46, 196, 182, 0.3);
         }
-
-        .cart-box {
-            background: #f8f9fa;
-            border: 2px solid #e9ecef;
-            border-radius: 15px;
-            padding: 20px;
-            height: fit-content;
-        }
-
-        .cart-items { list-style: none; padding: 0; margin: 0 0 15px 0; max-height: 150px; overflow-y: auto; }
-        .cart-items li { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 8px; border-bottom: 1px dashed #ddd; padding-bottom: 5px; }
-        .cart-total { font-weight: 800; font-size: 16px; text-align: right; margin-bottom: 15px; }
-
-        .btn-checkout {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            border: none;
-            padding: 14px;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 800;
-            cursor: pointer;
-            width: 100%;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            box-sizing: border-box;
-            box-shadow: 0 6px 15px rgba(255, 51, 75, 0.3);
-        }
+        .btn-add-cart:hover { background: #25a194; }
     </style>
 </head>
 <body>
 
-    <div style="max-width: 900px; margin: 0 auto;">
+    <!-- Notificación Toast -->
+    <div id="toastNotification">¡Producto agregado con éxito! 🛒</div>
+
+    <div class="top-nav">
         <a href="index.html" class="back-link">← Volver al Catálogo Principal</a>
+        
+        <!-- Carrito Flotante con Desplegable -->
+        <div class="cart-icon-container" onclick="toggleCartDropdown()">
+            🛒 Carrito <span class="cart-badge" id="cartBadge">0</span>
+            <div class="cart-dropdown" id="cartDropdown" onclick="event.stopPropagation()">
+                <h4>Tus Productos Seleccionados</h4>
+                <ul class="cart-dropdown-items" id="cartDropdownItems">
+                    <li style="color: #888; text-align: center;">El carrito está vacío</li>
+                </ul>
+                <div class="cart-dropdown-total">Subtotal: $<span id="cartSubtotal">0</span></div>
+                <a href="checkout.html" class="btn-go-checkout">Ir a Pagar 💳</a>
+            </div>
+        </div>
     </div>
 
     <div class="container">
-        <!-- Detalle del Producto -->
         <div class="product-info">
             <span id="prodBadge" style="background: #fff0f1; color: var(--primary-color); font-size: 11px; font-weight: 800; padding: 5px 10px; border-radius: 6px;">PRODUCTO OFICIAL</span>
             <h2 id="prodNombre">Cargando producto...</h2>
@@ -113,20 +138,9 @@
             </ul>
             <button class="btn-add-cart" onclick="agregarAlCarrito()">🛒 Agregar al Carrito</button>
         </div>
-
-        <!-- Carrito de Compras -->
-        <div class="cart-box">
-            <h3 style="margin-top: 0; font-size: 18px;">🛍️ Tu Carrito de Compras</h3>
-            <ul id="cartItems" class="cart-items">
-                <li style="color: #888;">El carrito está vacío</li>
-            </ul>
-            <div class="cart-total">Total: $<span id="cartTotal">0</span></div>
-            <a href="checkout.html" class="btn-checkout" onclick="return validarCheckout()">Ir a Pagar y Rellenar Datos 💳</a>
-        </div>
     </div>
 
     <script>
-        // Base de datos de productos de ejemplo
         const productosDB = {
             'estandar': { nombre: 'Placa Estándar NFC', precio: 8990, desc: 'Resistente al agua, golpes y diseñada para el uso diario de mascotas activas con chip NFC integrado.' },
             'premium': { nombre: 'Placa Premium Metálica', precio: 12990, desc: 'Aleación de zinc ultrarresistente con acabado elegante, alta durabilidad y estética superior.' },
@@ -145,41 +159,60 @@
         let carrito = JSON.parse(localStorage.getItem('chapitas_carrito') || '[]');
         actualizarCarritoUI();
 
+        function toggleCartDropdown() {
+            const drop = document.getElementById('cartDropdown');
+            drop.style.display = drop.style.display === 'block' ? 'none' : 'block';
+        }
+
+        window.onclick = function(event) {
+            if (!event.target.closest('.cart-icon-container')) {
+                document.getElementById('cartDropdown').style.display = 'none';
+            }
+        }
+
         function agregarAlCarrito() {
             carrito.push(productoActual);
             localStorage.setItem('chapitas_carrito', JSON.stringify(carrito));
             actualizarCarritoUI();
-            alert(`¡${productoActual.nombre} agregado al carrito con éxito!`);
+            mostrarToast();
+        }
+
+        function mostrarToast() {
+            const toast = document.getElementById('toastNotification');
+            toast.className = "show";
+            setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 3000);
         }
 
         function actualizarCarritoUI() {
-            const lista = document.getElementById('cartItems');
-            const totalSpan = document.getElementById('cartTotal');
+            const badge = document.getElementById('cartBadge');
+            const lista = document.getElementById('cartDropdownItems');
+            const subtotalSpan = document.getElementById('cartSubtotal');
+            
+            badge.textContent = carrito.length;
             lista.innerHTML = '';
             let total = 0;
 
             if (carrito.length === 0) {
-                lista.innerHTML = '<li style="color: #888;">El carrito está vacío</li>';
-                totalSpan.textContent = '0';
+                lista.innerHTML = '<li style="color: #888; text-align: center;">El carrito está vacío</li>';
+                subtotalSpan.textContent = '0';
                 return;
             }
 
             carrito.forEach((item, index) => {
                 total += item.precio;
                 const li = document.createElement('li');
-                li.innerHTML = `<span>${item.producto || item.nombre}</span> <span>$${item.precio.toLocaleString('es-CL')}</span>`;
+                li.innerHTML = `<span>${item.producto || item.nombre}</span> <span>$${item.precio.toLocaleString('es-CL')} <button class="btn-remove-item" onclick="eliminarDelCarrito(event, ${index})">✕</button></span>`;
                 lista.appendChild(li);
             });
 
-            totalSpan.textContent = total.toLocaleString('es-CL');
+            subtotalSpan.textContent = total.toLocaleString('es-CL');
         }
 
-        function validarCheckout() {
-            if (carrito.length === 0) {
-                alert("Para poder gestionar tu pedido debes de rellenar todos los datos solicitados (Agrega productos al carrito primero).");
-                return false;
-            }
-            return true;
+        function eliminarDelCarrito(e, index) {
+            e.stopPropagation();
+            carrito.splice(index, 1);
+            localStorage.setItem('chapitas_carrito', JSON.stringify(carrito));
+            actualizarCarritoUI();
         }
     </script>
 </body>
