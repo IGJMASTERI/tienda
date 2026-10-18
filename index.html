@@ -148,7 +148,6 @@
             height: 50px;
         }
 
-        /* Texto de error en rojo */
         .error-msg {
             color: #d9534f;
             font-size: 11px;
@@ -158,26 +157,72 @@
             margin-bottom: 4px;
         }
 
-        /* Caja de Términos y Condiciones */
-        .terms-container {
-            font-size: 11px;
-            color: #555;
-            background: #fdfdfd;
-            border: 1px solid #eee;
-            padding: 10px;
-            border-radius: 8px;
-            max-height: 90px;
-            overflow-y: auto;
-            margin-top: 5px;
-        }
-
+        /* Casilla de términos limpia */
         .terms-check {
             display: flex;
-            align-items: flex-start;
+            align-items: center;
             gap: 8px;
             font-size: 12px;
-            margin-top: 8px;
+            margin-top: 12px;
             cursor: pointer;
+        }
+
+        .terms-link {
+            color: var(--primary-color);
+            text-decoration: underline;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* Modal para leer Términos y Condiciones */
+        .modal-terms {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .modal-terms-content {
+            background: #fff;
+            width: 100%;
+            max-width: 450px;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            text-align: left;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-terms-content h3 {
+            margin-top: 0;
+            color: #222;
+        }
+
+        .modal-terms-content p {
+            font-size: 13px;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        .btn-close-modal {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            display: block;
+            margin: 20px auto 0 auto;
         }
 
         .btn-checkout {
@@ -286,10 +331,9 @@
             <div class="cart-total">Total: $<span id="cartTotal">0</span></div>
         </div>
 
-        <!-- Columna 2: Formulario de Registro con Validación y Términos -->
+        <!-- Columna 2: Formulario de Registro -->
         <div class="panel">
             <h2>2. Datos de la Mascota</h2>
-            <!-- Desactivamos el aviso nativo con novalidate para usar nuestros mensajes en rojo -->
             <form id="orderForm" class="checkout-form" novalidate>
                 <label>Tu Correo Electrónico</label>
                 <input type="email" id="email" placeholder="tucorreo@gmail.com">
@@ -318,13 +362,10 @@
                 <input type="file" id="fotoFile" accept="image/jpeg, image/png, image/webp" onchange="validarYPrevisualizarFoto(event)">
                 <span id="err-foto" class="error-msg">Debe rellenar esta información</span>
 
-                <label style="margin-top: 10px;">Términos y Condiciones (Ley N° 19.628)</label>
-                <div class="terms-container">
-                    <strong>Términos de Privacidad y Protección de Datos:</strong> Autorizo de forma expresa a <strong>Chapitas NFC</strong> para el tratamiento de los datos personales y de contacto aquí entregados. Conforme a la Ley Chilena N° 19.628 sobre Protección de la Vida Privada, estos datos serán utilizados exclusivamente para la gestión de la ficha de identificación de la mascota, el funcionamiento operativo de la placa NFC y la emisión de alertas de ubicación en caso de extravío. Los datos no serán cedidos a terceros con fines comerciales.
-                </div>
+                <!-- Términos y Condiciones limpio con enlace flotante -->
                 <label class="terms-check">
-                    <input type="checkbox" id="termsCheck" style="width: auto; margin-top: 2px;">
-                    <span>He leído y acepto los términos y condiciones de protección de datos.</span>
+                    <input type="checkbox" id="termsCheck" style="width: auto;">
+                    <span>Acepto los <span class="terms-link" id="openTerms">Términos y Condiciones</span></span>
                 </label>
                 <span id="err-terms" class="error-msg">Debe aceptar los términos y condiciones</span>
 
@@ -349,6 +390,20 @@
                     <div><strong>⚠️ Alergias:</strong> <span id="prevAlergias">--</span></div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Ventana Modal de Términos y Condiciones -->
+    <div id="termsModal" class="modal-terms">
+        <div class="modal-terms-content">
+            <h3>Términos y Condiciones</h3>
+            <p>Conforme a la Ley Chilena N° 19.628 sobre Protección de la Vida Privada, al utilizar los servicios de <strong>Chapitas NFC</strong>, usted autoriza de forma expresa el tratamiento de los datos personales y de contacto suministrados en este formulario.</p>
+            <p>Estos datos serán almacenados y utilizados exclusivamente para:</p>
+            <p>1. La creación y gestión operativa de la ficha digital de identificación de la mascota.<br>
+            2. El funcionamiento técnico de la placa NFC y la emisión de avisos de ubicación en caso de que la mascota sea encontrada y reportada.<br>
+            3. Comunicaciones logísticas vinculadas a su compra.</p>
+            <p>La información no será comercializada ni cedida a terceros bajo ninguna circunstancia.</p>
+            <button class="btn-close-modal" id="closeTerms">Cerrar</button>
         </div>
     </div>
 
@@ -383,6 +438,25 @@
             });
 
             totalSpan.textContent = total.toLocaleString('es-CL');
+        }
+
+        // Lógica para abrir y cerrar el modal de Términos y Condiciones
+        const termsModal = document.getElementById('termsModal');
+        const openTerms = document.getElementById('openTerms');
+        const closeTerms = document.getElementById('closeTerms');
+
+        openTerms.onclick = function() {
+            termsModal.style.display = 'flex';
+        }
+
+        closeTerms.onclick = function() {
+            termsModal.style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            if (event.target == termsModal) {
+                termsModal.style.display = 'none';
+            }
         }
 
         function validarYPrevisualizarFoto(event) {
@@ -428,7 +502,6 @@
         orderForm.onsubmit = async function(e) {
             e.preventDefault();
 
-            // Ocultar todos los errores previos
             document.querySelectorAll('.error-msg').forEach(el => el.style.display = 'none');
 
             if (carrito.length === 0) {
@@ -436,7 +509,6 @@
                 return;
             }
 
-            // Validar campos uno a uno y mostrar mensaje rojo debajo si falta
             let isValid = true;
 
             const email = document.getElementById('email').value.trim();
@@ -483,7 +555,6 @@
 
                 if (!response.ok) throw new Error("Error al guardar en la base de datos");
 
-                // Usando tu código Web3Forms proporcionado
                 await fetch("https://api.web3forms.com/submit", {
                     method: "POST",
                     headers: {
