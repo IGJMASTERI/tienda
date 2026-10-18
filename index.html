@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CHAPITAS NFC - Tienda Chapitas NFC</title>
+    <title>Chapitas NFC - Tienda Oficial</title>
     <style>
         :root {
             --primary-color: #ff5e6c;
@@ -50,7 +50,6 @@
             }
         }
 
-        /* Sección de productos y carrito */
         .panel {
             background: #fff;
             border-radius: 15px;
@@ -121,17 +120,17 @@
             margin-bottom: 15px;
         }
 
-        /* Formulario */
         .checkout-form {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
         }
 
         .checkout-form label {
             font-size: 12px;
             font-weight: bold;
             color: #444;
+            margin-top: 5px;
         }
 
         .checkout-form input, .checkout-form textarea {
@@ -149,6 +148,38 @@
             height: 50px;
         }
 
+        /* Texto de error en rojo */
+        .error-msg {
+            color: #d9534f;
+            font-size: 11px;
+            font-weight: bold;
+            display: none;
+            margin-top: -4px;
+            margin-bottom: 4px;
+        }
+
+        /* Caja de Términos y Condiciones */
+        .terms-container {
+            font-size: 11px;
+            color: #555;
+            background: #fdfdfd;
+            border: 1px solid #eee;
+            padding: 10px;
+            border-radius: 8px;
+            max-height: 90px;
+            overflow-y: auto;
+            margin-top: 5px;
+        }
+
+        .terms-check {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            font-size: 12px;
+            margin-top: 8px;
+            cursor: pointer;
+        }
+
         .btn-checkout {
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
@@ -162,7 +193,6 @@
             margin-top: 10px;
         }
 
-        /* Tarjeta de Previsualización en Vivo */
         .preview-card {
             background: #ffffff;
             border-radius: 20px;
@@ -228,8 +258,8 @@
 <body>
 
     <header>
-        <h1>CHAPITA NFC</h1>
-        <p class="subtitle">Compra tu placa inteligente NFC y personaliza la ficha de tu mascota</p>
+        <h1>Chapitas NFC</h1>
+        <p class="subtitle">Adquiere tu placa inteligente y personaliza la seguridad de tu mascota</p>
     </header>
 
     <div class="store-container">
@@ -256,36 +286,53 @@
             <div class="cart-total">Total: $<span id="cartTotal">0</span></div>
         </div>
 
-        <!-- Columna 2: Formulario de Registro con Subida Segura -->
+        <!-- Columna 2: Formulario de Registro con Validación y Términos -->
         <div class="panel">
             <h2>2. Datos de la Mascota</h2>
-            <form id="orderForm" class="checkout-form">
+            <!-- Desactivamos el aviso nativo con novalidate para usar nuestros mensajes en rojo -->
+            <form id="orderForm" class="checkout-form" novalidate>
                 <label>Tu Correo Electrónico</label>
-                <input type="email" id="email" required placeholder="tucorreo@gmail.com">
+                <input type="email" id="email" placeholder="tucorreo@gmail.com">
+                <span id="err-email" class="error-msg">Debe rellenar esta información</span>
 
                 <label>Nombre de la Mascota</label>
-                <input type="text" id="nombre" required placeholder="Ej: Bruno" oninput="actualizarPreview()">
+                <input type="text" id="nombre" placeholder="Ej: Bruno" oninput="actualizarPreview()">
+                <span id="err-nombre" class="error-msg">Debe rellenar esta información</span>
 
                 <label>Detalle / Raza / Edad</label>
-                <input type="text" id="detalle" required placeholder="Ej: Pincher, 3 años" oninput="actualizarPreview()">
+                <input type="text" id="detalle" placeholder="Ej: Pincher, 3 años" oninput="actualizarPreview()">
+                <span id="err-detalle" class="error-msg">Debe rellenar esta información</span>
 
                 <label>Dueño/a y Teléfono</label>
-                <input type="text" id="dueno" required placeholder="Nombre y Teléfono" oninput="actualizarPreview()">
+                <input type="text" id="dueno" placeholder="Nombre y Teléfono" oninput="actualizarPreview()">
+                <span id="err-dueno" class="error-msg">Debe rellenar esta información</span>
 
                 <label>Número WhatsApp (para alertas)</label>
-                <input type="tel" id="wsp" required placeholder="56912345678">
+                <input type="tel" id="wsp" placeholder="56912345678">
+                <span id="err-wsp" class="error-msg">Debe rellenar esta información</span>
 
                 <label>Alergias o Cuidados</label>
                 <textarea id="alergias" placeholder="Ej: Alérgico al pollo" oninput="actualizarPreview()"></textarea>
 
-                <label>Subir Foto de la Mascota (Seguro - Max 3MB)</label>
-                <input type="file" id="fotoFile" accept="image/jpeg, image/png, image/webp" required onchange="validarYPrevisualizarFoto(event)">
+                <label>Subir Foto de la Mascota (Max 3MB)</label>
+                <input type="file" id="fotoFile" accept="image/jpeg, image/png, image/webp" onchange="validarYPrevisualizarFoto(event)">
+                <span id="err-foto" class="error-msg">Debe rellenar esta información</span>
+
+                <label style="margin-top: 10px;">Términos y Condiciones (Ley N° 19.628)</label>
+                <div class="terms-container">
+                    <strong>Términos de Privacidad y Protección de Datos:</strong> Autorizo de forma expresa a <strong>Chapitas NFC</strong> para el tratamiento de los datos personales y de contacto aquí entregados. Conforme a la Ley Chilena N° 19.628 sobre Protección de la Vida Privada, estos datos serán utilizados exclusivamente para la gestión de la ficha de identificación de la mascota, el funcionamiento operativo de la placa NFC y la emisión de alertas de ubicación en caso de extravío. Los datos no serán cedidos a terceros con fines comerciales.
+                </div>
+                <label class="terms-check">
+                    <input type="checkbox" id="termsCheck" style="width: auto; margin-top: 2px;">
+                    <span>He leído y acepto los términos y condiciones de protección de datos.</span>
+                </label>
+                <span id="err-terms" class="error-msg">Debe aceptar los términos y condiciones</span>
 
                 <button type="submit" class="btn-checkout">Finalizar Pedido y Pagar 💳</button>
             </form>
         </div>
 
-        <!-- Columna 3: Previsualización en Vivo de la Tarjeta -->
+        <!-- Columna 3: Previsualización en Vivo -->
         <div class="panel" style="text-align: center;">
             <h2>3. Vista Previa</h2>
             <div class="preview-card">
@@ -308,7 +355,7 @@
     <script>
         let carrito = [];
         let total = 0;
-        let fotoBase64Segura = ''; // Aquí guardaremos la imagen convertida de forma segura
+        let fotoBase64Segura = '';
 
         function agregarAlCarrito(nombreProducto, precio) {
             carrito.push({ producto: nombreProducto, precio: precio });
@@ -338,37 +385,33 @@
             totalSpan.textContent = total.toLocaleString('es-CL');
         }
 
-        // Función de seguridad para validar archivos, prevenir virus y convertir imagen a Base64
         function validarYPrevisualizarFoto(event) {
             const archivo = event.target.files[0];
             if (!archivo) return;
 
-            // REGLA DE SEGURIDAD 1: Validar tipo MIME estricto (Evita que suban scripts maliciosos disfrazados)
             const tiposPermitidos = ['image/jpeg', 'image/png', 'image/webp'];
             if (!tiposPermitidos.includes(archivo.type)) {
-                alert("⚠️ Archivo no permitido. Por seguridad, solo se aceptan imágenes JPG, PNG o WEBP.");
-                event.target.value = ''; // Limpia el input
-                return;
-            }
-
-            // REGLA DE SEGURIDAD 2: Validar tamaño máximo de 3 Megabytes para evitar sobrecarga o ataques de denegación
-            const tamanioMaximoBytes = 3 * 1024 * 1024; 
-            if (archivo.size > tamanioMaximoBytes) {
-                alert("⚠️ La imagen es demasiado pesada. El tamaño máximo permitido es de 3 MB.");
+                alert("⚠️ Formato no permitido. Solo se aceptan imágenes JPG, PNG o WEBP.");
                 event.target.value = '';
                 return;
             }
 
-            // Si pasa las validaciones de seguridad, leemos la imagen de forma segura para previsualizarla
+            const tamanioMaximoBytes = 3 * 1024 * 1024; 
+            if (archivo.size > tamanioMaximoBytes) {
+                alert("⚠️ La imagen excede el tamaño máximo permitido de 3 MB.");
+                event.target.value = '';
+                return;
+            }
+
             const lector = new FileReader();
             lector.onload = function(e) {
-                fotoBase64Segura = e.target.result; // Imagen limpia convertida a texto Base64
+                fotoBase64Segura = e.target.result;
                 document.getElementById('prevFoto').src = fotoBase64Segura;
+                document.getElementById('err-foto').style.display = 'none';
             };
             lector.readAsDataURL(archivo);
         }
 
-        // Previsualización dinámica en tiempo real
         function actualizarPreview() {
             const nombre = document.getElementById('nombre').value;
             const detalle = document.getElementById('detalle').value;
@@ -385,29 +428,47 @@
         orderForm.onsubmit = async function(e) {
             e.preventDefault();
 
+            // Ocultar todos los errores previos
+            document.querySelectorAll('.error-msg').forEach(el => el.style.display = 'none');
+
             if (carrito.length === 0) {
                 alert("Debes agregar al menos una placa al carrito antes de finalizar.");
                 return;
             }
 
-            if (!fotoBase64Segura) {
-                alert("Por favor, sube una foto válida de tu mascota.");
-                return;
-            }
+            // Validar campos uno a uno y mostrar mensaje rojo debajo si falta
+            let isValid = true;
+
+            const email = document.getElementById('email').value.trim();
+            const nombre = document.getElementById('nombre').value.trim();
+            const detalle = document.getElementById('detalle').value.trim();
+            const dueno = document.getElementById('dueno').value.trim();
+            const wsp = document.getElementById('wsp').value.trim();
+            const termsChecked = document.getElementById('termsCheck').checked;
+
+            if (!email) { document.getElementById('err-email').style.display = 'block'; isValid = false; }
+            if (!nombre) { document.getElementById('err-nombre').style.display = 'block'; isValid = false; }
+            if (!detalle) { document.getElementById('err-detalle').style.display = 'block'; isValid = false; }
+            if (!dueno) { document.getElementById('err-dueno').style.display = 'block'; isValid = false; }
+            if (!wsp) { document.getElementById('err-wsp').style.display = 'block'; isValid = false; }
+            if (!fotoBase64Segura) { document.getElementById('err-foto').style.display = 'block'; isValid = false; }
+            if (!termsChecked) { document.getElementById('err-terms').style.display = 'block'; isValid = false; }
+
+            if (!isValid) return;
 
             const uniqueId = 'chip_' + Math.random().toString(36).substring(2, 10);
             const productosComprados = carrito.map(i => i.producto).join(', ');
 
             const datosOrden = {
                 id: uniqueId,
-                email: document.getElementById('email').value,
-                nombre: document.getElementById('nombre').value,
-                detalle: document.getElementById('detalle').value,
-                dueno: document.getElementById('dueno').value,
-                telefono: document.getElementById('wsp').value,
-                wsp: document.getElementById('wsp').value,
+                email: email,
+                nombre: nombre,
+                detalle: detalle,
+                dueno: dueno,
+                telefono: wsp,
+                wsp: wsp,
                 alergias: document.getElementById('alergias').value,
-                foto: fotoBase64Segura, // Guardamos la imagen sanitizada directamente en la base de datos
+                foto: fotoBase64Segura,
                 estado: 'inactivo'
             };
 
@@ -422,6 +483,7 @@
 
                 if (!response.ok) throw new Error("Error al guardar en la base de datos");
 
+                // Usando tu código Web3Forms proporcionado
                 await fetch("https://api.web3forms.com/submit", {
                     method: "POST",
                     headers: {
@@ -429,10 +491,10 @@
                         "Accept": "application/json"
                     },
                     body: JSON.stringify({
-                        access_key: "YOUR_WEB3FORMS_KEY", // 540aca10-b3dc-4f3a-9127-8b6aad8bbeea
-                        subject: `🛒 ¡Nueva Orden Segura - ${datosOrden.nombre}!`,
+                        access_key: "540aca10-b3dc-4f3a-9127-8b6aad8bbeea",
+                        subject: `🛒 ¡Nueva Orden en Chapitas NFC - ${datosOrden.nombre}!`,
                         email: "jv7276659@gmail.com",
-                        message: `¡Nueva orden con subida segura de foto!\n\n- Productos: ${productosComprados}\n- Total: $${total}\n- ID Chapita: ${uniqueId}\n- Cliente: ${datosOrden.email}\n- Mascota: ${datosOrden.nombre}\n- Teléfono: ${datosOrden.wsp}`
+                        message: `¡Has recibido una nueva orden!\n\n- Productos: ${productosComprados}\n- Total: $${total}\n- ID Chapita: ${uniqueId}\n- Cliente: ${datosOrden.email}\n- Mascota: ${datosOrden.nombre}\n- Teléfono: ${datosOrden.wsp}`
                     })
                 });
 
