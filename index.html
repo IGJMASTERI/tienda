@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chapitas NFC - Tienda Oficial</title>
+    <title>Chapitas NFC - Tienda Oficial y Seguridad para Mascotas</title>
     <style>
         :root {
-            --primary-color: #ff5e6c;
-            --secondary-color: #ff9966;
-            --bg-color: #f9f9f9;
-            --text-color: #333;
+            --primary-color: #ff334b;
+            --secondary-color: #ff7543;
+            --accent-purple: #7b2cbf;
+            --bg-color: #f4f6f9;
+            --text-color: #2b2d42;
         }
 
         body {
@@ -17,34 +18,90 @@
             background-color: var(--bg-color);
             color: var(--text-color);
             margin: 0;
-            padding: 20px;
+            padding: 0;
             box-sizing: border-box;
         }
 
+        /* --- CABECERA TIPO E-COMMERCE GRANDE --- */
         header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .logo-area h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+
+        .logo-area p {
+            margin: 0;
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        .user-nav-area {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .btn-user-auth {
+            background: white;
+            color: var(--primary-color);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 13px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: 0.2s;
+        }
+
+        .btn-user-auth:hover {
+            background: #fff0f1;
+        }
+
+        /* --- HERO BANNER PRINCIPAL --- */
+        .hero-banner {
+            background: linear-gradient(135deg, #5a189a, #7b2cbf, #ff334b);
+            color: white;
             text-align: center;
-            margin-bottom: 25px;
+            padding: 40px 20px;
+            margin-bottom: 30px;
+            box-shadow: inset 0 -10px 20px rgba(0,0,0,0.1);
         }
 
-        h1 {
-            color: #222;
-            margin-bottom: 5px;
+        .hero-banner h2 {
+            margin: 0 0 10px 0;
+            font-size: 32px;
+            font-weight: 800;
         }
 
-        .subtitle {
-            color: #666;
-            font-size: 14px;
+        .hero-banner p {
+            margin: 0;
+            font-size: 16px;
+            opacity: 0.95;
         }
 
+        /* --- CONTENEDOR PRINCIPAL DE LA TIENDA --- */
         .store-container {
-            max-width: 1100px;
-            margin: 0 auto;
+            max-width: 1200px;
+            margin: 0 auto 40px auto;
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 20px;
+            grid-template-columns: 1fr 1.2fr 1fr;
+            gap: 25px;
+            padding: 0 20px;
         }
 
-        @media(max-width: 900px) {
+        @media(max-width: 1000px) {
             .store-container {
                 grid-template-columns: 1fr;
             }
@@ -52,25 +109,36 @@
 
         .panel {
             background: #fff;
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
             height: fit-content;
         }
 
         .panel h2 {
             margin-top: 0;
             font-size: 18px;
-            border-bottom: 2px solid #eee;
-            padding-bottom: 10px;
+            color: #1a1a1a;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
+        /* --- PRODUCTOS Y CARRITO --- */
         .product-card {
-            border: 1px solid #eee;
-            border-radius: 12px;
+            border: 2px solid #f0f0f0;
+            border-radius: 15px;
             padding: 15px;
             margin-bottom: 15px;
             text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .product-card:hover {
+            border-color: var(--secondary-color);
+            box-shadow: 0 5px 15px rgba(255, 117, 67, 0.1);
         }
 
         .product-card h3 {
@@ -79,28 +147,33 @@
         }
 
         .price {
-            font-size: 16px;
-            font-weight: bold;
+            font-size: 18px;
+            font-weight: 800;
             color: var(--primary-color);
             margin: 10px 0;
         }
 
         .btn-add {
-            background: #28a745;
+            background: #2ec4b6;
             color: white;
             border: none;
-            padding: 8px 12px;
-            border-radius: 6px;
+            padding: 10px;
+            border-radius: 10px;
             font-weight: bold;
             cursor: pointer;
             width: 100%;
+            transition: background 0.2s;
+        }
+
+        .btn-add:hover {
+            background: #25a194;
         }
 
         .cart-items {
             list-style: none;
             padding: 0;
-            margin: 0 0 10px 0;
-            max-height: 120px;
+            margin: 0 0 15px 0;
+            max-height: 140px;
             overflow-y: auto;
         }
 
@@ -108,62 +181,84 @@
             display: flex;
             justify-content: space-between;
             font-size: 13px;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
             border-bottom: 1px dashed #eee;
-            padding-bottom: 4px;
+            padding-bottom: 6px;
         }
 
         .cart-total {
-            font-weight: bold;
-            font-size: 15px;
+            font-weight: 800;
+            font-size: 16px;
             text-align: right;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            color: #1a1a1a;
         }
 
+        /* --- CAMPOS DE FORMULARIO LLAMATIVOS Y MODERNOS --- */
         .checkout-form {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 12px;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 2px;
         }
 
         .checkout-form label {
-            font-size: 12px;
-            font-weight: bold;
-            color: #444;
-            margin-top: 5px;
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            color: #6c757d;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .checkout-form input, .checkout-form textarea {
             width: 100%;
-            padding: 9px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 13px;
+            padding: 12px 14px;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            font-size: 14px;
             box-sizing: border-box;
             font-family: inherit;
+            background-color: #f8f9fa;
+            transition: all 0.3s;
+        }
+
+        .checkout-form input:focus, .checkout-form textarea:focus {
+            border-color: var(--primary-color);
+            background-color: #fff;
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(255, 51, 75, 0.1);
         }
 
         .checkout-form textarea {
             resize: none;
-            height: 50px;
+            height: 60px;
         }
 
         .error-msg {
-            color: #d9534f;
+            color: var(--primary-color);
             font-size: 11px;
-            font-weight: bold;
+            font-weight: 700;
             display: none;
-            margin-top: -4px;
-            margin-bottom: 4px;
+            margin-top: 4px;
         }
 
         .terms-check {
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 12px;
-            margin-top: 12px;
+            gap: 10px;
+            font-size: 13px;
+            margin-top: 10px;
             cursor: pointer;
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid #e9ecef;
         }
 
         .terms-link {
@@ -173,95 +268,52 @@
             font-weight: bold;
         }
 
-        .modal-terms {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        .modal-terms-content {
-            background: #fff;
-            width: 100%;
-            max-width: 450px;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            text-align: left;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-
-        .modal-terms-content h3 {
-            margin-top: 0;
-            color: #222;
-        }
-
-        .modal-terms-content p {
-            font-size: 13px;
-            color: #555;
-            line-height: 1.5;
-        }
-
-        .btn-close-modal {
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-            display: block;
-            margin: 20px auto 0 auto;
-        }
-
         .btn-checkout {
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
             border: none;
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 15px;
-            font-weight: bold;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 800;
             cursor: pointer;
-            box-shadow: 0 4px 10px rgba(255, 94, 108, 0.3);
+            box-shadow: 0 6px 15px rgba(255, 51, 75, 0.3);
             margin-top: 10px;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
 
+        .btn-checkout:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 51, 75, 0.4);
+        }
+
+        /* --- PREVISUALIZACIÓN DE LA TARJETA --- */
         .preview-card {
             background: #ffffff;
             border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.06);
             overflow: hidden;
             text-align: center;
-            padding: 20px;
-            box-sizing: border-box;
-            border: 2px dashed #ff9966;
+            padding: 25px;
+            border: 2px dashed var(--secondary-color);
         }
 
         .preview-badge {
-            background: #fff3f4;
+            background: #fff0f1;
             color: var(--primary-color);
             font-size: 11px;
-            font-weight: bold;
-            padding: 4px 8px;
-            border-radius: 6px;
+            font-weight: 800;
+            padding: 5px 10px;
+            border-radius: 8px;
             display: inline-block;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
         }
 
         .pet-photo-container {
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 10px auto;
+            width: 130px;
+            height: 130px;
+            margin: 0 auto 15px auto;
         }
 
         .pet-photo {
@@ -269,100 +321,189 @@
             height: 100%;
             object-fit: cover;
             border-radius: 50%;
-            border: 3px solid #eee;
+            border: 4px solid #f0f0f0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
         .preview-card h3 {
             margin: 5px 0;
-            font-size: 20px;
-            color: #222;
+            font-size: 22px;
+            color: #1a1a1a;
         }
 
         .preview-card p {
             color: #666;
-            font-size: 12px;
-            margin-bottom: 15px;
+            font-size: 13px;
+            margin-bottom: 20px;
         }
 
         .preview-info {
-            background: #fdfdfd;
-            border: 1px solid #eee;
-            border-radius: 10px;
-            padding: 10px;
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            padding: 12px;
             text-align: left;
             font-size: 13px;
         }
 
         .preview-info div {
-            margin-bottom: 6px;
+            margin-bottom: 8px;
+        }
+
+        /* --- VENTANAS MODALES (Términos, Login y Mi Cuenta) --- */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .modal-box {
+            background: #fff;
+            width: 100%;
+            max-width: 450px;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            text-align: left;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-box h3 {
+            margin-top: 0;
+            color: #1a1a1a;
+        }
+
+        .modal-box p {
+            font-size: 13px;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .btn-modal-action {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            display: block;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .close-x {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 20px;
+            cursor: pointer;
+            color: #888;
         }
     </style>
 </head>
 <body>
 
+    <!-- Cabecera Estilo E-commerce -->
     <header>
-        <h1>Chapitas NFC</h1>
-        <p class="subtitle">Adquiere tu placa inteligente y personaliza la seguridad de tu mascota</p>
+        <div class="logo-area">
+            <h1>Chapitas NFC</h1>
+            <p>Seguridad inteligente y placas interactivas</p>
+        </div>
+        <div class="user-nav-area">
+            <button class="btn-user-auth" onclick="abrirLoginModal()">👤 Iniciar Sesión / Registrarse</button>
+        </div>
     </header>
+
+    <!-- Banner Principal -->
+    <div class="hero-banner">
+        <h2>Protege a tu compañero con tecnología NFC</h2>
+        <p>Crea su ficha digital inteligente, vincúlala a su placa y mantén su información segura en todo momento.</p>
+    </div>
 
     <div class="store-container">
         <!-- Columna 1: Productos y Carrito -->
         <div class="panel">
-            <h2>1. Elige tu Placa</h2>
+            <h2>🛒 1. Elige tu Placa</h2>
             <div class="product-card">
                 <h3>Placa Estándar</h3>
                 <p>Resistente al agua y golpes con chip NFC.</p>
                 <div class="price">$8.990</div>
-                <button class="btn-add" onclick="agregarAlCarrito('Placa Estándar', 8990)">Agregar</button>
+                <button class="btn-add" onclick="agregarAlCarrito('Placa Estándar', 8990)">Agregar al Carrito</button>
             </div>
             <div class="product-card">
                 <h3>Placa Premium Metálica</h3>
                 <p>Aleación de zinc elegante y alta durabilidad.</p>
                 <div class="price">$12.990</div>
-                <button class="btn-add" onclick="agregarAlCarrito('Placa Premium Metálica', 12990)">Agregar</button>
+                <button class="btn-add" onclick="agregarAlCarrito('Placa Premium Metálica', 12990)">Agregar al Carrito</button>
             </div>
 
-            <h2>Tu Carrito</h2>
+            <h2>🛍️ Tu Carrito</h2>
             <ul id="cartItems" class="cart-items">
-                <li style="color: #888;">Vacío</li>
+                <li style="color: #888;">Tu carrito está vacío</li>
             </ul>
             <div class="cart-total">Total: $<span id="cartTotal">0</span></div>
         </div>
 
-        <!-- Columna 2: Formulario de Registro -->
+        <!-- Columna 2: Formulario de Registro de Mascota -->
         <div class="panel">
-            <h2>2. Datos de la Mascota</h2>
+            <h2>🐾 2. Datos de la Mascota</h2>
             <form id="orderForm" class="checkout-form" novalidate>
-                <label>Tu Correo Electrónico</label>
-                <input type="email" id="email" placeholder="tucorreo@gmail.com">
-                <span id="err-email" class="error-msg">Debe rellenar esta información</span>
+                <div class="input-group">
+                    <label>Tu Correo Electrónico</label>
+                    <input type="email" id="email" placeholder="tucorreo@gmail.com">
+                    <span id="err-email" class="error-msg">Debe rellenar esta información</span>
+                </div>
 
-                <label>Nombre de la Mascota</label>
-                <input type="text" id="nombre" placeholder="Ej: Bruno" oninput="actualizarPreview()">
-                <span id="err-nombre" class="error-msg">Debe rellenar esta información</span>
+                <div class="input-group">
+                    <label>Nombre de la Mascota</label>
+                    <input type="text" id="nombre" placeholder="Ej: Bruno" oninput="actualizarPreview()">
+                    <span id="err-nombre" class="error-msg">Debe rellenar esta información</span>
+                </div>
 
-                <label>Detalle / Raza / Edad</label>
-                <input type="text" id="detalle" placeholder="Ej: Pincher, 3 años" oninput="actualizarPreview()">
-                <span id="err-detalle" class="error-msg">Debe rellenar esta información</span>
+                <div class="input-group">
+                    <label>Detalle / Raza / Edad</label>
+                    <input type="text" id="detalle" placeholder="Ej: Pincher, 3 años" oninput="actualizarPreview()">
+                    <span id="err-detalle" class="error-msg">Debe rellenar esta información</span>
+                </div>
 
-                <label>Dueño/a y Teléfono</label>
-                <input type="text" id="dueno" placeholder="Nombre y Teléfono" oninput="actualizarPreview()">
-                <span id="err-dueno" class="error-msg">Debe rellenar esta información</span>
+                <div class="input-group">
+                    <label>Dueño/a y Teléfono</label>
+                    <input type="text" id="dueno" placeholder="Nombre y Teléfono" oninput="actualizarPreview()">
+                    <span id="err-dueno" class="error-msg">Debe rellenar esta información</span>
+                </div>
 
-                <label>Número WhatsApp (para alertas)</label>
-                <input type="tel" id="wsp" placeholder="56912345678">
-                <span id="err-wsp" class="error-msg">Debe rellenar esta información</span>
+                <div class="input-group">
+                    <label>Número WhatsApp (para alertas)</label>
+                    <input type="tel" id="wsp" placeholder="56912345678">
+                    <span id="err-wsp" class="error-msg">Debe rellenar esta información</span>
+                </div>
 
-                <label>Alergias o Cuidados</label>
-                <textarea id="alergias" placeholder="Ej: Alérgico al pollo" oninput="actualizarPreview()"></textarea>
+                <div class="input-group">
+                    <label>Alergias o Cuidados Especiales</label>
+                    <textarea id="alergias" placeholder="Ej: Alérgico al pollo" oninput="actualizarPreview()"></textarea>
+                </div>
 
-                <label>Subir Foto de la Mascota (Max 3MB)</label>
-                <input type="file" id="fotoFile" accept="image/jpeg, image/png, image/webp" onchange="validarYPrevisualizarFoto(event)">
-                <span id="err-foto" class="error-msg">Debe rellenar esta información</span>
+                <div class="input-group">
+                    <label>Subir Foto de la Mascota (Seguro - Max 3MB)</label>
+                    <input type="file" id="fotoFile" accept="image/jpeg, image/png, image/webp" onchange="validarYPrevisualizarFoto(event)">
+                    <span id="err-foto" class="error-msg">Debe rellenar esta información</span>
+                </div>
 
                 <label class="terms-check">
                     <input type="checkbox" id="termsCheck" style="width: auto;">
-                    <span>Acepto los <span class="terms-link" id="openTerms">Términos y Condiciones</span></span>
+                    <span>Acepto los <span class="terms-link" onclick="abrirTermsModal(event)">Términos y Condiciones</span></span>
                 </label>
                 <span id="err-terms" class="error-msg">Debe aceptar los términos y condiciones</span>
 
@@ -370,9 +511,9 @@
             </form>
         </div>
 
-        <!-- Columna 3: Previsualización en Vivo -->
+        <!-- Columna 3: Vista Previa en Vivo -->
         <div class="panel" style="text-align: center;">
-            <h2>3. Vista Previa</h2>
+            <h2>✨ 3. Vista Previa</h2>
             <div class="preview-card">
                 <span class="preview-badge">Así se verá al escanear</span>
                 <div class="pet-photo-container">
@@ -390,17 +531,43 @@
         </div>
     </div>
 
-    <!-- Modal de Términos y Condiciones -->
-    <div id="termsModal" class="modal-terms">
-        <div class="modal-terms-content">
+    <!-- Modal: Términos y Condiciones -->
+    <div id="termsModal" class="modal-overlay">
+        <div class="modal-box">
+            <span class="close-x" onclick="cerrarTermsModal()">&times;</span>
             <h3>Términos y Condiciones</h3>
             <p>Conforme a la Ley Chilena N° 19.628 sobre Protección de la Vida Privada, al utilizar los servicios de <strong>Chapitas NFC</strong>, usted autoriza de forma expresa el tratamiento de los datos personales y de contacto suministrados en este formulario.</p>
-            <p>Estos datos serán almacenados y utilizados exclusivamente para:</p>
-            <p>1. La creación y gestión operativa de la ficha digital de identificación de la mascota.<br>
-            2. El funcionamiento técnico de la placa NFC y la emisión de avisos de ubicación en caso de que la mascota sea encontrada y reportada.<br>
-            3. Comunicaciones logísticas vinculadas a su compra.</p>
-            <p>La información no será comercializada ni cedida a terceros bajo ninguna circunstancia.</p>
-            <button class="btn-close-modal" id="closeTerms">Cerrar</button>
+            <p>Estos datos serán almacenados y utilizados exclusivamente para la creación y gestión de la ficha de identificación de la mascota y la emisión de avisos de ubicación en caso de extravío. La información no será comercializada ni cedida a terceros.</p>
+            <button class="btn-modal-action" onclick="cerrarTermsModal()">Entendido</button>
+        </div>
+    </div>
+
+    <!-- Modal: Iniciar Sesión / Cuenta de Usuario -->
+    <div id="loginModal" class="modal-overlay">
+        <div class="modal-box">
+            <span class="close-x" onclick="cerrarLoginModal()">&times;</span>
+            <div id="authContent">
+                <h3>Mi Cuenta - Chapitas NFC</h3>
+                <p>Inicia sesión con tu correo para revisar tus compras y preferencias guardadas.</p>
+                <form onsubmit="manejarLogin(event)" style="display: flex; flex-direction: column; gap: 12px; margin-top: 15px;">
+                    <label style="font-size: 11px; font-weight: 700; color: #666;">CORREO ELECTRÓNICO</label>
+                    <input type="email" id="loginEmail" required placeholder="tucorreo@gmail.com" style="padding: 10px; border: 2px solid #ddd; border-radius: 8px;">
+                    
+                    <label style="font-size: 11px; font-weight: 700; color: #666;">CONTRASEÑA</label>
+                    <input type="password" id="loginPass" required placeholder="********" style="padding: 10px; border: 2px solid #ddd; border-radius: 8px;">
+                    
+                    <button type="submit" class="btn-modal-action">Ingresar a mi Cuenta</button>
+                </form>
+            </div>
+            <div id="userDashboard" style="display: none;">
+                <h3>¡Bienvenido/a de nuevo!</h3>
+                <p><strong>Correo:</strong> <span id="userProfileEmail"></span></p>
+                <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin-top: 15px;">
+                    <h4 style="margin: 0 0 10px 0; font-size: 14px;">📦 Tus Pedidos Recientes:</h4>
+                    <p style="font-size: 12px; color: #666; margin: 0;" id="userOrdersList">No hay pedidos registrados todavía en este navegador.</p>
+                </div>
+                <button class="btn-modal-action" style="background: #6c757d;" onclick="cerrarSesion()">Cerrar Sesión</button>
+            </div>
         </div>
     </div>
 
@@ -422,7 +589,7 @@
             total = 0;
 
             if (carrito.length === 0) {
-                lista.innerHTML = '<li style="color: #888;">Vacío</li>';
+                lista.innerHTML = '<li style="color: #888;">Tu carrito está vacío</li>';
                 totalSpan.textContent = '0';
                 return;
             }
@@ -437,24 +604,53 @@
             totalSpan.textContent = total.toLocaleString('es-CL');
         }
 
-        const termsModal = document.getElementById('termsModal');
-        const openTerms = document.getElementById('openTerms');
-        const closeTerms = document.getElementById('closeTerms');
-
-        openTerms.onclick = function() {
-            termsModal.style.display = 'flex';
+        // Modales de Términos
+        function abrirTermsModal(e) {
+            e.preventDefault();
+            document.getElementById('termsModal').style.display = 'flex';
+        }
+        function cerrarTermsModal() {
+            document.getElementById('termsModal').style.display = 'none';
         }
 
-        closeTerms.onclick = function() {
-            termsModal.style.display = 'none';
-        }
-
-        window.onclick = function(event) {
-            if (event.target == termsModal) {
-                termsModal.style.display = 'none';
+        // Modales de Autenticación de Usuario
+        function abrirLoginModal() {
+            const userGuardado = localStorage.getItem('chapitas_user');
+            if (userGuardado) {
+                document.getElementById('authContent').style.display = 'none';
+                document.getElementById('userDashboard').style.display = 'block';
+                document.getElementById('userProfileEmail').textContent = userGuardado;
+                
+                // Cargar pedidos simulados del localStorage
+                const pedidos = JSON.parse(localStorage.getItem('chapitas_pedidos') || '[]');
+                if (pedidos.length > 0) {
+                    document.getElementById('userOrdersList').innerHTML = pedidos.map(p => `• Pedido #${p.id} (${p.mascota}) - <b>Estado: En producción</b>`).join('<br>');
+                }
+            } else {
+                document.getElementById('authContent').style.display = 'block';
+                document.getElementById('userDashboard').style.display = 'none';
             }
+            document.getElementById('loginModal').style.display = 'flex';
+        }
+        function cerrarLoginModal() {
+            document.getElementById('loginModal').style.display = 'none';
         }
 
+        function manejarLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            localStorage.setItem('chapitas_user', email);
+            alert("¡Sesión iniciada con éxito!");
+            cerrarLoginModal();
+        }
+
+        function cerrarSesion() {
+            localStorage.removeItem('chapitas_user');
+            alert("Has cerrado sesión.");
+            cerrarLoginModal();
+        }
+
+        // Subida y seguridad de fotos
         function validarYPrevisualizarFoto(event) {
             const archivo = event.target.files[0];
             if (!archivo) return;
@@ -494,6 +690,7 @@
             document.getElementById('prevAlergias').textContent = alergias || "Ninguna";
         }
 
+        // Envío de formulario y validaciones
         const orderForm = document.getElementById('orderForm');
         orderForm.onsubmit = async function(e) {
             e.preventDefault();
@@ -506,7 +703,6 @@
             }
 
             let isValid = true;
-
             const email = document.getElementById('email').value.trim();
             const nombre = document.getElementById('nombre').value.trim();
             const detalle = document.getElementById('detalle').value.trim();
@@ -554,6 +750,7 @@
 
                 if (!response.ok) throw new Error("Error al guardar en la base de datos");
 
+                // Enviar correo a través de tu clave Web3Forms
                 await fetch("https://api.web3forms.com/submit", {
                     method: "POST",
                     headers: {
@@ -567,6 +764,12 @@
                         message: `¡Has recibido una nueva orden!\n\n- Productos: ${productosComprados}\n- Total: $${total}\n- ID Chapita: ${uniqueId}\n- Cliente: ${datosOrden.email}\n- Mascota: ${datosOrden.nombre}\n- Teléfono: ${datosOrden.wsp}`
                     })
                 });
+
+                // Guardar localmente el pedido para que el usuario lo vea en "Mi Cuenta"
+                let misPedidos = JSON.parse(localStorage.getItem('chapitas_pedidos') || '[]');
+                misPedidos.push({ id: uniqueId, mascota: nombre });
+                localStorage.setItem('chapitas_pedidos', JSON.stringify(misPedidos));
+                localStorage.setItem('chapitas_user', email);
 
                 alert("¡Pedido realizado con éxito!");
                 window.location.href = `/ficha.html?id=${uniqueId}`;
