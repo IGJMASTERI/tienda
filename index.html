@@ -34,264 +34,88 @@
             z-index: 99;
         }
 
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
+        .header-left { display: flex; align-items: center; gap: 20px; }
+        .menu-toggle { background: none; border: none; color: white; font-size: 24px; cursor: pointer; }
+        .logo-area h1 { margin: 0; font-size: 22px; font-weight: 800; }
+        .logo-area p { margin: 0; font-size: 11px; opacity: 0.9; }
 
-        .menu-toggle {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 24px;
-            cursor: pointer;
-        }
+        .header-right { display: flex; align-items: center; gap: 15px; }
+        .btn-user-auth { background: white; color: var(--primary-color); border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; font-size: 13px; cursor: pointer; }
 
-        .logo-area h1 {
-            margin: 0;
-            font-size: 22px;
-            font-weight: 800;
-        }
-
-        .logo-area p {
-            margin: 0;
-            font-size: 11px;
-            opacity: 0.9;
-        }
-
-        .user-nav-area {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-        }
-
-        .btn-user-auth {
-            background: white;
-            color: var(--primary-color);
-            border: none;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-weight: bold;
-            font-size: 13px;
-            cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .sidebar {
-            height: 100%;
-            width: 0;
-            position: fixed;
-            z-index: 1000;
-            top: 0;
-            left: 0;
-            background-color: #ffffff;
-            overflow-x: hidden;
-            transition: 0.3s;
-            padding-top: 60px;
-            box-shadow: 5px 0 15px rgba(0,0,0,0.1);
-        }
-
-        .sidebar a {
-            padding: 12px 25px;
-            text-decoration: none;
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--text-color);
-            display: block;
-            border-bottom: 1px solid #f0f0f0;
-        }
-
-        .sidebar a:hover {
-            background-color: #fff0f1;
-            color: var(--primary-color);
-        }
-
-        .sidebar .close-btn {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            font-size: 25px;
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
-
-        .hero-banner {
-            background: linear-gradient(135deg, #5a189a, #7b2cbf, #ff334b);
-            color: white;
-            text-align: center;
-            padding: 50px 20px;
-            margin-bottom: 30px;
-        }
-
-        .hero-banner h2 {
-            margin: 0 0 10px 0;
-            font-size: 34px;
-            font-weight: 800;
-        }
-
-        .catalog-container {
-            max-width: 1100px;
-            margin: 0 auto 40px auto;
-            padding: 0 20px;
-        }
-
-        .catalog-container h2 {
-            font-size: 22px;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #ddd;
-            padding-bottom: 10px;
-        }
-
-        .product-grid-main {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 20px;
-        }
-
-        .product-card-main {
-            background: white;
-            border-radius: 15px;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            border: 2px solid #f0f0f0;
-            transition: transform 0.2s;
-        }
-
-        .product-card-main:hover {
-            transform: translateY(-5px);
-            border-color: var(--secondary-color);
-        }
-
-        .product-card-main h3 {
-            margin: 10px 0;
-            font-size: 18px;
-        }
-
-        .product-card-main p {
-            font-size: 13px;
-            color: #666;
-            margin-bottom: 15px;
-        }
-
-        .price-main {
-            font-size: 18px;
-            font-weight: 800;
-            color: var(--primary-color);
-            margin-bottom: 15px;
-        }
-
-        .btn-view {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 10px;
-            font-weight: bold;
-            cursor: pointer;
-            width: 100%;
-            text-decoration: none;
-            display: inline-block;
-            box-sizing: border-box;
-            box-shadow: 0 4px 10px rgba(255, 51, 75, 0.3);
-        }
-
-        footer {
-            background-color: #ffffff;
-            border-top: 1px solid #e9ecef;
-            padding: 40px 20px 20px 20px;
-            margin-top: 50px;
-        }
-
-        .footer-container {
-            max-width: 1100px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 30px;
-            margin-bottom: 30px;
-        }
-
-        .footer-col h4 {
-            color: var(--primary-color);
-            font-size: 16px;
-            margin-bottom: 15px;
-            font-weight: 800;
-        }
-
-        .footer-col ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .footer-col ul li {
-            margin-bottom: 10px;
-            font-size: 13px;
-            color: #555;
-            cursor: pointer;
-        }
-
-        .footer-bottom {
-            text-align: center;
-            font-size: 12px;
-            color: #888;
-            border-top: 1px solid #f0f0f0;
-            padding-top: 20px;
-        }
-
-        .modal-overlay {
+        /* --- BOTÓN DE CARRITO FLOTANTE Y DESPLEGABLE --- */
+        .cart-icon-container { position: relative; cursor: pointer; background: rgba(255,255,255,0.2); padding: 8px 12px; border-radius: 20px; display: flex; align-items: center; gap: 8px; color: white; font-weight: bold; font-size: 14px; }
+        .cart-badge { background: #fff; color: var(--primary-color); border-radius: 50%; padding: 2px 6px; font-size: 12px; font-weight: 800; }
+        
+        .cart-dropdown {
             display: none;
-            position: fixed;
-            z-index: 2000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.6);
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        .modal-box {
-            background: #fff;
-            width: 100%;
-            max-width: 450px;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-            text-align: left;
-            position: relative;
-        }
-
-        .btn-modal-action {
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 10px;
-            font-weight: bold;
-            cursor: pointer;
-            display: block;
-            width: 100%;
-            margin-top: 20px;
-        }
-
-        .close-x {
             position: absolute;
-            top: 15px;
-            right: 20px;
-            font-size: 20px;
-            cursor: pointer;
-            color: #888;
+            right: 0;
+            top: 45px;
+            background: white;
+            color: #333;
+            width: 300px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            padding: 20px;
+            z-index: 1000;
+            text-align: left;
         }
+        .cart-dropdown h4 { margin-top: 0; border-bottom: 2px solid #f0f0f0; padding-bottom: 8px; font-size: 15px; }
+        .cart-dropdown-items { list-style: none; padding: 0; margin: 0 0 15px 0; max-height: 150px; overflow-y: auto; }
+        .cart-dropdown-items li { display: flex; justify-content: space-between; align-items: center; font-size: 12px; margin-bottom: 8px; border-bottom: 1px dashed #eee; padding-bottom: 5px; }
+        .btn-remove-item { background: none; border: none; color: #ff334b; cursor: pointer; font-weight: bold; font-size: 14px; }
+        .cart-dropdown-total { font-weight: 800; font-size: 14px; text-align: right; margin-bottom: 12px; }
+        .btn-go-checkout { background: var(--primary-color); color: white; border: none; padding: 10px; border-radius: 8px; width: 100%; font-weight: bold; text-align: center; text-decoration: none; display: block; box-sizing: border-box; }
+
+        /* --- NOTIFICACIÓN TOAST INFERIOR --- */
+        #toastNotification {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #2ec4b6;
+            color: white;
+            text-align: center;
+            border-radius: 10px;
+            padding: 12px;
+            position: fixed;
+            z-index: 3000;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            font-size: 14px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: visibility 0.5s, opacity 0.5s;
+            opacity: 0;
+        }
+        #toastNotification.show { visibility: visible; opacity: 1; }
+
+        /* Sidebar, Banners y Catálogo */
+        .sidebar { height: 100%; width: 0; position: fixed; z-index: 2000; top: 0; left: 0; background: white; overflow-x: hidden; transition: 0.3s; padding-top: 60px; box-shadow: 5px 0 15px rgba(0,0,0,0.1); }
+        .sidebar a { padding: 12px 25px; text-decoration: none; font-size: 16px; font-weight: 600; color: var(--text-color); display: block; border-bottom: 1px solid #f0f0f0; }
+        .sidebar .close-btn { position: absolute; top: 15px; right: 20px; font-size: 25px; background: none; border: none; cursor: pointer; }
+
+        .hero-banner { background: linear-gradient(135deg, #5a189a, #7b2cbf, #ff334b); color: white; text-align: center; padding: 50px 20px; margin-bottom: 30px; }
+        .hero-banner h2 { margin: 0 0 10px 0; font-size: 34px; font-weight: 800; }
+
+        .catalog-container { max-width: 1100px; margin: 0 auto 40px auto; padding: 0 20px; }
+        .catalog-container h2 { font-size: 22px; margin-bottom: 20px; border-bottom: 2px solid #ddd; padding-bottom: 10px; }
+        .product-grid-main { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+        .product-card-main { background: white; border-radius: 15px; padding: 20px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border: 2px solid #f0f0f0; }
+        .product-card-main h3 { margin: 10px 0; font-size: 18px; }
+        .price-main { font-size: 18px; font-weight: 800; color: var(--primary-color); margin-bottom: 15px; }
+        .btn-view { background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white; border: none; padding: 10px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; width: 100%; text-decoration: none; display: inline-block; box-sizing: border-box; }
+
+        footer { background: white; border-top: 1px solid #e9ecef; padding: 40px 20px 20px 20px; margin-top: 50px; text-align: center; font-size: 12px; color: #888; }
+        .modal-overlay { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; }
+        .modal-box { background: #fff; width: 100%; max-width: 450px; padding: 30px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); position: relative; text-align: left; }
+        .btn-modal-action { background: var(--primary-color); color: white; border: none; padding: 10px; border-radius: 10px; font-weight: bold; width: 100%; margin-top: 20px; cursor: pointer; }
+        .close-x { position: absolute; top: 15px; right: 20px; font-size: 20px; cursor: pointer; color: #888; }
     </style>
 </head>
 <body>
+
+    <!-- Notificación Toast -->
+    <div id="toastNotification">¡Producto agregado con éxito! 🛒</div>
 
     <div id="mySidebar" class="sidebar">
         <button class="close-btn" onclick="cerrarMenu()">×</button>
@@ -312,7 +136,19 @@
                 <p>Seguridad inteligente para ti y los tuyos</p>
             </div>
         </div>
-        <div class="user-nav-area">
+        <div class="header-right">
+            <!-- Icono de Carrito Flotante con Desplegable -->
+            <div class="cart-icon-container" onclick="toggleCartDropdown()">
+                🛒 Carrito <span class="cart-badge" id="cartBadge">0</span>
+                <div class="cart-dropdown" id="cartDropdown" onclick="event.stopPropagation()">
+                    <h4>Tus Productos Seleccionados</h4>
+                    <ul class="cart-dropdown-items" id="cartDropdownItems">
+                        <li style="color: #888;">El carrito está vacío</li>
+                    </ul>
+                    <div class="cart-dropdown-total">Subtotal: $<span id="cartSubtotal">0</span></div>
+                    <a href="checkout.html" class="btn-go-checkout">Ir a Pagar 💳</a>
+                </div>
+            </div>
             <button class="btn-user-auth" onclick="abrirLoginModal()">👤 Mi Cuenta</button>
         </div>
     </header>
@@ -353,33 +189,7 @@
     </div>
 
     <footer>
-        <div class="footer-container">
-            <div class="footer-col">
-                <h4>Tienda</h4>
-                <ul>
-                    <li onclick="location.href='producto.html?id=estandar'">Chapitas NFC</li>
-                    <li onclick="location.href='producto.html?id=collar'">Collares Inteligentes</li>
-                    <li onclick="location.href='producto.html?id=bicicleta'">Placas para Bicicletas</li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4>Acceso Clientes</h4>
-                <ul>
-                    <li onclick="abrirLoginModal()">Iniciar Sesión</li>
-                    <li onclick="abrirLoginModal()">Estado de mis pedidos</li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4>¿Necesitas ayuda?</h4>
-                <ul>
-                    <li>Contacto y Ayuda</li>
-                    <li>Despachos y Envíos en Chile</li>
-                </ul>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>© 2026 Chapitas NFC. Todos los derechos reservados. Ley Chilena N° 19.628.</p>
-        </div>
+        <p>© 2026 Chapitas NFC. Todos los derechos reservados. Ley Chilena N° 19.628.</p>
     </footer>
 
     <!-- MODAL LOGIN -->
@@ -410,6 +220,59 @@
     <script>
         function abrirMenu() { document.getElementById("mySidebar").style.width = "280px"; }
         function cerrarMenu() { document.getElementById("mySidebar").style.width = "0"; }
+
+        function toggleCartDropdown() {
+            const drop = document.getElementById('cartDropdown');
+            drop.style.display = drop.style.display === 'block' ? 'none' : 'block';
+        }
+
+        window.onclick = function(event) {
+            if (!event.target.closest('.cart-icon-container')) {
+                document.getElementById('cartDropdown').style.display = 'none';
+            }
+        }
+
+        let carrito = JSON.parse(localStorage.getItem('chapitas_carrito') || '[]');
+        actualizarCarritoGlobalUI();
+
+        function actualizarCarritoGlobalUI() {
+            const badge = document.getElementById('cartBadge');
+            const lista = document.getElementById('cartDropdownItems');
+            const subtotalSpan = document.getElementById('cartSubtotal');
+            
+            badge.textContent = carrito.length;
+            lista.innerHTML = '';
+            let total = 0;
+
+            if (carrito.length === 0) {
+                lista.innerHTML = '<li style="color: #888; text-align: center;">El carrito está vacío</li>';
+                subtotalSpan.textContent = '0';
+                return;
+            }
+
+            carrito.forEach((item, index) => {
+                total += item.precio;
+                const li = document.createElement('li');
+                li.innerHTML = `<span>${item.producto || item.nombre}</span> <span>$${item.precio.toLocaleString('es-CL')} <button class="btn-remove-item" onclick="eliminarDelCarritoGlobal(event, ${index})">✕</button></span>`;
+                lista.appendChild(li);
+            });
+
+            subtotalSpan.textContent = total.toLocaleString('es-CL');
+        }
+
+        function eliminarDelCarritoGlobal(e, index) {
+            e.stopPropagation();
+            carrito.splice(index, 1);
+            localStorage.setItem('chapitas_carrito', JSON.stringify(carrito));
+            actualizarCarritoGlobalUI();
+        }
+
+        function mostrarToast() {
+            const toast = document.getElementById('toastNotification');
+            toast.className = "show";
+            setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 3000);
+        }
+
         function abrirLoginModal() {
             const user = localStorage.getItem('chapitas_user');
             if (user) {
