@@ -7,15 +7,16 @@
     <link rel="icon" href="logo.jpeg">
     <style>
         :root {
-            --primary-color: #7b5267;
-            --primary-dark: #5a394a;
-            --secondary-color: #d88398;
-            --accent-color: #a3c9a8;
-            --light-color: #f7f1f3;
-            --bg-color: #fdfbf7;
+            --primary-color: #729b83;     /* Verde menta/bosque suave */
+            --primary-dark: #51735e;      /* Verde oscuro elegante */
+            --secondary-color: #f7a8b8;   /* Rosado pastel del tulipán */
+            --accent-color: #a3d9b8;      /* Verde menta claro */
+            --yellow-pastel: #fdf0cd;     /* Amarillo pastel */
+            --light-color: #fcf9f5;       /* Fondo crema muy suave */
+            --bg-color: #f6f2ec;          /* Fondo general de la página */
             --card-bg: #ffffff;
-            --text-color: #4a3b42;
-            --on-accent: #233126;
+            --text-color: #3e4842;
+            --on-accent: #2c3830;
         }
 
         body {
@@ -28,11 +29,11 @@
         }
 
         .top-nav { max-width: 900px; margin: 0 auto 20px auto; display: flex; justify-content: space-between; align-items: center; }
-        .back-link { color: var(--primary-color); text-decoration: none; font-weight: bold; background: var(--light-color); padding: 7px 14px; border-radius: 20px; font-size: 13px; transition: background 0.2s; }
-        .back-link:hover { background: #efe3e7; }
+        .back-link { color: var(--primary-dark); text-decoration: none; font-weight: bold; background: var(--yellow-pastel); padding: 7px 14px; border-radius: 20px; font-size: 13px; transition: background 0.2s; border: 1px solid #f2dfa8; }
+        .back-link:hover { background: #fae4a5; }
 
-        .cart-icon-container { position: relative; cursor: pointer; background: var(--primary-color); padding: 8px 16px; border-radius: 20px; display: flex; align-items: center; gap: 8px; color: white; font-weight: bold; font-size: 14px; box-shadow: 0 4px 12px rgba(123, 82, 103, 0.25); }
-        .cart-badge { background: var(--accent-color); color: var(--on-accent); border-radius: 50%; padding: 2px 6px; font-size: 12px; font-weight: 800; }
+        .cart-icon-container { position: relative; cursor: pointer; background: var(--primary-color); padding: 8px 16px; border-radius: 20px; display: flex; align-items: center; gap: 8px; color: white; font-weight: bold; font-size: 14px; box-shadow: 0 4px 12px rgba(114, 155, 131, 0.25); }
+        .cart-badge { background: var(--secondary-color); color: white; border-radius: 50%; padding: 2px 6px; font-size: 12px; font-weight: 800; }
         
         .cart-dropdown {
             display: none;
@@ -49,19 +50,19 @@
             text-align: left;
             border: 1px solid #eee;
         }
-        .cart-dropdown h4 { margin-top: 0; border-bottom: 2px solid var(--light-color); padding-bottom: 8px; font-size: 15px; color: var(--primary-color); }
+        .cart-dropdown h4 { margin-top: 0; border-bottom: 2px solid var(--light-color); padding-bottom: 8px; font-size: 15px; color: var(--primary-dark); }
         .cart-dropdown-items { list-style: none; padding: 0; margin: 0 0 15px 0; max-height: 150px; overflow-y: auto; }
-        .cart-dropdown-items li { display: flex; justify-content: space-between; align-items: center; font-size: 12px; margin-bottom: 8px; border-bottom: 1px dashed #f0e6eb; padding-bottom: 6px; color: #555; }
-        .btn-remove-item { background: none; border: none; color: var(--primary-color); cursor: pointer; font-weight: bold; font-size: 14px; }
+        .cart-dropdown-items li { display: flex; justify-content: space-between; align-items: center; font-size: 12px; margin-bottom: 8px; border-bottom: 1px dashed #eee; padding-bottom: 6px; color: #555; }
+        .btn-remove-item { background: none; border: none; color: var(--secondary-color); cursor: pointer; font-weight: bold; font-size: 14px; }
         .cart-dropdown-total { font-weight: 800; font-size: 14px; text-align: right; margin-bottom: 12px; color: var(--primary-dark); }
-        .btn-go-checkout { background: var(--accent-color); color: var(--on-accent); border: none; padding: 10px; border-radius: 10px; font-weight: 900; text-align: center; text-decoration: none; display: block; box-sizing: border-box; }
-        .btn-go-checkout:hover { opacity: 0.9; }
+        .btn-go-checkout { background: var(--secondary-color); color: white; border: none; padding: 10px; border-radius: 10px; font-weight: 900; text-align: center; text-decoration: none; display: block; box-sizing: border-box; }
+        .btn-go-checkout:hover { background: #e593a5; }
 
         #toastNotification {
             visibility: hidden;
             min-width: 250px;
-            background-color: var(--accent-color);
-            color: var(--on-accent);
+            background-color: var(--secondary-color);
+            color: white;
             text-align: center;
             border-radius: 10px;
             padding: 12px;
@@ -84,35 +85,34 @@
             background: white;
             padding: 30px;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(123, 82, 103, 0.08);
+            box-shadow: 0 10px 30px rgba(114, 155, 131, 0.1);
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 30px;
-            border-top: 9px solid var(--accent-color);
-            border: 1px solid #efe4e8;
-            border-top-width: 9px;
+            border-top: 9px solid var(--secondary-color);
+            border-left: 1px solid #e7eee9;
+            border-right: 1px solid #e7eee9;
+            border-bottom: 1px solid #e7eee9;
         }
         @media(max-width: 768px) { .container { grid-template-columns: 1fr; } }
 
-        /* Contenedor de imagen cuadrado y uniforme idéntico al index */
         .product-gallery { text-align: center; }
-        .product-img-container { width: 100%; aspect-ratio: 1 / 1; background: var(--light-color); border-radius: 16px; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 2px solid #f0e6eb; box-shadow: 0 4px 15px rgba(0,0,0,0.04); }
+        .product-img-container { width: 100%; aspect-ratio: 1 / 1; background: var(--light-color); border-radius: 16px; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 2px solid #e8f0ec; box-shadow: 0 4px 15px rgba(0,0,0,0.04); }
         .product-image-main { width: 100%; height: 100%; object-fit: cover; display: block; }
         
-        /* Botones minimalistas de cara de perro y gato */
         .variant-buttons { display: flex; gap: 14px; justify-content: center; margin-top: 15px; }
-        .btn-variant { background: var(--light-color); border: 2px solid #e3d3db; width: 56px; height: 56px; border-radius: 50%; cursor: pointer; font-size: 24px; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
-        .btn-variant:hover { background: #efe3e7; }
-        .btn-variant.active { background: var(--primary-color); border-color: var(--primary-dark); transform: scale(1.08); box-shadow: 0 4px 12px rgba(123,82,103,0.3); }
+        .btn-variant { background: var(--light-color); border: 2px solid #d5e3dc; width: 56px; height: 56px; border-radius: 50%; cursor: pointer; font-size: 24px; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+        .btn-variant:hover { background: #e8f2ec; }
+        .btn-variant.active { background: var(--primary-color); border-color: var(--primary-dark); transform: scale(1.08); box-shadow: 0 4px 12px rgba(114,155,131,0.3); }
 
-        .product-info h2 { margin-top: 0; font-size: 26px; color: var(--primary-color); }
+        .product-info h2 { margin-top: 0; font-size: 26px; color: var(--primary-dark); }
         .product-info .price { font-size: 24px; font-weight: 800; color: var(--primary-color); margin: 15px 0; }
-        .product-info p { color: #77656e; line-height: 1.6; font-size: 14px; }
+        .product-info p { color: #617068; line-height: 1.6; font-size: 14px; }
         .product-info ul { background: var(--light-color); border-radius: 12px; padding: 14px 14px 14px 32px !important; color: #555; }
 
         .btn-add-cart {
-            background: var(--accent-color) !important;
-            color: var(--on-accent) !important;
+            background: var(--secondary-color) !important;
+            color: white !important;
             border: none;
             padding: 14px 20px;
             border-radius: 12px;
@@ -121,7 +121,7 @@
             cursor: pointer;
             width: 100%;
             margin-top: 20px;
-            box-shadow: 0 6px 16px rgba(163,201,168,0.4) !important;
+            box-shadow: 0 6px 16px rgba(247,168,184,0.45) !important;
             transition: opacity 0.2s;
         }
         .btn-add-cart:hover { opacity: 0.9; }
@@ -132,7 +132,7 @@
     <div id="toastNotification">¡Producto agregado con éxito! 🛒</div>
 
     <div class="top-nav">
-        <a href="index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;"><img src="logo.jpeg" alt="Logo de PAWMI" style="width:38px;height:38px;border-radius:50%;object-fit:cover;border:2px solid #ddd;"></a>
+        <a href="index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;"><img src="logo.jpeg" alt="Logo de PAWMI" style="width:38px;height:38px;border-radius:50%;object-fit:cover;border:2px solid var(--accent-color);"></a>
         <a href="index.html" class="back-link">← Volver al Catálogo Principal</a>
         
         <div class="cart-icon-container" onclick="toggleCartDropdown()">
@@ -153,7 +153,6 @@
             <div class="product-img-container">
                 <img id="mainProductImg" src="CHAPAPERRO.jpg" alt="Placa Estándar" class="product-image-main">
             </div>
-            <!-- Botones minimalistas: Solo cara de perro y gato -->
             <div class="variant-buttons" id="variantButtons" style="display: none;">
                 <button class="btn-variant active" id="btnPerro" onclick="cambiarVariante('perro')" title="Chapaperro">🐶</button>
                 <button class="btn-variant" id="btnGato" onclick="cambiarVariante('gato')" title="Chapagato">🐱</button>
@@ -161,7 +160,7 @@
         </div>
 
         <div class="product-info">
-            <span id="prodBadge" style="background: var(--light-color); color: var(--primary-color); font-size: 11px; font-weight: 800; padding: 5px 10px; border-radius: 6px;">PRODUCTO OFICIAL</span>
+            <span id="prodBadge" style="background: var(--yellow-pastel); color: var(--primary-dark); font-size: 11px; font-weight: 800; padding: 5px 10px; border-radius: 6px; border: 1px solid #f2dfa8;">PRODUCTO OFICIAL</span>
             <h2 id="prodNombre">Cargando producto...</h2>
             <div class="price" id="prodPrecio">$0</div>
             <p id="prodDesc">Cargando descripción detallada...</p>
