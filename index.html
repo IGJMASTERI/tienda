@@ -50,7 +50,6 @@
         .header-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
         .btn-user-auth { background: white; color: var(--primary-color); border: none; padding: 6px 10px; border-radius: 20px; font-weight: bold; font-size: 11px; cursor: pointer; white-space: nowrap; }
 
-        /* --- CARRITO FLOTANTE Y DESPLEGABLE ADAPTABLE --- */
         .cart-icon-container { position: relative; cursor: pointer; background: rgba(255,255,255,0.25); padding: 6px 10px; border-radius: 20px; display: flex; align-items: center; gap: 5px; color: white; font-weight: bold; font-size: 12px; white-space: nowrap; }
         .cart-badge { background: #fff; color: var(--primary-color); border-radius: 50%; padding: 1px 5px; font-size: 11px; font-weight: 800; }
         
@@ -75,29 +74,6 @@
         .cart-dropdown-total { font-weight: 800; font-size: 13px; text-align: right; margin-bottom: 10px; }
         .btn-go-checkout { background: var(--primary-color); color: white; border: none; padding: 8px; border-radius: 8px; width: 100%; font-weight: bold; text-align: center; text-decoration: none; display: block; box-sizing: border-box; font-size: 12px; }
 
-        /* --- NOTIFICACIÓN TOAST INFERIOR --- */
-        #toastNotification {
-            visibility: hidden;
-            min-width: 220px;
-            background-color: var(--accent-color);
-            color: #2f3a0d;
-            text-align: center;
-            border-radius: 10px;
-            padding: 10px;
-            position: fixed;
-            z-index: 3000;
-            left: 50%;
-            bottom: 30px;
-            transform: translateX(-50%);
-            font-size: 13px;
-            font-weight: bold;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            transition: visibility 0.5s, opacity 0.5s;
-            opacity: 0;
-        }
-        #toastNotification.show { visibility: visible; opacity: 1; }
-
-        /* Sidebar, Banners y Catálogo */
         .sidebar { height: 100%; width: 0; position: fixed; z-index: 2000; top: 0; left: 0; background: white; overflow-x: hidden; transition: 0.3s; padding-top: 60px; box-shadow: 5px 0 15px rgba(0,0,0,0.1); }
         .sidebar a { padding: 12px 25px; text-decoration: none; font-size: 16px; font-weight: 600; color: var(--text-color); display: block; border-bottom: 1px solid #f0f0f0; }
         .sidebar .close-btn { position: absolute; top: 15px; right: 20px; font-size: 25px; background: none; border: none; cursor: pointer; }
@@ -115,30 +91,11 @@
         .price-main { font-size: 16px; font-weight: 800; color: var(--primary-color); margin-bottom: 12px; }
         .btn-view { background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)); color: white; border: none; padding: 8px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%; text-decoration: none; display: inline-block; box-sizing: border-box; font-size: 13px; }
 
-        /* --- FOOTER INFERIOR COMPLETO --- */
-        footer {
-            background-color: #ffffff;
-            border-top: 1px solid #e9ecef;
-            padding: 30px 15px 15px 15px;
-            margin-top: 40px;
-        }
-        .footer-container {
-            max-width: 1100px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 25px;
-            margin-bottom: 25px;
-        }
-        .footer-col h4 {
-            color: var(--primary-color);
-            font-size: 15px;
-            margin-bottom: 12px;
-            font-weight: 800;
-        }
+        footer { background-color: #ffffff; border-top: 1px solid #e9ecef; padding: 30px 15px 15px 15px; margin-top: 40px; }
+        .footer-container { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 25px; margin-bottom: 25px; }
+        .footer-col h4 { color: var(--primary-color); font-size: 15px; margin-bottom: 12px; font-weight: 800; }
         .footer-col ul { list-style: none; padding: 0; margin: 0; }
         .footer-col ul li { margin-bottom: 8px; font-size: 12px; color: #555; cursor: pointer; }
-        .footer-col ul li:hover { color: var(--primary-color); }
         .footer-bottom { text-align: center; font-size: 11px; color: #888; border-top: 1px solid #f0f0f0; padding-top: 15px; }
 
         .modal-overlay { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); justify-content: center; align-items: center; padding: 15px; box-sizing: border-box; }
@@ -146,63 +103,33 @@
         .btn-modal-action { background: var(--primary-color); color: white; border: none; padding: 10px; border-radius: 10px; font-weight: bold; width: 100%; margin-top: 15px; cursor: pointer; }
         .close-x { position: absolute; top: 12px; right: 15px; font-size: 20px; cursor: pointer; color: #888; }
 
-        /* ===== TEMA PAWMI VIVO (colores del logo) ===== */
         :root { --primary-color: #7a1734; --primary-dark: #4f0e22; --secondary-color: #e0507a; --accent-color: #b4d32e; --light-color: #f3e7ea; --bg-color: #e4dac6; --text-color: #2e1520; --on-accent: #2f3a0d; }
-
         header { background: linear-gradient(90deg, var(--primary-color), #9a1f48) !important; border-bottom: 4px solid var(--accent-color); }
         .btn-user-auth { background: var(--accent-color) !important; color: var(--on-accent) !important; }
         .cart-icon-container { background: rgba(255,255,255,0.22) !important; }
         .cart-badge { background: var(--accent-color) !important; color: var(--on-accent) !important; }
         .btn-go-checkout { background: var(--accent-color) !important; color: var(--on-accent) !important; font-weight: 900 !important; }
         .hero-banner { background: radial-gradient(circle at 85% 20%, rgba(224,80,122,0.55), transparent 55%), linear-gradient(135deg, var(--primary-dark), var(--primary-color)) !important; padding: 42px 15px !important; }
-        .hero-banner h2 { font-size: 26px !important; }
-        .hero-banner::after { content: ""; display: block; width: 76px; height: 6px; border-radius: 3px; background: var(--accent-color); margin: 16px auto 0; }
         .catalog-container h2 { color: var(--primary-color); display: inline-block; border-bottom: 6px solid var(--accent-color); padding-bottom: 4px; }
         .product-card-main { border: 2px solid #fff !important; border-top: 9px solid var(--secondary-color) !important; transition: transform .2s, box-shadow .2s; }
         .product-card-main:hover { transform: translateY(-5px); box-shadow: 0 14px 28px rgba(122,23,52,0.22); }
-        .product-card-main:nth-child(1) { border-top-color: var(--accent-color) !important; }
-        .product-card-main:nth-child(2) { border-top-color: var(--primary-color) !important; }
-        .product-card-main:nth-child(3) { border-top-color: var(--secondary-color) !important; }
-        .product-card-main:nth-child(4) { border-top-color: var(--accent-color) !important; }
-        .product-card-main h3 { color: var(--primary-color); }
         .btn-view { background: var(--primary-color) !important; }
-        .btn-view:hover { background: var(--secondary-color) !important; }
         .sidebar { background: var(--light-color) !important; }
-        .sidebar a { border-bottom: 1px solid rgba(122,23,52,0.15) !important; }
-        .sidebar a:hover { background: var(--accent-color); color: var(--on-accent); }
         footer { background-color: var(--primary-dark) !important; border-top: 6px solid var(--accent-color) !important; color: var(--light-color); }
-        .footer-col h4 { color: var(--accent-color) !important; }
-        .footer-col ul li { color: var(--light-color) !important; }
-        .footer-col ul li:hover { color: var(--accent-color) !important; }
-        .footer-bottom { color: var(--secondary-color) !important; border-top-color: rgba(243,231,234,0.2) !important; }
-        .modal-box { border-top: 8px solid var(--accent-color); }
-        .modal-box h3 { color: var(--primary-color); margin-top: 0; }
-        .btn-modal-action { background: var(--primary-color) !important; }
-        .btn-modal-action:hover { background: var(--secondary-color) !important; }
         .form-cuenta { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
         .form-cuenta label { font-size: 11px; font-weight: 800; color: var(--primary-color); letter-spacing: .04em; margin-top: 6px; }
         .form-cuenta input { padding: 11px; border: 2px solid #e3d3d8; border-radius: 10px; font-size: 14px; }
-        .form-cuenta input:focus { outline: none; border-color: var(--secondary-color); box-shadow: 0 0 0 3px rgba(224,80,122,.18); }
-        .msg-error { color: #b3123f; font-size: 12px; font-weight: 700; min-height: 16px; margin: 6px 0 0; }
-        .divisor { text-align: center; margin: 16px 0 10px; font-size: 12px; color: #7d5c68; }
-        .btn-crear-cuenta { display: block; text-align: center; text-decoration: none; background: var(--accent-color); color: var(--on-accent); font-weight: 900; padding: 12px; border-radius: 12px; box-shadow: 0 5px 14px rgba(180,211,46,.45); }
-        .btn-crear-cuenta:hover { background: #a3c01f; }
-        .caja-pedidos { background: var(--light-color); padding: 12px; border-radius: 12px; margin-top: 10px; font-size: 12px; line-height: 1.6; }
-        .caja-pedidos h4 { margin: 0 0 8px 0; font-size: 13px; color: var(--primary-color); }
-        .btn-salir { background: #fff !important; color: var(--primary-color) !important; border: 2px solid var(--primary-color) !important; }
+        .btn-crear-cuenta { display: block; text-align: center; text-decoration: none; background: var(--accent-color); color: var(--on-accent); font-weight: 900; padding: 12px; border-radius: 12px; }
     </style>
 <script src="sesion.js"></script>
 </head>
 <body>
 
-    <!-- Notificación Toast -->
-    <div id="toastNotification">¡Producto agregado con éxito! 🛒</div>
-
     <div id="mySidebar" class="sidebar">
         <button class="close-btn" onclick="cerrarMenu()">×</button>
         <h3 style="padding: 0 25px; color: var(--primary-color); margin-bottom: 10px;">Menú Principal</h3>
         <a href="index.html" onclick="cerrarMenu()">🏠 Inicio / Ofertas</a>
-        <a href="producto.html?id=estandar" onclick="cerrarMenu()">🏷️ Placa Estándar NFC</a>
+        <a href="producto.html?id=estandar" onclick="cerrarMenu()">🏷️ Placa Estándar NFC (Chapaperro / Chapagato)</a>
         <a href="producto.html?id=premium" onclick="cerrarMenu()">✨ Placa Premium Metálica</a>
         <a href="producto.html?id=collar" onclick="cerrarMenu()">🔗 Collar Inteligente</a>
         <a href="producto.html?id=bicicleta" onclick="cerrarMenu()">🚲 Placa Bicicleta</a>
@@ -221,7 +148,6 @@
             </div>
         </div>
         <div class="header-right">
-            <!-- Icono de Carrito Flotante con Desplegable -->
             <div class="cart-icon-container" onclick="toggleCartDropdown()">
                 🛒 <span class="cart-badge" id="cartBadge">0</span>
                 <div class="cart-dropdown" id="cartDropdown" onclick="event.stopPropagation()">
@@ -247,9 +173,9 @@
         <div class="product-grid-main">
             <div class="product-card-main">
                 <h3>Placa Estándar</h3>
-                <p>Resistente al agua y golpes con chip NFC.</p>
+                <p>Elige entre Chapaperro y Chapagato con chip NFC integrado.</p>
                 <div class="price-main">$8.990</div>
-                <a href="producto.html?id=estandar" class="btn-view">Ver Descripción 🐾</a>
+                <a href="producto.html?id=estandar" class="btn-view">Ver Modelos 🐾</a>
             </div>
             <div class="product-card-main">
                 <h3>Placa Premium Metálica</h3>
@@ -277,7 +203,7 @@
             <div class="footer-col">
                 <h4>Tienda</h4>
                 <ul>
-                    <li onclick="location.href='producto.html?id=estandar'">Chapitas NFC</li>
+                    <li onclick="location.href='producto.html?id=estandar'">Chapitas NFC (Perro y Gato)</li>
                     <li onclick="location.href='producto.html?id=collar'">Collares Inteligentes</li>
                     <li onclick="location.href='producto.html?id=bicicleta'">Placas para Bicicletas</li>
                 </ul>
@@ -290,29 +216,12 @@
                     <li onclick="location.href='mis-pedidos.html'">Mis pedidos</li>
                 </ul>
             </div>
-            <div class="footer-col">
-                <h4>¿Necesitas ayuda?</h4>
-                <ul>
-                    <li>Contacto y Ayuda</li>
-                    <li>Despachos y Envíos en Chile</li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4>Síguenos</h4>
-                <ul style="display: flex; gap: 8px; font-size: 18px;">
-                    <li title="Instagram">📷</li>
-                    <li title="Facebook">📘</li>
-                    <li title="YouTube">▶️</li>
-                    <li title="WhatsApp">💬</li>
-                </ul>
-            </div>
         </div>
         <div class="footer-bottom">
             <p>© 2026 PAWMI. Todos los derechos reservados. Ley Chilena N° 19.628.</p>
         </div>
     </footer>
 
-    <!-- MODAL CUENTA -->
     <div id="loginModal" class="modal-overlay">
         <div class="modal-box">
             <span class="close-x" onclick="cerrarLoginModal()">&times;</span>
@@ -327,18 +236,18 @@
                     <p id="loginError" class="msg-error" role="alert"></p>
                     <button type="submit" class="btn-modal-action" id="btnLogin">Ingresar</button>
                 </form>
-                <div class="divisor">¿Eres nuevo en PAWMI?</div>
+                <div class="divisor" style="text-align:center;margin:12px 0;">¿Eres nuevo en PAWMI?</div>
                 <a href="registro.html" class="btn-crear-cuenta">Crear cuenta nueva</a>
             </div>
             <div id="userDashboard" style="display: none;">
                 <h3>¡Hola de nuevo!</h3>
                 <p><strong>Correo:</strong> <span id="userProfileEmail"></span></p>
-                <div class="caja-pedidos">
-                    <h4>📦 Tus últimos pedidos</h4>
+                <div style="background: var(--light-color); padding: 12px; border-radius: 12px; margin-top: 10px; font-size: 12px; line-height: 1.6;">
+                    <h4 style="margin: 0 0 8px 0; color: var(--primary-color);">📦 Tus últimos pedidos</h4>
                     <div id="userOrdersList">Cargando...</div>
                 </div>
                 <a href="mis-pedidos.html" class="btn-modal-action" style="display:block;text-align:center;text-decoration:none;box-sizing:border-box;">Ver todos mis pedidos</a>
-                <button class="btn-modal-action btn-salir" onclick="cerrarSesion()">Cerrar sesión</button>
+                <button class="btn-modal-action" style="background:#fff !important;color:var(--primary-color) !important;border:2px solid var(--primary-color) !important;" onclick="cerrarSesion()">Cerrar sesión</button>
             </div>
         </div>
     </div>
@@ -393,7 +302,6 @@
             actualizarCarritoGlobalUI();
         }
 
-        function escapar(t) { return String(t == null ? '' : t).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
         function actualizarBotonCuenta() {
             const u = PAWMI.usuario();
             document.querySelector('.btn-user-auth').textContent = u ? '👤 ' + u.split('@')[0].slice(0, 10) : '👤 Cuenta';
