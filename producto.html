@@ -7,13 +7,15 @@
     <link rel="icon" href="logo.jpeg">
     <style>
         :root {
-            --primary-color: #7a1734;
-            --primary-dark: #5a1126;
-            --secondary-color: #da849b;
-            --accent-color: #c7d784;
-            --light-color: #f3e7ea;
-            --bg-color: #e4dac6;
-            --text-color: #2e1520;
+            --primary-color: #7b5267;
+            --primary-dark: #5a394a;
+            --secondary-color: #d88398;
+            --accent-color: #a3c9a8;
+            --light-color: #f7f1f3;
+            --bg-color: #fdfbf7;
+            --card-bg: #ffffff;
+            --text-color: #4a3b42;
+            --on-accent: #233126;
         }
 
         body {
@@ -26,10 +28,11 @@
         }
 
         .top-nav { max-width: 900px; margin: 0 auto 20px auto; display: flex; justify-content: space-between; align-items: center; }
-        .back-link { color: var(--primary-color); text-decoration: none; font-weight: bold; }
+        .back-link { color: var(--primary-color); text-decoration: none; font-weight: bold; background: var(--light-color); padding: 7px 14px; border-radius: 20px; font-size: 13px; transition: background 0.2s; }
+        .back-link:hover { background: #efe3e7; }
 
-        .cart-icon-container { position: relative; cursor: pointer; background: var(--primary-color); padding: 8px 15px; border-radius: 20px; display: flex; align-items: center; gap: 8px; color: white; font-weight: bold; font-size: 14px; box-shadow: 0 4px 10px rgba(122,23,52,0.3); }
-        .cart-badge { background: #fff; color: var(--primary-color); border-radius: 50%; padding: 2px 6px; font-size: 12px; font-weight: 800; }
+        .cart-icon-container { position: relative; cursor: pointer; background: var(--primary-color); padding: 8px 16px; border-radius: 20px; display: flex; align-items: center; gap: 8px; color: white; font-weight: bold; font-size: 14px; box-shadow: 0 4px 12px rgba(123, 82, 103, 0.25); }
+        .cart-badge { background: var(--accent-color); color: var(--on-accent); border-radius: 50%; padding: 2px 6px; font-size: 12px; font-weight: 800; }
         
         .cart-dropdown {
             display: none;
@@ -39,24 +42,26 @@
             background: white;
             color: #333;
             width: 300px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.12);
             padding: 20px;
             z-index: 1000;
             text-align: left;
+            border: 1px solid #eee;
         }
-        .cart-dropdown h4 { margin-top: 0; border-bottom: 2px solid #f0f0f0; padding-bottom: 8px; font-size: 15px; }
+        .cart-dropdown h4 { margin-top: 0; border-bottom: 2px solid var(--light-color); padding-bottom: 8px; font-size: 15px; color: var(--primary-color); }
         .cart-dropdown-items { list-style: none; padding: 0; margin: 0 0 15px 0; max-height: 150px; overflow-y: auto; }
-        .cart-dropdown-items li { display: flex; justify-content: space-between; align-items: center; font-size: 12px; margin-bottom: 8px; border-bottom: 1px dashed #eee; padding-bottom: 5px; }
+        .cart-dropdown-items li { display: flex; justify-content: space-between; align-items: center; font-size: 12px; margin-bottom: 8px; border-bottom: 1px dashed #f0e6eb; padding-bottom: 6px; color: #555; }
         .btn-remove-item { background: none; border: none; color: var(--primary-color); cursor: pointer; font-weight: bold; font-size: 14px; }
-        .cart-dropdown-total { font-weight: 800; font-size: 14px; text-align: right; margin-bottom: 12px; }
-        .btn-go-checkout { background: var(--primary-color); color: white; border: none; padding: 10px; border-radius: 8px; width: 100%; font-weight: bold; text-align: center; text-decoration: none; display: block; box-sizing: border-box; }
+        .cart-dropdown-total { font-weight: 800; font-size: 14px; text-align: right; margin-bottom: 12px; color: var(--primary-dark); }
+        .btn-go-checkout { background: var(--accent-color); color: var(--on-accent); border: none; padding: 10px; border-radius: 10px; font-weight: 900; text-align: center; text-decoration: none; display: block; box-sizing: border-box; }
+        .btn-go-checkout:hover { opacity: 0.9; }
 
         #toastNotification {
             visibility: hidden;
             min-width: 250px;
             background-color: var(--accent-color);
-            color: #2f3a0d;
+            color: var(--on-accent);
             text-align: center;
             border-radius: 10px;
             padding: 12px;
@@ -67,7 +72,7 @@
             transform: translateX(-50%);
             font-size: 14px;
             font-weight: bold;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
             transition: visibility 0.5s, opacity 0.5s;
             opacity: 0;
         }
@@ -79,47 +84,47 @@
             background: white;
             padding: 30px;
             border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            box-shadow: 0 10px 30px rgba(123, 82, 103, 0.08);
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 30px;
+            border-top: 9px solid var(--accent-color);
+            border: 1px solid #efe4e8;
+            border-top-width: 9px;
         }
         @media(max-width: 768px) { .container { grid-template-columns: 1fr; } }
 
+        /* Contenedor de imagen cuadrado y uniforme idéntico al index */
         .product-gallery { text-align: center; }
-        .product-image-main { width: 100%; max-height: 350px; object-fit: cover; border-radius: 15px; border: 3px solid var(--secondary-color); box-shadow: 0 6px 15px rgba(0,0,0,0.1); }
+        .product-img-container { width: 100%; aspect-ratio: 1 / 1; background: var(--light-color); border-radius: 16px; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 2px solid #f0e6eb; box-shadow: 0 4px 15px rgba(0,0,0,0.04); }
+        .product-image-main { width: 100%; height: 100%; object-fit: cover; display: block; }
         
-        .variant-buttons { display: flex; gap: 12px; justify-content: center; margin-top: 15px; }
-        .btn-variant { background: var(--light-color); border: 2px solid var(--primary-color); width: 55px; height: 55px; border-radius: 50%; cursor: pointer; font-size: 24px; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
-        .btn-variant.active { background: var(--primary-color); border-color: var(--primary-dark); transform: scale(1.1); box-shadow: 0 4px 10px rgba(122,23,52,0.3); }
+        /* Botones minimalistas de cara de perro y gato */
+        .variant-buttons { display: flex; gap: 14px; justify-content: center; margin-top: 15px; }
+        .btn-variant { background: var(--light-color); border: 2px solid #e3d3db; width: 56px; height: 56px; border-radius: 50%; cursor: pointer; font-size: 24px; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+        .btn-variant:hover { background: #efe3e7; }
+        .btn-variant.active { background: var(--primary-color); border-color: var(--primary-dark); transform: scale(1.08); box-shadow: 0 4px 12px rgba(123,82,103,0.3); }
 
         .product-info h2 { margin-top: 0; font-size: 26px; color: var(--primary-color); }
         .product-info .price { font-size: 24px; font-weight: 800; color: var(--primary-color); margin: 15px 0; }
-        .product-info p { color: #666; line-height: 1.6; font-size: 14px; }
+        .product-info p { color: #77656e; line-height: 1.6; font-size: 14px; }
+        .product-info ul { background: var(--light-color); border-radius: 12px; padding: 14px 14px 14px 32px !important; color: #555; }
 
         .btn-add-cart {
             background: var(--accent-color) !important;
             color: var(--on-accent) !important;
             border: none;
-            padding: 12px 20px;
+            padding: 14px 20px;
             border-radius: 12px;
             font-weight: 900;
             font-size: 15px;
             cursor: pointer;
             width: 100%;
             margin-top: 20px;
-            box-shadow: 0 6px 16px rgba(180,211,46,.5) !important;
+            box-shadow: 0 6px 16px rgba(163,201,168,0.4) !important;
+            transition: opacity 0.2s;
         }
-        .btn-add-cart:hover { background: #a3c01f !important; }
-
-        :root { --primary-color: #7a1734; --primary-dark: #4f0e22; --secondary-color: #e0507a; --accent-color: #b4d32e; --light-color: #f3e7ea; --bg-color: #e4dac6; --text-color: #2e1520; --on-accent: #2f3a0d; }
-        body { background: var(--bg-color); }
-        .container { border-top: 9px solid var(--secondary-color); }
-        .product-info ul { background: var(--light-color); border-radius: 12px; padding: 14px 14px 14px 32px !important; }
-        .back-link { background: var(--light-color); padding: 7px 12px; border-radius: 20px; font-size: 13px; }
-        .cart-icon-container { background: var(--primary-color) !important; }
-        .cart-badge { background: var(--accent-color) !important; color: var(--on-accent) !important; }
-        .btn-go-checkout { background: var(--accent-color) !important; color: var(--on-accent) !important; font-weight: 900 !important; }
+        .btn-add-cart:hover { opacity: 0.9; }
     </style>
 </head>
 <body>
@@ -127,7 +132,7 @@
     <div id="toastNotification">¡Producto agregado con éxito! 🛒</div>
 
     <div class="top-nav">
-        <a href="index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;"><img src="logo.jpeg" alt="Logo de PAWMI" style="width:38px;height:38px;border-radius:50%;object-fit:cover;"></a>
+        <a href="index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;"><img src="logo.jpeg" alt="Logo de PAWMI" style="width:38px;height:38px;border-radius:50%;object-fit:cover;border:2px solid #ddd;"></a>
         <a href="index.html" class="back-link">← Volver al Catálogo Principal</a>
         
         <div class="cart-icon-container" onclick="toggleCartDropdown()">
@@ -145,8 +150,10 @@
 
     <div class="container">
         <div class="product-gallery" id="gallerySection">
-            <img id="mainProductImg" src="CHAPAPERRO.jpg" alt="Placa Estándar" class="product-image-main">
-            <!-- Botones minimalistas con solo cara de perro y gato -->
+            <div class="product-img-container">
+                <img id="mainProductImg" src="CHAPAPERRO.jpg" alt="Placa Estándar" class="product-image-main">
+            </div>
+            <!-- Botones minimalistas: Solo cara de perro y gato -->
             <div class="variant-buttons" id="variantButtons" style="display: none;">
                 <button class="btn-variant active" id="btnPerro" onclick="cambiarVariante('perro')" title="Chapaperro">🐶</button>
                 <button class="btn-variant" id="btnGato" onclick="cambiarVariante('gato')" title="Chapagato">🐱</button>
@@ -158,7 +165,7 @@
             <h2 id="prodNombre">Cargando producto...</h2>
             <div class="price" id="prodPrecio">$0</div>
             <p id="prodDesc">Cargando descripción detallada...</p>
-            <ul style="font-size: 13px; color: #555; padding-left: 15px; line-height: 1.8;">
+            <ul style="font-size: 13px; line-height: 1.8;">
                 <li>Tecnología NFC y Código QR de alta durabilidad.</li>
                 <li>Sin aplicaciones necesarias para escanear.</li>
                 <li>Actualización de datos en tiempo real.</li>
