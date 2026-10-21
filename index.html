@@ -86,6 +86,7 @@
         .catalog-container h2 { font-size: 20px; margin-bottom: 15px; border-bottom: 2px solid #ddd; padding-bottom: 8px; }
         .product-grid-main { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; }
         .product-card-main { background: white; border-radius: 15px; padding: 15px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border: 2px solid #f0f0f0; }
+        .product-card-main img { width: 100%; height: 160px; object-fit: cover; border-radius: 10px; margin-bottom: 8px; }
         .product-card-main h3 { margin: 8px 0; font-size: 16px; }
         .product-card-main p { font-size: 12px; color: #666; margin-bottom: 12px; }
         .price-main { font-size: 16px; font-weight: 800; color: var(--primary-color); margin-bottom: 12px; }
@@ -129,7 +130,7 @@
         <button class="close-btn" onclick="cerrarMenu()">×</button>
         <h3 style="padding: 0 25px; color: var(--primary-color); margin-bottom: 10px;">Menú Principal</h3>
         <a href="index.html" onclick="cerrarMenu()">🏠 Inicio / Ofertas</a>
-        <a href="producto.html?id=estandar" onclick="cerrarMenu()">🏷️ Placa Estándar NFC (Chapaperro / Chapagato)</a>
+        <a href="producto.html?id=estandar" onclick="cerrarMenu()">🏷️ Placa Estándar</a>
         <a href="producto.html?id=premium" onclick="cerrarMenu()">✨ Placa Premium Metálica</a>
         <a href="producto.html?id=collar" onclick="cerrarMenu()">🔗 Collar Inteligente</a>
         <a href="producto.html?id=bicicleta" onclick="cerrarMenu()">🚲 Placa Bicicleta</a>
@@ -171,25 +172,30 @@
     <div class="catalog-container">
         <h2>🔥 Productos Destacados</h2>
         <div class="product-grid-main">
+            <!-- Placa Estándar con carrusel de imágenes cada 3 segundos -->
             <div class="product-card-main">
+                <img id="imgCarrusel" src="CHAPAPERRO.jpg" alt="Placa Estándar">
                 <h3>Placa Estándar</h3>
-                <p>Elige entre Chapaperro y Chapagato con chip NFC integrado.</p>
+                <p>Resistente al agua y golpes con chip NFC.</p>
                 <div class="price-main">$8.990</div>
-                <a href="producto.html?id=estandar" class="btn-view">Ver Modelos 🐾</a>
+                <a href="producto.html?id=estandar" class="btn-view">Ver Descripción 🐾</a>
             </div>
             <div class="product-card-main">
+                <img src="logo.jpeg" alt="Placa Premium">
                 <h3>Placa Premium Metálica</h3>
                 <p>Aleación de zinc elegante y alta durabilidad.</p>
                 <div class="price-main">$12.990</div>
                 <a href="producto.html?id=premium" class="btn-view">Ver Descripción 🐾</a>
             </div>
             <div class="product-card-main">
+                <img src="logo.jpeg" alt="Collar Inteligente">
                 <h3>Collar Inteligente NFC</h3>
                 <p>Collar ajustable con placa integrada de alta gama.</p>
                 <div class="price-main">$15.990</div>
                 <a href="producto.html?id=collar" class="btn-view">Ver Descripción 🐾</a>
             </div>
             <div class="product-card-main">
+                <img src="logo.jpeg" alt="Placa Bicicleta">
                 <h3>Placa Bicicleta NFC</h3>
                 <p>Protege tu bicicleta frente a robos con alerta directa.</p>
                 <div class="price-main">$9.990</div>
@@ -203,7 +209,7 @@
             <div class="footer-col">
                 <h4>Tienda</h4>
                 <ul>
-                    <li onclick="location.href='producto.html?id=estandar'">Chapitas NFC (Perro y Gato)</li>
+                    <li onclick="location.href='producto.html?id=estandar'">Placa Estándar</li>
                     <li onclick="location.href='producto.html?id=collar'">Collares Inteligentes</li>
                     <li onclick="location.href='producto.html?id=bicicleta'">Placas para Bicicletas</li>
                 </ul>
@@ -253,6 +259,17 @@
     </div>
 
     <script>
+        // Carrusel de imágenes cada 3 segundos para la Placa Estándar
+        const imagenesCarrusel = ['CHAPAPERRO.jpg', 'CHAPAGATO.jpg'];
+        let indiceImg = 0;
+        setInterval(() => {
+            indiceImg = (indiceImg + 1) % imagenesCarrusel.length;
+            const imgEl = document.getElementById('imgCarrusel');
+            if (imgEl) {
+                imgEl.src = imagenesCarrusel[indiceImg];
+            }
+        }, 3000);
+
         function abrirMenu() { document.getElementById("mySidebar").style.width = "280px"; }
         function cerrarMenu() { document.getElementById("mySidebar").style.width = "0"; }
 
