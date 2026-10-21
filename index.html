@@ -95,7 +95,6 @@
         .product-card-main { background: var(--card-bg); border-radius: 18px; padding: 18px; text-align: center; box-shadow: 0 8px 25px rgba(123, 82, 103, 0.08); border: 1px solid #efe4e8; transition: transform 0.25s, box-shadow 0.25s; display: flex; flex-direction: column; justify-content: space-between; }
         .product-card-main:hover { transform: translateY(-5px); box-shadow: 0 12px 30px rgba(123, 82, 103, 0.15); }
         
-        /* Contenedor de imagen uniforme y cuadrado */
         .card-img-container { width: 100%; aspect-ratio: 1 / 1; background: var(--light-color); border-radius: 12px; overflow: hidden; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; }
         .card-img-container img { width: 100%; height: 100%; object-fit: cover; display: block; transition: opacity 0.4s ease-in-out; }
 
@@ -112,6 +111,10 @@
         .footer-col ul { list-style: none; padding: 0; margin: 0; }
         .footer-col ul li { margin-bottom: 8px; font-size: 12px; color: #e2d2d9; cursor: pointer; transition: color 0.2s; }
         .footer-col ul li:hover { color: var(--accent-color); }
+        .footer-social-links { display: flex; gap: 12px; font-size: 18px; margin-top: 5px; }
+        .footer-social-links a { color: #e2d2d9; text-decoration: none; transition: color 0.2s; display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; }
+        .footer-social-links a:hover { color: var(--accent-color); }
+        
         .footer-bottom { text-align: center; font-size: 11px; color: #d0bdc6; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px; }
 
         .modal-overlay { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(74, 59, 66, 0.6); justify-content: center; align-items: center; padding: 15px; box-sizing: border-box; backdrop-filter: blur(3px); }
@@ -179,7 +182,6 @@
     <div class="catalog-container">
         <h2>🔥 Productos Destacados</h2>
         <div class="product-grid-main">
-            <!-- Placa Estándar con carrusel de imágenes cada 3 segundos y contenedor cuadrado uniforme -->
             <div class="product-card-main">
                 <div class="card-img-container">
                     <img id="imgCarrusel" src="CHAPAPERRO.jpg" alt="Placa Estándar">
@@ -248,6 +250,19 @@
                     <li onclick="location.href='mis-pedidos.html'">Mis pedidos</li>
                 </ul>
             </div>
+            <div class="footer-col">
+                <h4>Síguenos</h4>
+                <div class="footer-social-links">
+                    <a href="https://www.instagram.com/pawmi_tienda?rpxt=MWU5cWx0bTA0OGUxOA==" target="_blank" rel="noopener noreferrer" title="Instagram">
+                        📷 Instagram
+                    </a>
+                </div>
+                <div class="footer-social-links" style="margin-top: 8px;">
+                    <a href="https://www.tiktok.com/@pawmi_tienda?_r=1&_t=ZS-9Ajp08wQOIe" target="_blank" rel="noopener noreferrer" title="TikTok">
+                        🎵 TikTok
+                    </a>
+                </div>
+            </div>
         </div>
         <div class="footer-bottom">
             <p>© 2026 PAWMI. Todos los derechos reservados. Ley Chilena N° 19.628.</p>
@@ -285,7 +300,6 @@
     </div>
 
     <script>
-        // Carrusel automático cada 3 segundos con transición suave
         const imagenesCarrusel = ['CHAPAPERRO.jpg', 'CHAPAGATO.jpg'];
         let indiceImg = 0;
         setInterval(() => {
