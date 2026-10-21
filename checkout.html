@@ -189,7 +189,25 @@
         }
 
         .close-x { position: absolute; top: 15px; right: 20px; font-size: 20px; cursor: pointer; color: #888; }
+
+        /* ===== TEMA PAWMI VIVO (colores del logo) ===== */
+        :root { --primary-color: #7a1734; --primary-dark: #4f0e22; --secondary-color: #e0507a; --accent-color: #b4d32e; --light-color: #f3e7ea; --bg-color: #e4dac6; --text-color: #2e1520; --on-accent: #2f3a0d; }
+
+        body { background: var(--bg-color); }
+        header { border-bottom: 4px solid var(--accent-color); }
+        h1 { color: var(--primary-color) !important; }
+        .panel { border-top: 8px solid var(--secondary-color); }
+        .panel h2 { color: var(--primary-color) !important; }
+        .item-form-card { border-left: 7px solid var(--accent-color) !important; }
+        .item-form-card h3 { color: var(--primary-color) !important; }
+        .checkout-form input:focus, .checkout-form textarea:focus { outline: none; border-color: var(--secondary-color) !important; box-shadow: 0 0 0 3px rgba(224,80,122,.18); }
+        .btn-checkout { background: var(--accent-color) !important; color: var(--on-accent) !important; box-shadow: 0 6px 16px rgba(180,211,46,.5) !important; }
+        .btn-checkout:hover { background: #a3c01f !important; }
+        .btn-modal-action { background: var(--primary-color) !important; }
+        .aviso-sesion { background: var(--light-color); border-left: 5px solid var(--accent-color); padding: 10px 12px; border-radius: 10px; font-size: 13px; margin: 10px 0 14px; }
+        .aviso-sesion a { color: var(--primary-color); font-weight: 800; }
     </style>
+<script src="sesion.js"></script>
 </head>
 <body>
 
@@ -203,6 +221,7 @@
         <div class="panel">
             <h2>📦 Resumen y Datos por cada Producto Solicitado</h2>
             <p style="font-size: 13px; color: #666;">Completa la información y la foto correspondiente para cada artículo en tu carrito.</p>
+            <div id="avisoSesion" class="aviso-sesion"></div>
 
             <form id="multiOrderForm" class="checkout-form" novalidate>
                 <!-- Datos generales del comprador -->
@@ -367,6 +386,7 @@
 
             try {
                 let primerId = '';
+                const nuevosPedidos = [];
                 let totalCompra = 0;
 
                 for (let i = 0; i < itemsData.length; i++) {
@@ -396,8 +416,11 @@
 
                     let misPedidos = JSON.parse(localStorage.getItem('chapitas_pedidos') || '[]');
                     misPedidos.push({ id: uniqueId, mascota: item.nombre });
+                    nuevosPedidos.push({ id: uniqueId, mascota: item.nombre, producto: item.producto, total: item.precio });
                     localStorage.setItem('chapitas_pedidos', JSON.stringify(misPedidos));
                 }
+
+                if (window.PAWMI && PAWMI.usuario()) { try { await PAWMI.guardarPedidos(nuevosPedidos); } catch (e) { console.warn(e); } }
 
                 // Enviar correo con Web3Forms
                 const resumenItemsTxt = itemsData.map(it => `- ${it.producto} (Mascota: ${it.nombre}, Dueño: ${it.dueno})`).join('\n');
@@ -413,7 +436,7 @@
                 });
 
                 localStorage.removeItem('chapitas_carrito');
-                localStorage.setItem('chapitas_user', email);
+                
 
                 alert("¡Pedido realizado con éxito!");
                 window.location.href = `/ficha.html?id=${primerId}`;
@@ -423,6 +446,15 @@
                 console.error(err);
             }
         };
+        (function () {
+            const box = document.getElementById('avisoSesion'), u = PAWMI.usuario();
+            if (u) {
+                box.textContent = 'Este pedido quedará en “Mis pedidos” de tu cuenta: ' + u;
+                const em = document.getElementById('generalEmail'); if (em && !em.value) em.value = u;
+            } else {
+                box.innerHTML = '<a href="index.html?login=1">Inicia sesión</a> o <a href="registro.html">crea tu cuenta</a> para ver este pedido en “Mis pedidos”.';
+            }
+        })();
     </script>
 </body>
 </html>
