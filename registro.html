@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crear cuenta - PAWMI</title>
+<link rel="icon" href="logo.jpeg">
+<style>
+:root{--primary-color:#7a1734;--primary-dark:#4f0e22;--secondary-color:#e0507a;--accent-color:#b4d32e;--light-color:#f3e7ea;--bg-color:#e4dac6;--text-color:#2e1520;--on-accent:#2f3a0d}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:var(--bg-color);color:var(--text-color);min-height:100vh}
+.top{background:linear-gradient(90deg,var(--primary-color),#9a1f48);border-bottom:4px solid var(--accent-color);padding:10px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.marca{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-weight:800;font-size:20px}
+.marca img{width:42px;height:42px;border-radius:50%;object-fit:cover;background:var(--bg-color)}
+.volver{color:#fff;text-decoration:none;font-size:13px;font-weight:700;background:rgba(255,255,255,.18);padding:7px 12px;border-radius:20px;white-space:nowrap}
+main{max-width:520px;margin:0 auto;padding:26px 16px 50px}
+.tarjeta{background:#fff;border-radius:20px;padding:26px 22px;box-shadow:0 12px 30px rgba(79,14,34,.14);border-top:8px solid var(--secondary-color)}
+h1{margin:0 0 6px;font-size:26px;color:var(--primary-color)}
+.sub{margin:0 0 18px;color:#6b4a56;font-size:14px;line-height:1.5}
+label{display:block;font-size:12px;font-weight:800;letter-spacing:.04em;color:var(--primary-color);text-transform:uppercase;margin:14px 0 6px}
+input[type=email],input[type=password],input[type=text]{width:100%;padding:13px 14px;border:2px solid #e3d3d8;border-radius:12px;font-size:15px;background:#fff;color:var(--text-color)}
+input:focus{outline:none;border-color:var(--secondary-color);box-shadow:0 0 0 4px rgba(224,80,122,.18)}
+.campo-pass{position:relative}.campo-pass input{padding-right:92px}
+.campo-pass button{position:absolute;right:6px;top:6px;bottom:6px;border:none;background:var(--light-color);color:var(--primary-color);font-weight:800;border-radius:9px;padding:0 12px;cursor:pointer;font-size:12px}
+.fuerza{height:8px;background:#efe4e8;border-radius:5px;margin-top:10px;overflow:hidden}.fuerza div{height:100%;width:0;border-radius:5px;transition:width .25s,background .25s}
+.ayuda{font-size:12px;color:#7d5c68;margin:6px 0 0}
+.check{display:flex!important;gap:10px;align-items:flex-start;text-transform:none!important;letter-spacing:0!important;font-weight:600!important;color:var(--text-color)!important;font-size:13px!important;margin-top:16px}
+.check input{margin-top:3px;width:18px;height:18px;accent-color:var(--primary-color)}
+.error{color:#b3123f;font-size:13px;font-weight:700;margin:12px 0 0;min-height:18px}
+.btn-principal{display:block;width:100%;margin-top:14px;padding:15px;border:none;border-radius:14px;background:var(--accent-color);color:var(--on-accent);font-size:16px;font-weight:900;cursor:pointer;box-shadow:0 6px 16px rgba(180,211,46,.45);text-align:center;text-decoration:none}
+.btn-principal:hover{background:#a3c01f}.btn-principal:disabled{opacity:.6;cursor:wait}
+.btn-sec{display:block;width:100%;margin-top:10px;padding:14px;border:2px solid var(--primary-color);border-radius:14px;background:#fff;color:var(--primary-color);font-size:15px;font-weight:800;cursor:pointer;text-align:center;text-decoration:none}
+.btn-sec:hover{background:var(--primary-color);color:#fff}
+.pie{text-align:center;font-size:14px;margin:18px 0 0}.pie a,.link{color:var(--primary-color);font-weight:800}
+.aviso{background:var(--light-color);border-left:5px solid var(--secondary-color);padding:10px 12px;border-radius:10px;font-size:13px;margin-top:14px}
+</style>
+<script src="sesion.js"></script>
+</head>
+<body>
+<header class="top"><a href="index.html" class="marca"><img src="logo.jpeg" alt="Logo de PAWMI">PAWMI</a><a href="index.html" class="volver">← Volver a la tienda</a></header>
+<main>
+  <section class="tarjeta" id="formulario">
+    <h1>Crea tu cuenta</h1>
+    <p class="sub">Con tu cuenta ves tus pedidos y las fichas NFC de tus mascotas en un solo lugar.</p>
+    <form id="frm" novalidate>
+      <label for="email">Correo electrónico</label>
+      <input type="email" id="email" placeholder="tucorreo@gmail.com" autocomplete="email" required>
+      <label for="pass">Contraseña</label>
+      <div class="campo-pass"><input type="password" id="pass" placeholder="Mínimo 8 caracteres" autocomplete="new-password" required><button type="button" id="ver">Mostrar</button></div>
+      <div class="fuerza"><div id="barra"></div></div><p class="ayuda" id="textoFuerza">Usa mayúsculas, números y símbolos para hacerla más segura.</p>
+      <label for="pass2">Repite la contraseña</label>
+      <input type="password" id="pass2" placeholder="Escríbela otra vez" autocomplete="new-password" required>
+      <label class="check"><input type="checkbox" id="terminos"> Acepto el tratamiento de mis datos personales según la Ley N° 19.628.</label>
+      <p class="error" id="error" role="alert"></p>
+      <button class="btn-principal" id="btn" type="submit">Crear mi cuenta</button>
+    </form>
+    <p class="pie">¿Ya tienes cuenta? <a href="index.html?login=1">Inicia sesión</a></p>
+  </section>
+  <section class="tarjeta" id="exito" hidden>
+    <h1 id="exitoTitulo">¡Cuenta creada!</h1>
+    <p class="sub" id="exitoTexto"></p>
+    <a href="index.html" class="btn-principal">Ir a la tienda</a>
+    <a href="mis-pedidos.html" class="btn-sec">Ver mis pedidos</a>
+    <p class="aviso" id="avisoLocal" hidden>Modo de prueba: tu cuenta se guarda solo en este dispositivo.</p>
+  </section>
+</main>
+<script>
+(function () {
+  var $ = function (i) { return document.getElementById(i); };
+  function exito(yaTenia, local) {
+    $('formulario').hidden = true; $('exito').hidden = false;
+    $('exitoTitulo').textContent = yaTenia ? 'Ya tienes una sesión iniciada' : '¡Cuenta creada!';
+    $('exitoTexto').textContent = yaTenia ? 'Estás conectado como ' + PAWMI.usuario() + '.' : 'Bienvenido/a a PAWMI. Ya puedes comprar y ver tus pedidos.';
+    $('avisoLocal').hidden = !(local || PAWMI.modoLocal());
+  }
+  if (PAWMI.usuario()) exito(true);
+  $('ver').onclick = function () {
+    var t = $('pass').type === 'password'; $('pass').type = t ? 'text' : 'password'; $('pass2').type = $('pass').type; this.textContent = t ? 'Ocultar' : 'Mostrar';
+  };
+  $('pass').oninput = function () {
+    var v = this.value, s = 0;
+    if (v.length >= 8) s++; if (/[a-z]/.test(v) && /[A-Z]/.test(v)) s++; if (/\d/.test(v)) s++; if (/[^A-Za-z0-9]/.test(v)) s++;
+    if (v.length < 8) s = Math.min(s, 1);
+    var b = $('barra'); b.style.width = (v ? Math.max(s, 1) * 25 : 0) + '%';
+    b.style.background = s >= 3 ? '#b4d32e' : s === 2 ? '#e0507a' : '#7a1734';
+    $('textoFuerza').textContent = !v ? 'Usa mayúsculas, números y símbolos para hacerla más segura.' : s >= 3 ? 'Contraseña fuerte.' : s === 2 ? 'Puede mejorar: agrega números o símbolos.' : 'Contraseña débil.';
+  };
+  $('frm').onsubmit = async function (e) {
+    e.preventDefault(); var err = $('error'); err.textContent = '';
+    var email = $('email').value.trim(), p1 = $('pass').value, p2 = $('pass2').value;
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { err.textContent = 'Escribe un correo válido.'; return; }
+    if (p1.length < 8) { err.textContent = 'La contraseña debe tener al menos 8 caracteres.'; return; }
+    if (p1 !== p2) { err.textContent = 'Las contraseñas no coinciden.'; return; }
+    if (!$('terminos').checked) { err.textContent = 'Debes aceptar el tratamiento de datos para continuar.'; return; }
+    var btn = $('btn'); btn.disabled = true; btn.textContent = 'Creando tu cuenta...';
+    var r = await PAWMI.registrar(email, p1);
+    btn.disabled = false; btn.textContent = 'Crear mi cuenta';
+    if (!r.ok) { err.textContent = r.error; return; }
+    exito(false, r.local);
+  };
+})();
+</script>
+</body>
+</html>

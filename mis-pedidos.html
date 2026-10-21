@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mis pedidos - PAWMI</title>
+<link rel="icon" href="logo.jpeg">
+<style>
+:root{--primary-color:#7a1734;--primary-dark:#4f0e22;--secondary-color:#e0507a;--accent-color:#b4d32e;--light-color:#f3e7ea;--bg-color:#e4dac6;--text-color:#2e1520;--on-accent:#2f3a0d}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:var(--bg-color);color:var(--text-color);min-height:100vh}
+.top{background:linear-gradient(90deg,var(--primary-color),#9a1f48);border-bottom:4px solid var(--accent-color);padding:10px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.marca{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-weight:800;font-size:20px}
+.marca img{width:42px;height:42px;border-radius:50%;object-fit:cover;background:var(--bg-color)}
+.volver{color:#fff;text-decoration:none;font-size:13px;font-weight:700;background:rgba(255,255,255,.18);padding:7px 12px;border-radius:20px;white-space:nowrap}
+main{max-width:520px;margin:0 auto;padding:26px 16px 50px}
+.tarjeta{background:#fff;border-radius:20px;padding:26px 22px;box-shadow:0 12px 30px rgba(79,14,34,.14);border-top:8px solid var(--secondary-color)}
+h1{margin:0 0 6px;font-size:26px;color:var(--primary-color)}
+.sub{margin:0 0 18px;color:#6b4a56;font-size:14px;line-height:1.5}
+label{display:block;font-size:12px;font-weight:800;letter-spacing:.04em;color:var(--primary-color);text-transform:uppercase;margin:14px 0 6px}
+input[type=email],input[type=password],input[type=text]{width:100%;padding:13px 14px;border:2px solid #e3d3d8;border-radius:12px;font-size:15px;background:#fff;color:var(--text-color)}
+input:focus{outline:none;border-color:var(--secondary-color);box-shadow:0 0 0 4px rgba(224,80,122,.18)}
+.campo-pass{position:relative}.campo-pass input{padding-right:92px}
+.campo-pass button{position:absolute;right:6px;top:6px;bottom:6px;border:none;background:var(--light-color);color:var(--primary-color);font-weight:800;border-radius:9px;padding:0 12px;cursor:pointer;font-size:12px}
+.fuerza{height:8px;background:#efe4e8;border-radius:5px;margin-top:10px;overflow:hidden}.fuerza div{height:100%;width:0;border-radius:5px;transition:width .25s,background .25s}
+.ayuda{font-size:12px;color:#7d5c68;margin:6px 0 0}
+.check{display:flex!important;gap:10px;align-items:flex-start;text-transform:none!important;letter-spacing:0!important;font-weight:600!important;color:var(--text-color)!important;font-size:13px!important;margin-top:16px}
+.check input{margin-top:3px;width:18px;height:18px;accent-color:var(--primary-color)}
+.error{color:#b3123f;font-size:13px;font-weight:700;margin:12px 0 0;min-height:18px}
+.btn-principal{display:block;width:100%;margin-top:14px;padding:15px;border:none;border-radius:14px;background:var(--accent-color);color:var(--on-accent);font-size:16px;font-weight:900;cursor:pointer;box-shadow:0 6px 16px rgba(180,211,46,.45);text-align:center;text-decoration:none}
+.btn-principal:hover{background:#a3c01f}.btn-principal:disabled{opacity:.6;cursor:wait}
+.btn-sec{display:block;width:100%;margin-top:10px;padding:14px;border:2px solid var(--primary-color);border-radius:14px;background:#fff;color:var(--primary-color);font-size:15px;font-weight:800;cursor:pointer;text-align:center;text-decoration:none}
+.btn-sec:hover{background:var(--primary-color);color:#fff}
+.pie{text-align:center;font-size:14px;margin:18px 0 0}.pie a,.link{color:var(--primary-color);font-weight:800}
+.aviso{background:var(--light-color);border-left:5px solid var(--secondary-color);padding:10px 12px;border-radius:10px;font-size:13px;margin-top:14px}
+
+main{max-width:640px}
+.cab{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:6px}
+.salir{background:#fff;border:2px solid var(--primary-color);color:var(--primary-color);border-radius:20px;padding:7px 14px;font-weight:800;font-size:12px;cursor:pointer}
+.salir:hover{background:var(--primary-color);color:#fff}
+.lista{display:grid;gap:12px;margin-top:16px}
+.pedido{background:#fff;border-radius:16px;padding:16px 18px;box-shadow:0 8px 20px rgba(79,14,34,.10);border-left:8px solid var(--accent-color);display:grid;gap:6px}
+.pedido:nth-child(even){border-left-color:var(--secondary-color)}
+.pedido h2{margin:0;font-size:19px;color:var(--primary-color)}
+.fila{display:flex;justify-content:space-between;gap:10px;font-size:13px;color:#6b4a56;flex-wrap:wrap}
+.estado{background:var(--accent-color);color:var(--on-accent);font-weight:900;font-size:11px;padding:4px 10px;border-radius:12px;text-transform:uppercase;letter-spacing:.04em}
+.ver{color:var(--primary-color);font-weight:800;font-size:14px;text-decoration:none}.ver:hover{color:var(--secondary-color)}
+.vacio{text-align:center;padding:10px 0}
+</style>
+<script src="sesion.js"></script>
+</head>
+<body>
+<header class="top"><a href="index.html" class="marca"><img src="logo.jpeg" alt="Logo de PAWMI">PAWMI</a><a href="index.html" class="volver">← Seguir comprando</a></header>
+<main id="contenido"></main>
+<script>
+(async function () {
+  var c = document.getElementById('contenido');
+  function el(t, cls, txt) { var e = document.createElement(t); if (cls) e.className = cls; if (txt !== undefined) e.textContent = txt; return e; }
+  var u = PAWMI.usuario();
+  if (!u) {
+    var t = el('section', 'tarjeta');
+    t.appendChild(el('h1', '', 'Mis pedidos'));
+    t.appendChild(el('p', 'sub', 'Inicia sesión para ver los pedidos de tu cuenta.'));
+    var a = el('a', 'btn-principal', 'Iniciar sesión'); a.href = 'index.html?login=1'; t.appendChild(a);
+    var b = el('a', 'btn-sec', 'Crear cuenta nueva'); b.href = 'registro.html'; t.appendChild(b);
+    c.appendChild(t); return;
+  }
+  var cab = el('div', 'cab'); cab.appendChild(el('h1', '', 'Mis pedidos'));
+  var s = el('button', 'salir', 'Cerrar sesión'); s.onclick = function () { PAWMI.salir(); location.href = 'index.html'; };
+  cab.appendChild(s); c.appendChild(cab);
+  c.appendChild(el('p', 'sub', 'Sesión iniciada como ' + u));
+  if (PAWMI.modoLocal()) c.appendChild(el('p', 'aviso', 'Modo de prueba: tus pedidos se guardan solo en este dispositivo.'));
+  var lista = el('div', 'lista'); c.appendChild(lista);
+  lista.appendChild(el('p', 'sub', 'Cargando tus pedidos...'));
+  var pedidos = await PAWMI.pedidos(); lista.textContent = '';
+  if (!pedidos.length) {
+    var v = el('section', 'tarjeta vacio');
+    v.appendChild(el('h1', '', 'Aún no tienes pedidos'));
+    v.appendChild(el('p', 'sub', 'Cuando compres una chapita, aparecerá aquí con su ficha NFC.'));
+    var ir = el('a', 'btn-principal', 'Ver productos'); ir.href = 'index.html'; v.appendChild(ir); lista.appendChild(v); return;
+  }
+  pedidos.slice().reverse().forEach(function (p) {
+    var card = el('article', 'pedido');
+    card.appendChild(el('h2', '', p.mascota || 'Mascota'));
+    var f1 = el('div', 'fila'); f1.appendChild(el('span', '', p.producto || 'Placa NFC'));
+    f1.appendChild(el('span', 'estado', p.estado || 'Recibido')); card.appendChild(f1);
+    var f2 = el('div', 'fila');
+    f2.appendChild(el('span', '', p.fecha ? new Date(p.fecha).toLocaleDateString('es-CL') : ''));
+    f2.appendChild(el('strong', '', p.total ? '$' + Number(p.total).toLocaleString('es-CL') : '')); card.appendChild(f2);
+    var l = el('a', 'ver', 'Ver ficha digital →'); l.href = 'ficha.html?id=' + encodeURIComponent(p.id); card.appendChild(l);
+    lista.appendChild(card);
+  });
+})();
+</script>
+</body>
+</html>

@@ -145,7 +145,53 @@
         .modal-box { background: #fff; width: 100%; max-width: 400px; padding: 25px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); position: relative; text-align: left; }
         .btn-modal-action { background: var(--primary-color); color: white; border: none; padding: 10px; border-radius: 10px; font-weight: bold; width: 100%; margin-top: 15px; cursor: pointer; }
         .close-x { position: absolute; top: 12px; right: 15px; font-size: 20px; cursor: pointer; color: #888; }
+
+        /* ===== TEMA PAWMI VIVO (colores del logo) ===== */
+        :root { --primary-color: #7a1734; --primary-dark: #4f0e22; --secondary-color: #e0507a; --accent-color: #b4d32e; --light-color: #f3e7ea; --bg-color: #e4dac6; --text-color: #2e1520; --on-accent: #2f3a0d; }
+
+        header { background: linear-gradient(90deg, var(--primary-color), #9a1f48) !important; border-bottom: 4px solid var(--accent-color); }
+        .btn-user-auth { background: var(--accent-color) !important; color: var(--on-accent) !important; }
+        .cart-icon-container { background: rgba(255,255,255,0.22) !important; }
+        .cart-badge { background: var(--accent-color) !important; color: var(--on-accent) !important; }
+        .btn-go-checkout { background: var(--accent-color) !important; color: var(--on-accent) !important; font-weight: 900 !important; }
+        .hero-banner { background: radial-gradient(circle at 85% 20%, rgba(224,80,122,0.55), transparent 55%), linear-gradient(135deg, var(--primary-dark), var(--primary-color)) !important; padding: 42px 15px !important; }
+        .hero-banner h2 { font-size: 26px !important; }
+        .hero-banner::after { content: ""; display: block; width: 76px; height: 6px; border-radius: 3px; background: var(--accent-color); margin: 16px auto 0; }
+        .catalog-container h2 { color: var(--primary-color); display: inline-block; border-bottom: 6px solid var(--accent-color); padding-bottom: 4px; }
+        .product-card-main { border: 2px solid #fff !important; border-top: 9px solid var(--secondary-color) !important; transition: transform .2s, box-shadow .2s; }
+        .product-card-main:hover { transform: translateY(-5px); box-shadow: 0 14px 28px rgba(122,23,52,0.22); }
+        .product-card-main:nth-child(1) { border-top-color: var(--accent-color) !important; }
+        .product-card-main:nth-child(2) { border-top-color: var(--primary-color) !important; }
+        .product-card-main:nth-child(3) { border-top-color: var(--secondary-color) !important; }
+        .product-card-main:nth-child(4) { border-top-color: var(--accent-color) !important; }
+        .product-card-main h3 { color: var(--primary-color); }
+        .btn-view { background: var(--primary-color) !important; }
+        .btn-view:hover { background: var(--secondary-color) !important; }
+        .sidebar { background: var(--light-color) !important; }
+        .sidebar a { border-bottom: 1px solid rgba(122,23,52,0.15) !important; }
+        .sidebar a:hover { background: var(--accent-color); color: var(--on-accent); }
+        footer { background-color: var(--primary-dark) !important; border-top: 6px solid var(--accent-color) !important; color: var(--light-color); }
+        .footer-col h4 { color: var(--accent-color) !important; }
+        .footer-col ul li { color: var(--light-color) !important; }
+        .footer-col ul li:hover { color: var(--accent-color) !important; }
+        .footer-bottom { color: var(--secondary-color) !important; border-top-color: rgba(243,231,234,0.2) !important; }
+        .modal-box { border-top: 8px solid var(--accent-color); }
+        .modal-box h3 { color: var(--primary-color); margin-top: 0; }
+        .btn-modal-action { background: var(--primary-color) !important; }
+        .btn-modal-action:hover { background: var(--secondary-color) !important; }
+        .form-cuenta { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
+        .form-cuenta label { font-size: 11px; font-weight: 800; color: var(--primary-color); letter-spacing: .04em; margin-top: 6px; }
+        .form-cuenta input { padding: 11px; border: 2px solid #e3d3d8; border-radius: 10px; font-size: 14px; }
+        .form-cuenta input:focus { outline: none; border-color: var(--secondary-color); box-shadow: 0 0 0 3px rgba(224,80,122,.18); }
+        .msg-error { color: #b3123f; font-size: 12px; font-weight: 700; min-height: 16px; margin: 6px 0 0; }
+        .divisor { text-align: center; margin: 16px 0 10px; font-size: 12px; color: #7d5c68; }
+        .btn-crear-cuenta { display: block; text-align: center; text-decoration: none; background: var(--accent-color); color: var(--on-accent); font-weight: 900; padding: 12px; border-radius: 12px; box-shadow: 0 5px 14px rgba(180,211,46,.45); }
+        .btn-crear-cuenta:hover { background: #a3c01f; }
+        .caja-pedidos { background: var(--light-color); padding: 12px; border-radius: 12px; margin-top: 10px; font-size: 12px; line-height: 1.6; }
+        .caja-pedidos h4 { margin: 0 0 8px 0; font-size: 13px; color: var(--primary-color); }
+        .btn-salir { background: #fff !important; color: var(--primary-color) !important; border: 2px solid var(--primary-color) !important; }
     </style>
+<script src="sesion.js"></script>
 </head>
 <body>
 
@@ -160,7 +206,9 @@
         <a href="producto.html?id=premium" onclick="cerrarMenu()">✨ Placa Premium Metálica</a>
         <a href="producto.html?id=collar" onclick="cerrarMenu()">🔗 Collar Inteligente</a>
         <a href="producto.html?id=bicicleta" onclick="cerrarMenu()">🚲 Placa Bicicleta</a>
-        <a href="#" onclick="abrirLoginModal(); cerrarMenu();">👤 Mi Cuenta y Pedidos</a>
+        <a href="mis-pedidos.html">📦 Mis pedidos</a>
+        <a href="#" onclick="abrirLoginModal(); cerrarMenu();">👤 Mi cuenta</a>
+        <a href="registro.html">✨ Crear cuenta</a>
     </div>
 
     <header>
@@ -237,8 +285,9 @@
             <div class="footer-col">
                 <h4>Acceso Clientes</h4>
                 <ul>
-                    <li onclick="abrirLoginModal()">Iniciar Sesión</li>
-                    <li onclick="abrirLoginModal()">Estado de mis pedidos</li>
+                    <li onclick="abrirLoginModal()">Iniciar sesión</li>
+                    <li onclick="location.href='registro.html'">Crear cuenta</li>
+                    <li onclick="location.href='mis-pedidos.html'">Mis pedidos</li>
                 </ul>
             </div>
             <div class="footer-col">
@@ -263,27 +312,33 @@
         </div>
     </footer>
 
-    <!-- MODAL LOGIN -->
+    <!-- MODAL CUENTA -->
     <div id="loginModal" class="modal-overlay">
         <div class="modal-box">
             <span class="close-x" onclick="cerrarLoginModal()">&times;</span>
             <div id="authContent">
-                <h3>Mi Cuenta</h3>
-                <p>Inicia sesión con tu correo para revisar tus compras y preferencias.</p>
-                <form onsubmit="manejarLogin(event)" style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
-                    <label style="font-size: 11px; font-weight: 700; color: #666;">CORREO ELECTRÓNICO</label>
-                    <input type="email" id="loginEmail" required placeholder="tucorreo@gmail.com" style="padding: 10px; border: 2px solid #ddd; border-radius: 8px; font-size: 13px;">
-                    <button type="submit" class="btn-modal-action">Ingresar</button>
+                <h3>Mi cuenta</h3>
+                <p>Inicia sesión para ver tus pedidos y gestionar tus chapitas.</p>
+                <form onsubmit="manejarLogin(event)" class="form-cuenta">
+                    <label for="loginEmail">CORREO ELECTRÓNICO</label>
+                    <input type="email" id="loginEmail" required placeholder="tucorreo@gmail.com" autocomplete="email">
+                    <label for="loginPass">CONTRASEÑA</label>
+                    <input type="password" id="loginPass" required placeholder="Tu contraseña" autocomplete="current-password">
+                    <p id="loginError" class="msg-error" role="alert"></p>
+                    <button type="submit" class="btn-modal-action" id="btnLogin">Ingresar</button>
                 </form>
+                <div class="divisor">¿Eres nuevo en PAWMI?</div>
+                <a href="registro.html" class="btn-crear-cuenta">Crear cuenta nueva</a>
             </div>
             <div id="userDashboard" style="display: none;">
-                <h3>¡Bienvenido/a!</h3>
+                <h3>¡Hola de nuevo!</h3>
                 <p><strong>Correo:</strong> <span id="userProfileEmail"></span></p>
-                <div style="background: #f8f9fa; padding: 12px; border-radius: 10px; margin-top: 10px;">
-                    <h4 style="margin: 0 0 8px 0; font-size: 13px;">📦 Tus Pedidos:</h4>
-                    <p style="font-size: 11px; color: #666;" id="userOrdersList">No hay pedidos registrados.</p>
+                <div class="caja-pedidos">
+                    <h4>📦 Tus últimos pedidos</h4>
+                    <div id="userOrdersList">Cargando...</div>
                 </div>
-                <button class="btn-modal-action" style="background: #6c757d;" onclick="cerrarSesion()">Cerrar Sesión</button>
+                <a href="mis-pedidos.html" class="btn-modal-action" style="display:block;text-align:center;text-decoration:none;box-sizing:border-box;">Ver todos mis pedidos</a>
+                <button class="btn-modal-action btn-salir" onclick="cerrarSesion()">Cerrar sesión</button>
             </div>
         </div>
     </div>
@@ -338,34 +393,45 @@
             actualizarCarritoGlobalUI();
         }
 
-        function abrirLoginModal() {
-            const user = localStorage.getItem('chapitas_user');
+        function escapar(t) { return String(t == null ? '' : t).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+        function actualizarBotonCuenta() {
+            const u = PAWMI.usuario();
+            document.querySelector('.btn-user-auth').textContent = u ? '👤 ' + u.split('@')[0].slice(0, 10) : '👤 Cuenta';
+        }
+        async function abrirLoginModal() {
+            const user = PAWMI.usuario();
+            document.getElementById('loginError').textContent = '';
+            document.getElementById('loginModal').style.display = 'flex';
             if (user) {
                 document.getElementById('authContent').style.display = 'none';
                 document.getElementById('userDashboard').style.display = 'block';
                 document.getElementById('userProfileEmail').textContent = user;
-                const pedidos = JSON.parse(localStorage.getItem('chapitas_pedidos') || '[]');
-                if (pedidos.length > 0) {
-                    document.getElementById('userOrdersList').innerHTML = pedidos.map(p => `• Pedido #${p.id} (${p.mascota})`).join('<br>');
-                }
+                const lista = document.getElementById('userOrdersList');
+                lista.textContent = 'Cargando...';
+                const pedidos = await PAWMI.pedidos();
+                lista.innerHTML = pedidos.length
+                    ? pedidos.slice(-3).reverse().map(p => '• ' + escapar(p.mascota) + ' <small>(' + escapar(p.producto || 'Pedido') + ')</small>').join('<br>')
+                    : 'Aún no tienes pedidos.';
             } else {
                 document.getElementById('authContent').style.display = 'block';
                 document.getElementById('userDashboard').style.display = 'none';
             }
-            document.getElementById('loginModal').style.display = 'flex';
         }
         function cerrarLoginModal() { document.getElementById('loginModal').style.display = 'none'; }
-        function manejarLogin(e) {
+        async function manejarLogin(e) {
             e.preventDefault();
-            localStorage.setItem('chapitas_user', document.getElementById('loginEmail').value);
-            alert("¡Sesión iniciada!");
-            cerrarLoginModal();
+            const btn = document.getElementById('btnLogin'), err = document.getElementById('loginError');
+            err.textContent = ''; btn.disabled = true; btn.textContent = 'Ingresando...';
+            const r = await PAWMI.ingresar(document.getElementById('loginEmail').value, document.getElementById('loginPass').value);
+            btn.disabled = false; btn.textContent = 'Ingresar';
+            if (!r.ok) { err.textContent = r.error; return; }
+            document.getElementById('loginPass').value = '';
+            actualizarBotonCuenta();
+            abrirLoginModal();
         }
-        function cerrarSesion() {
-            localStorage.removeItem('chapitas_user');
-            alert("Sesión cerrada.");
-            cerrarLoginModal();
-        }
+        function cerrarSesion() { PAWMI.salir(); cerrarLoginModal(); actualizarBotonCuenta(); }
+        actualizarBotonCuenta();
+        if (new URLSearchParams(location.search).get('login') === '1') abrirLoginModal();
     </script>
 </body>
 </html>
