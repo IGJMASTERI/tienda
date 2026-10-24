@@ -19,26 +19,38 @@
         }
 
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg-color); color: var(--text-color); margin: 0; padding: 20px; box-sizing: border-box; }
-        .checkout-container { max-width: 850px; margin: 0 auto; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(141, 174, 155, 0.1); border-top: 9px solid var(--secondary-color); }
+        .checkout-container { max-width: 900px; margin: 0 auto; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(141, 174, 155, 0.1); border-top: 9px solid var(--secondary-color); }
         h2, h3 { color: var(--primary-dark); margin-top: 0; }
         .cart-summary-list { list-style: none; padding: 0; margin: 0 0 20px 0; }
         .cart-summary-list li { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed #eee; font-size: 14px; }
         .total-box { font-size: 18px; font-weight: 800; text-align: right; color: var(--primary-dark); margin-bottom: 25px; }
         
-        .placa-card { background: var(--light-color); border: 2px solid #ddecde; border-radius: 15px; padding: 20px; margin-bottom: 20px; }
-        .placa-card h4 { margin-top: 0; color: var(--primary-dark); border-bottom: 1px solid #ddecde; padding-bottom: 8px; }
+        .placa-card { background: var(--light-color); border: 2px solid #ddecde; border-radius: 15px; padding: 20px; margin-bottom: 25px; }
+        .placa-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddecde; padding-bottom: 8px; margin-bottom: 15px; }
+        .placa-header h4 { margin: 0; color: var(--primary-dark); }
         
-        .form-section { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
-        @media(max-width: 600px) { .form-section { grid-template-columns: 1fr; } }
-        .form-group { display: flex; flex-direction: column; gap: 6px; }
-        .form-group.full { grid-column: 1 / -1; }
-        .form-group label { font-size: 12px; font-weight: 800; color: var(--primary-dark); }
-        .form-group input, .form-group select { padding: 12px; border: 2px solid #ddecde; border-radius: 10px; font-size: 14px; background: #fafdfa; }
-        
-        .preview-container { display: flex; align-items: center; gap: 20px; background: white; padding: 15px; border-radius: 12px; border: 1px dashed var(--primary-color); margin-top: 10px; }
-        .preview-circle { width: 90px; height: 90px; border-radius: 50%; overflow: hidden; background: #ddd; border: 3px solid var(--primary-dark); position: relative; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
-        .preview-circle img { width: 100%; height: 100%; object-fit: cover; }
-        .preview-controls { flex-grow: 1; display: flex; flex-direction: column; gap: 8px; font-size: 13px; }
+        /* Selector de mascota (Perro / Gato) */
+        .pet-type-selector { display: flex; gap: 10px; }
+        .pet-type-btn { background: #fff; border: 2px solid #ddd; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; cursor: pointer; transition: all 0.2s; }
+        .pet-type-btn.active { background: var(--secondary-color); border-color: var(--primary-dark); color: var(--primary-dark); }
+
+        .form-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 20px; }
+        @media(max-width: 768px) { .form-grid { grid-template-columns: 1fr; } }
+
+        .form-fields { display: flex; flex-direction: column; gap: 12px; }
+        .form-group { display: flex; flex-direction: column; gap: 5px; }
+        .form-group label { font-size: 11px; font-weight: 800; color: var(--primary-dark); }
+        .form-group input { padding: 10px; border: 2px solid #ddecde; border-radius: 8px; font-size: 13px; background: #fafdfa; }
+
+        /* Simulación de la Tarjeta / Ficha de la Chapita */
+        .chip-preview-box { background: linear-gradient(135deg, #ffffff, var(--yellow-pastel)); border: 2px solid var(--primary-color); border-radius: 12px; padding: 15px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .chip-avatar { width: 80px; height: 80px; border-radius: 50%; overflow: hidden; border: 3px solid var(--primary-dark); background: #eee; margin-bottom: 8px; }
+        .chip-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .chip-name { font-weight: 900; font-size: 16px; color: var(--primary-dark); margin-bottom: 2px; }
+        .chip-info { font-size: 12px; color: #555; margin-bottom: 4px; }
+        .chip-badge { background: var(--primary-color); color: white; font-size: 10px; padding: 2px 8px; border-radius: 10px; font-weight: bold; margin-top: 5px; }
+
+        .preview-controls { display: flex; flex-direction: column; gap: 5px; margin-top: 10px; font-size: 11px; width: 100%; }
         
         .terminos-box { display: flex; align-items: center; gap: 10px; margin: 20px 0; font-size: 14px; font-weight: bold; }
         .btn-webpay { background: #002d62; color: white; border: none; padding: 14px; border-radius: 12px; font-weight: 900; font-size: 15px; cursor: pointer; width: 100%; transition: background 0.2s; box-shadow: 0 4px 15px rgba(0,45,98,0.2); display: flex; align-items: center; justify-content: center; gap: 10px; }
@@ -48,11 +60,11 @@
 </head>
 <body>
 
-    <div style="max-width: 850px; margin: 0 auto;"><a href="index.html" class="back-link">← Volver a la Tienda</a></div>
+    <div style="max-width: 900px; margin: 0 auto;"><a href="index.html" class="back-link">← Volver a la Tienda</a></div>
 
     <div class="checkout-container">
-        <h2>🛠️ Personaliza tus Chapitas NFC</h2>
-        <p style="font-size: 14px; color: #666;">Completa la información y ajusta la foto de cada mascota por separado.</p>
+        <h2>🐾 Personalización de Placas NFC</h2>
+        <p style="font-size: 14px; color: #666;">Configura los datos y revisa la previsualización en tiempo real para cada placa de tu pedido.</p>
         
         <ul class="cart-summary-list" id="resumenCarrito"></ul>
         <div class="total-box">Total a Pagar: $<span id="totalPagar">0</span></div>
@@ -60,10 +72,10 @@
         <form onsubmit="iniciarPagoWebpay(event)">
             <div style="background: var(--yellow-pastel); padding: 15px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #f2ead0;">
                 <h3 style="margin-top:0; font-size:15px; color:#555;">📦 Datos de Envío y Contacto</h3>
-                <div class="form-section">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
                     <div class="form-group"><label>NOMBRE DEL CLIENTE</label><input type="text" id="nombreCliente" required placeholder="Tu nombre y apellido"></div>
                     <div class="form-group"><label>TELÉFONO DE CONTACTO</label><input type="tel" id="fonoCliente" required placeholder="+569xxxxxxxx"></div>
-                    <div class="form-group full"><label>DIRECCIÓN DE ENVÍO</label><input type="text" id="dirCliente" required placeholder="Calle, número, comuna, ciudad"></div>
+                    <div class="form-group" style="grid-column: 1 / -1;"><label>DIRECCIÓN DE ENVÍO</label><input type="text" id="dirCliente" required placeholder="Calle, número, comuna, ciudad"></div>
                 </div>
             </div>
 
@@ -102,23 +114,48 @@
                 const card = document.createElement('div');
                 card.className = 'placa-card';
                 card.innerHTML = `
-                    <h4>🐾 Placa #${contadorPlaca}: ${item.producto || item.nombre}</h4>
-                    <div class="form-section">
-                        <div class="form-group"><label>NOMBRE DE LA MASCOTA</label><input type="text" class="mascota-nombre" required placeholder="Ej: Toby"></div>
-                        <div class="form-group"><label>TELÉFONO DE EMERGENCIA (PARA NFC)</label><input type="tel" class="mascota-fono" required placeholder="+569xxxxxxxx"></div>
+                    <div class="placa-header">
+                        <h4>Placa #${contadorPlaca}: ${item.producto || item.nombre}</h4>
+                        <div class="pet-type-selector">
+                            <button type="button" class="pet-type-btn active" onclick="cambiarTipoMascota(${index}, 'perro', this)">🐶 Perro</button>
+                            <button type="button" class="pet-type-btn" onclick="cambiarTipoMascota(${index}, 'gato', this)">🐱 Gato</button>
+                        </div>
                     </div>
-                    <div class="form-group full">
-                        <label>FOTO DE LA MASCOTA Y PREVISUALIZACIÓN (Ajusta el zoom/enfoque)</label>
-                        <input type="file" accept="image/*" class="input-foto" onchange="cargarPrevisualizacion(event, ${index})">
-                        
-                        <div class="preview-container">
-                            <div class="preview-circle">
-                                <img id="imgPreview_${index}" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='90' height='90'><rect width='100%' height='100%' fill='%23eee'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%23aaa' font-size='12'>Foto</text></svg>">
+
+                    <div class="form-grid">
+                        <!-- Campos de entrada de datos -->
+                        <div class="form-fields">
+                            <div class="form-group">
+                                <label>NOMBRE DE LA MASCOTA</label>
+                                <input type="text" class="mascota-nombre" id="inputNombre_${index}" required placeholder="Ej: Toby" oninput="actualizarPrevisualizacion(${index})">
                             </div>
+                            <div class="form-group">
+                                <label>TELÉFONO DE EMERGENCIA</label>
+                                <input type="tel" class="mascota-fono" id="inputFono_${index}" required placeholder="+569xxxxxxxx" oninput="actualizarPrevisualizacion(${index})">
+                            </div>
+                            <div class="form-group">
+                                <label>DIRECCIÓN / COMUNA</label>
+                                <input type="text" class="mascota-dir" id="inputDir_${index}" placeholder="Ej: La Florida, Stgo" oninput="actualizarPrevisualizacion(${index})">
+                            </div>
+                            <div class="form-group">
+                                <label>SUBIR FOTO</label>
+                                <input type="file" accept="image/*" class="input-foto" onchange="cargarPrevisualizacion(event, ${index})">
+                            </div>
+                        </div>
+
+                        <!-- Tarjeta de Previsualización en tiempo real -->
+                        <div class="chip-preview-box">
+                            <div class="chip-avatar">
+                                <img id="imgPreview_${index}" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='80'><rect width='100%' height='100%' fill='%23eee'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%23aaa' font-size='11'>Foto</text></svg>">
+                            </div>
+                            <div class="chip-name" id="prevNombre_${index}">Nombre Mascota</div>
+                            <div class="chip-info" id="prevFono_${index}">📞 Teléfono</div>
+                            <div class="chip-info" id="prevDir_${index}" style="font-size: 11px; color: #777;">📍 Dirección</div>
+                            <span class="chip-badge" id="prevBadge_${index}">🐶 Perro NFC</span>
+
                             <div class="preview-controls">
-                                <span>Ajustar Zoom / Encuadre:</span>
-                                <input type="range" min="1" max="3" step="0.1" value="1" class="zoom-range" id="zoom_${index}" oninput="ajustarZoom(event, ${index})" disabled>
-                                <small style="color: #666;">Sube una foto para activar el ajuste de zoom.</small>
+                                <label>Ajustar Zoom de la Foto:</label>
+                                <input type="range" min="1" max="3" step="0.1" value="1" id="zoom_${index}" oninput="ajustarZoom(event, ${index})" disabled>
                             </div>
                         </div>
                     </div>
@@ -128,6 +165,29 @@
             });
         }
         totalSpan.textContent = total.toLocaleString('es-CL');
+
+        // Funciones de control interactivo
+        window.tipoMascotaSeleccionada = window.tipoMascotaSeleccionada || {};
+
+        function cambiarTipoMascota(index, tipo, boton) {
+            const contenedor = boton.parentElement;
+            contenedor.querySelectorAll('.pet-type-btn').forEach(btn => btn.classList.remove('active'));
+            boton.classList.add('active');
+            
+            window.tipoMascotaSeleccionada[index] = tipo;
+            const badge = document.getElementById(`prevBadge_${index}`);
+            badge.textContent = tipo === 'perro' ? '🐶 Perro NFC' : '🐱 Gato NFC';
+        }
+
+        function actualizarPrevisualizacion(index) {
+            const nombre = document.getElementById(`inputNombre_${index}`).value || 'Nombre Mascota';
+            const fono = document.getElementById(`inputFono_${index}`).value || '📞 Teléfono';
+            const dir = document.getElementById(`inputDir_${index}`).value || '📍 Dirección';
+
+            document.getElementById(`prevNombre_${index}`).textContent = nombre;
+            document.getElementById(`prevFono_${index}`).textContent = fono ? '📞 ' + fono : '📞 Teléfono';
+            document.getElementById(`prevDir_${index}`).textContent = dir ? '📍 ' + dir : '📍 Dirección';
+        }
 
         function cargarPrevisualizacion(event, index) {
             const archivo = event.target.files[0];
@@ -160,13 +220,17 @@
             tarjetas.forEach((card, idx) => {
                 const nombreMascota = card.querySelector('.mascota-nombre').value;
                 const fonoMascota = card.querySelector('.mascota-fono').value;
+                const dirMascota = card.querySelector('.mascota-dir').value;
+                const tipoPet = window.tipoMascotaSeleccionada[idx] || 'perro';
                 const mascotaIdSlug = nombreMascota.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '_') + '_' + Math.floor(Math.random() * 9000 + 1000);
                 
                 detallePlacas.push({
                     placaNumero: idx + 1,
+                    tipo: tipoPet,
                     producto: carrito[idx].producto || carrito[idx].nombre,
                     mascota: nombreMascota,
                     fonoEmergencia: fonoMascota,
+                    direccionMascota: dirMascota,
                     nfcUrl: `https://pawmi.cl/pet.html?mascota=${mascotaIdSlug}&tel=${fonoMascota}`
                 });
             });
