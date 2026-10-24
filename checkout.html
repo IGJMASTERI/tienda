@@ -144,7 +144,7 @@
             carrito.forEach((item, index) => {
                 total += item.precio || 0;
 
-                // Detectar con precisión si es gato o perro según el tipo guardado
+                // Detección estricta e individual por cada producto en el carrito
                 let tipoItem = (item.tipo || item.producto || item.nombre || '').toLowerCase();
                 let esGato = tipoItem.includes('gato') || tipoItem.includes('minino') || tipoItem.includes('felino');
                 
