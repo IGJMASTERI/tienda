@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de Administración - PAWMI</title>
+    <title>Gestión Interna - PAWMI Admin</title>
     <link rel="icon" href="logo.jpeg">
     <style>
         :root {
@@ -18,187 +18,108 @@
             --text-color: #4a554f;
         }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            box-sizing: border-box;
-        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg-color); color: var(--text-color); margin: 0; padding: 20px; box-sizing: border-box; }
+        .admin-container { max-width: 1000px; margin: 0 auto; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(141, 174, 155, 0.1); border-top: 9px solid var(--primary-dark); }
+        
+        .admin-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--light-color); padding-bottom: 15px; margin-bottom: 25px; }
+        .admin-header h2 { color: var(--primary-dark); margin: 0; font-size: 22px; }
+        .btn-salir { background: #d9534f; color: white; border: none; padding: 8px 16px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 13px; }
+        .btn-salir:hover { background: #c9302c; }
 
-        .admin-login-container {
-            background: var(--card-bg);
-            width: 100%;
-            max-width: 420px;
-            padding: 35px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(141, 174, 155, 0.15);
-            border-top: 9px solid var(--primary-dark);
-            text-align: center;
-        }
+        .section-box { background: var(--light-color); border: 1px solid #ddecde; border-radius: 15px; padding: 20px; margin-bottom: 25px; }
+        .section-box h3 { margin-top: 0; color: var(--primary-dark); font-size: 16px; }
 
-        .admin-logo {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--accent-color);
-            margin-bottom: 15px;
-        }
-
-        h2 {
-            color: var(--primary-dark);
-            margin-top: 0;
-            font-size: 22px;
-        }
-
-        p.subtitle {
-            font-size: 13px;
-            color: #666;
-            margin-bottom: 25px;
-        }
-
-        .form-group {
-            text-align: left;
-            margin-bottom: 15px;
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-
-        .form-group label {
-            font-size: 11px;
-            font-weight: 800;
-            color: var(--primary-dark);
-            letter-spacing: 0.04em;
-        }
-
-        .form-group input {
-            padding: 12px;
-            border: 2px solid #ddecde;
-            border-radius: 10px;
-            font-size: 14px;
-            background: #fafdfa;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-
-        .form-group input:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(141, 174, 155, 0.2);
-        }
-
-        .msg-error {
-            color: #d9534f;
-            font-size: 12px;
-            font-weight: 700;
-            min-height: 18px;
-            margin: 8px 0;
-        }
-
-        .btn-admin-login {
-            background: var(--primary-dark);
-            color: white;
-            border: none;
-            padding: 14px;
-            border-radius: 12px;
-            font-weight: 900;
-            font-size: 15px;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 10px;
-            transition: background 0.2s;
-            box-shadow: 0 4px 15px rgba(98, 135, 115, 0.3);
-        }
-
-        .btn-admin-login:hover {
-            background: #4e6e5d;
-        }
-
-        .back-store {
-            display: inline-block;
-            margin-top: 20px;
-            font-size: 12px;
-            color: var(--primary-dark);
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .back-store:hover {
-            text-decoration: underline;
-        }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; background: white; border-radius: 10px; overflow: hidden; font-size: 13px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: var(--primary-color); color: white; font-weight: bold; }
+        
+        .badge-estado { background: var(--yellow-pastel); color: var(--primary-dark); padding: 4px 10px; border-radius: 8px; font-weight: bold; font-size: 11px; border: 1px solid #f2ead0; }
+        
+        .form-inline { display: flex; gap: 10px; align-items: center; margin-top: 10px; }
+        .form-inline input { padding: 8px 12px; border: 2px solid #ddecde; border-radius: 8px; font-size: 13px; }
+        .btn-accion { background: var(--primary-dark); color: white; border: none; padding: 8px 14px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        .btn-accion:hover { background: #4e6e5d; }
     </style>
 </head>
 <body>
 
-    <div class="admin-login-container">
-        <img src="logo.jpeg" alt="Logo PAWMI" class="admin-logo">
-        <h2>Panel de Control PAWMI</h2>
-        <p class="subtitle">Acceso exclusivo para administración y gestión de pedidos.</p>
+    <div class="admin-container">
+        <div class="admin-header">
+            <h2>🛠️ Panel de Gestión - PAWMI</h2>
+            <button class="btn-salir" onclick="cerrarSesionAdmin()">Cerrar Sesión</button>
+        </div>
 
-        <form id="adminLoginForm" onsubmit="manejarLoginAdmin(event)">
-            <div class="form-group">
-                <label for="adminEmail">CORREO DE ADMINISTRADOR</label>
-                <input type="email" id="adminEmail" required placeholder="admin@pawmi.cl" autocomplete="email">
+        <!-- Sección de Control de Precios / Productos -->
+        <div class="section-box">
+            <h3>🏷️ Control de Precios de Productos</h3>
+            <p style="font-size: 12px; color: #666;">Modifica el valor actual de las placas para las pruebas o ventas de la tienda.</p>
+            <div class="form-inline">
+                <label style="font-size: 12px; font-weight: bold;">Precio General de Placas ($):</label>
+                <input type="number" id="inputNuevoPrecio" value="100">
+                <button class="btn-accion" onclick="actualizarPrecioGlobal()">Actualizar Precio</button>
             </div>
+        </div>
 
-            <div class="form-group">
-                <label for="adminPass">CONTRASEÑA</label>
-                <input type="password" id="adminPass" required placeholder="••••••••••••" autocomplete="current-password">
+        <!-- Sección de Listado de Pedidos -->
+        <div class="section-box">
+            <h3>📦 Pedidos y Solicitudes Recibidas</h3>
+            <p style="font-size: 12px; color: #666;">Aquí visualizarás los pedidos pagados listos para grabar y despachar.</p>
+            <div id="tablaPedidosContainer">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Orden</th>
+                            <th>Cliente</th>
+                            <th>Mascota & NFC</th>
+                            <th>Total</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listaPedidosAdmin">
+                        <tr>
+                            <td colspan="5" style="text-align: center; color: #888;">Cargando pedidos recientes...</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-
-            <p id="adminError" class="msg-error" role="alert"></p>
-
-            <button type="submit" class="btn-admin-login" id="btnIngresar">Ingresar al Panel 🚀</button>
-        </form>
-
-        <a href="index.html" class="back-store">← Volver a la Tienda</a>
+        </div>
     </div>
 
     <script>
-        async function manejarLoginAdmin(e) {
-            e.preventDefault();
-            const email = document.getElementById('adminEmail').value.trim();
-            const pass = document.getElementById('adminPass').value;
-            const errorEl = document.getElementById('adminError');
-            const btn = document.getElementById('btnIngresar');
-
-            errorEl.textContent = '';
-            btn.disabled = true;
-            btn.textContent = 'Verificando credenciales...';
-
-            try {
-                // Aquí conectaremos luego con tu backend en Render para validar al administrador
-                const response = await fetch('https://pawmi-backend.onrender.com/api/admin/login', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, pass })
-                });
-
-                const data = await response.json();
-
-                if (response.ok && data.token) {
-                    // Guardamos el token de administrador en el navegador
-                    localStorage.setItem('pawmi_admin_token', data.token);
-                    alert('¡Acceso concedido! Redirigiendo al panel...');
-                    // window.location.href = 'admin-dashboard.html'; // Próxima página de gestión
-                } else {
-                    errorEl.textContent = data.error || 'Credenciales de administrador inválidas.';
-                    btn.disabled = false;
-                    btn.textContent = 'Ingresar al Panel 🚀';
-                }
-            } catch (err) {
-                console.error(err);
-                errorEl.textContent = 'No se pudo conectar con el servidor de autenticación.';
-                btn.disabled = false;
-                btn.textContent = 'Ingresar al Panel 🚀';
-            }
+        // Verificamos si el admin tiene token activo al cargar la página
+        const adminToken = localStorage.getItem('pawmi_admin_token');
+        if (!adminToken) {
+            alert('Acceso no autorizado. Inicia sesión como administrador.');
+            window.location.href = 'admin.html';
         }
+
+        function cerrarSesionAdmin() {
+            localStorage.removeItem('pawmi_admin_token');
+            window.location.href = 'admin.html';
+        }
+
+        function actualizarPrecioGlobal() {
+            const nuevoPrecio = document.getElementById('inputNuevoPrecio').value;
+            localStorage.setItem('pawmi_precio_config', nuevoPrecio);
+            alert(`¡Precio actualizado con éxito a $${Number(nuevoPrecio).toLocaleString('es-CL')}!`);
+        }
+
+        // Cargar pedidos simulados o reales desde el almacenamiento local / backend
+        function cargarPedidosAdmin() {
+            const tbody = document.getElementById('listaPedidosAdmin');
+            // Aquí puedes conectar luego con tu base de datos o almacenamiento de pedidos
+            tbody.innerHTML = `
+                <tr>
+                    <td>#O_94821</td>
+                    <td>Anais Zapata<br><small>+56972930605</small></td>
+                    <td>🐾 <strong>Andy</strong> (Pincher)<br><small>Link NFC generado</small></td>
+                    <td>$100</td>
+                    <td><span class="badge-estado">Pagado / Listo para Grabar</span></td>
+                </tr>
+            `;
+        }
+
+        cargarPedidosAdmin();
     </script>
 </body>
 </html>
