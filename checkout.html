@@ -25,7 +25,6 @@
         .cart-summary-list li { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed #eee; font-size: 14px; }
         .total-box { font-size: 18px; font-weight: 800; text-align: right; color: var(--primary-dark); margin-bottom: 25px; }
         
-        /* Tarjetas de personalización por cada placa */
         .placa-card { background: var(--light-color); border: 2px solid #ddecde; border-radius: 15px; padding: 20px; margin-bottom: 20px; }
         .placa-card h4 { margin-top: 0; color: var(--primary-dark); border-bottom: 1px solid #ddecde; padding-bottom: 8px; }
         
@@ -36,10 +35,9 @@
         .form-group label { font-size: 12px; font-weight: 800; color: var(--primary-dark); }
         .form-group input, .form-group select { padding: 12px; border: 2px solid #ddecde; border-radius: 10px; font-size: 14px; background: #fafdfa; }
         
-        /* Previsualización y ajuste de imagen */
         .preview-container { display: flex; align-items: center; gap: 20px; background: white; padding: 15px; border-radius: 12px; border: 1px dashed var(--primary-color); margin-top: 10px; }
         .preview-circle { width: 90px; height: 90px; border-radius: 50%; overflow: hidden; background: #ddd; border: 3px solid var(--primary-dark); position: relative; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
-        .preview-circle img { width: 100%; height: 100%; object-fit: cover; cursor: grab; }
+        .preview-circle img { width: 100%; height: 100%; object-fit: cover; }
         .preview-controls { flex-grow: 1; display: flex; flex-direction: column; gap: 8px; font-size: 13px; }
         
         .terminos-box { display: flex; align-items: center; gap: 10px; margin: 20px 0; font-size: 14px; font-weight: bold; }
@@ -60,7 +58,6 @@
         <div class="total-box">Total a Pagar: $<span id="totalPagar">0</span></div>
 
         <form onsubmit="iniciarPagoWebpay(event)">
-            <!-- Datos generales de envío -->
             <div style="background: var(--yellow-pastel); padding: 15px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #f2ead0;">
                 <h3 style="margin-top:0; font-size:15px; color:#555;">📦 Datos de Envío y Contacto</h3>
                 <div class="form-section">
@@ -70,10 +67,8 @@
                 </div>
             </div>
 
-            <!-- Contenedor dinámico donde se generan los formularios por cada placa -->
             <div id="contenedorPlacasParaPersonalizar"></div>
 
-            <!-- Términos y Condiciones -->
             <div class="terminos-box">
                 <input type="checkbox" id="aceptoTerminos" required style="width: 18px; height: 18px;">
                 <label for="aceptoTerminos" style="cursor: pointer;">Acepto los términos, condiciones y políticas de personalización de PAWMI.</label>
@@ -100,12 +95,10 @@
             carrito.forEach((item, index) => {
                 total += item.precio;
                 
-                // Resumen superior
                 const li = document.createElement('li');
                 li.innerHTML = `<span>${item.producto || item.nombre}</span> <span>$${item.precio.toLocaleString('es-CL')}</span>`;
                 resumenLista.appendChild(li);
 
-                // Generar tarjeta de personalización independiente para CADA placa/producto
                 const card = document.createElement('div');
                 card.className = 'placa-card';
                 card.innerHTML = `
@@ -125,7 +118,7 @@
                             <div class="preview-controls">
                                 <span>Ajustar Zoom / Encuadre:</span>
                                 <input type="range" min="1" max="3" step="0.1" value="1" class="zoom-range" id="zoom_${index}" oninput="ajustarZoom(event, ${index})" disabled>
-                                <small style="color: #666;">Sube una foto para activar el ajuste y arrástrala para centrarla.</small>
+                                <small style="color: #666;">Sube una foto para activar el ajuste de zoom.</small>
                             </div>
                         </div>
                     </div>
@@ -136,7 +129,6 @@
         }
         totalSpan.textContent = total.toLocaleString('es-CL');
 
-        // Función para cargar imagen y previsualizarla
         function cargarPrevisualizacion(event, index) {
             const archivo = event.target.files[0];
             if (archivo) {
@@ -150,21 +142,18 @@
             }
         }
 
-        // Función para ajustar el zoom de la imagen en tiempo real
         function ajustarZoom(event, index) {
             const escala = event.target.value;
             const img = document.getElementById(`imgPreview_${index}`);
             img.style.transform = `scale(${escala})`;
         }
 
-        // Iniciar pago conectando con Render
         async function iniciarPagoWebpay(e) {
             e.preventDefault();
             const btn = document.getElementById('btnPagar');
             btn.disabled = true;
             btn.textContent = 'Conectando con Webpay...';
 
-            // Recolectar datos detallados de cada placa personalizada
             const tarjetas = document.querySelectorAll('.placa-card');
             const detallePlacas = [];
 
