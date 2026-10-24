@@ -182,7 +182,7 @@
         const urlParams = new URLSearchParams(window.location.search);
         const productoId = urlParams.get('id') || 'estandar';
         let productoActual = Object.assign({}, productosDB[productoId] || productosDB['estandar']);
-        let varianteSeleccionada = 'perro'; // Por defecto para estándar
+        let varianteSeleccionada = 'perro';
 
         const mainImg = document.getElementById('mainProductImg');
         const variantDiv = document.getElementById('variantButtons');
@@ -231,10 +231,11 @@
         function agregarAlCarrito() {
             let itemParaAgregar = Object.assign({}, productoActual);
             
-            // Si es la placa estándar, guardamos el tipo exacto (perro o gato)
             if (productoId === 'estandar') {
                 itemParaAgregar.tipo = varianteSeleccionada;
                 itemParaAgregar.producto = varianteSeleccionada === 'gato' ? 'Placa de Gato' : 'Placa de Perro';
+            } else {
+                itemParaAgregar.tipo = productoId;
             }
 
             carrito.push(itemParaAgregar);
