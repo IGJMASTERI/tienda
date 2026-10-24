@@ -39,7 +39,6 @@
         .form-group label { font-size: 11px; font-weight: 800; color: var(--primary-dark); }
         .form-group input { padding: 9px 12px; border: 2px solid #ddecde; border-radius: 8px; font-size: 13px; background: #fafdfa; }
 
-        /* Simulación de la Ficha en tiempo real */
         .chip-preview-box { background: linear-gradient(135deg, #ffffff, var(--yellow-pastel)); border: 2px solid var(--primary-color); border-radius: 12px; padding: 15px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); position: relative; }
         .chip-avatar { width: 75px; height: 75px; border-radius: 50%; overflow: hidden; border: 3px solid var(--primary-dark); background: #eee; margin-bottom: 6px; position: relative; }
         .chip-avatar img { width: 100%; height: 100%; object-fit: cover; }
@@ -52,7 +51,6 @@
 
         .preview-controls { display: flex; flex-direction: column; gap: 4px; margin-top: 8px; font-size: 11px; width: 100%; }
         
-        /* Términos y Condiciones y Modal Flotante */
         .terminos-container { background: var(--light-color); border: 1px solid #ddecde; border-radius: 12px; padding: 15px; margin: 20px 0; font-size: 13px; display: flex; align-items: center; gap: 10px; font-weight: bold; }
         .terminos-link { color: var(--primary-dark); background: none; border: none; font-weight: bold; cursor: pointer; padding: 0; text-decoration: underline; font-size: 13px; }
         
@@ -63,8 +61,12 @@
         .modal-close-btn { background: var(--primary-color); color: white; border: none; padding: 8px 16px; border-radius: 8px; font-weight: bold; cursor: pointer; display: block; margin: 15px auto 0 auto; }
         .modal-close-btn:hover { background: var(--primary-dark); }
 
-        .btn-webpay { background: #002d62; color: white; border: none; padding: 14px; border-radius: 12px; font-weight: 900; font-size: 15px; cursor: pointer; width: 100%; transition: background 0.2s; box-shadow: 0 4px 15px rgba(0,45,98,0.2); display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .btn-webpay { background: #002d62; color: white; border: none; padding: 14px; border-radius: 12px; font-weight: 900; font-size: 15px; cursor: pointer; width: 100%; transition: background 0.2s; box-shadow: 0 4px 15px rgba(0,45,98,0.2); display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 12px; }
         .btn-webpay:hover { background: #001f44; }
+
+        .btn-simular { background: #28a745; color: white; border: none; padding: 12px; border-radius: 12px; font-weight: 900; font-size: 14px; cursor: pointer; width: 100%; transition: background 0.2s; box-shadow: 0 4px 15px rgba(40,167,69,0.2); display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn-simular:hover { background: #218838; }
+
         .back-link { display: inline-block; margin-bottom: 20px; color: var(--primary-dark); text-decoration: none; font-weight: bold; background: var(--yellow-pastel); padding: 7px 14px; border-radius: 20px; font-size: 13px; border: 1px solid #f2ead0; }
     </style>
 </head>
@@ -79,7 +81,7 @@
         <ul class="cart-summary-list" id="resumenCarrito"></ul>
         <div class="total-box">Total a Pagar: $<span id="totalPagar">0</span></div>
 
-        <form onsubmit="iniciarPagoWebpay(event)">
+        <form id="checkoutForm">
             <div style="background: var(--yellow-pastel); padding: 15px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #f2ead0;">
                 <h3 style="margin-top:0; font-size:15px; color:#555;">📦 Datos de Envío y Contacto General</h3>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
@@ -111,6 +113,11 @@
             <button type="submit" class="btn-webpay" id="btnPagar">
                 <span>Pagar de forma segura con Webpay ➔</span>
             </button>
+
+            <!-- Botón de prueba directa para saltarse Transbank -->
+            <button type="button" class="btn-simular" id="btnSimularPago" onclick="simularPagoExitoso()">
+                <span>⚡ Simular Pago Exitoso (Prueba Directa)</span>
+            </button>
         </form>
     </div>
 
@@ -139,12 +146,12 @@
                     <a href="index.html" style="background: var(--primary-color); color: white; padding: 10px 20px; border-radius: 10px; text-decoration: none; font-weight: bold; display: inline-block; margin-top: 10px;">Ir a la Tienda ➔</a>
                 </div>
             `;
+            document.getElementById('checkoutForm').style.display = 'none';
         } else {
             let contadorPlaca = 1;
             carrito.forEach((item, index) => {
                 total += item.precio || 0;
 
-                // Detección estricta e individual por cada producto en el carrito
                 let tipoItem = (item.tipo || item.producto || item.nombre || '').toLowerCase();
                 let esGato = tipoItem.includes('gato') || tipoItem.includes('minino') || tipoItem.includes('felino');
                 
@@ -205,11 +212,6 @@
                             <div class="chip-info" id="prevFono_${index}">📞 Teléfono</div>
                             <div class="chip-info" id="prevAlergias_${index}" style="font-size: 10px; color: #d9534f;">⚠️ Alergias: Ninguna</div>
                             <span class="chip-badge" id="prevBadge_${index}">${tipoIcono} NFC</span>
-
-                            <div class="preview-controls">
-                                <label>Ajustar Zoom:</label>
-                                <input type="range" min="1" max="3" step="0.1" value="1" id="zoom_${index}" oninput="ajustarZoom(event, ${index})" disabled>
-                            </div>
                         </div>
                     </div>
                 `;
@@ -240,28 +242,48 @@
                 lector.onload = function(e) {
                     const img = document.getElementById(`imgPreview_${index}`);
                     img.src = e.target.result;
-                    document.getElementById(`zoom_${index}`).disabled = false;
                 }
                 lector.readAsDataURL(archivo);
             }
         }
 
-        function ajustarZoom(event, index) {
-            const escala = event.target.value;
-            const img = document.getElementById(`imgPreview_${index}`);
-            img.style.transform = `scale(${escala})`;
-        }
-
-        async function iniciarPagoWebpay(e) {
+        // Flujo normal de Webpay
+        document.getElementById('checkoutForm').onsubmit = async function(e) {
             e.preventDefault();
-            if (carrito.length === 0) {
-                alert('El carrito está vacío.');
+            ejecutarPago('webpay');
+        };
+
+        // Función para simular el pago de inmediato sin pasar por Webpay
+        async function simularPagoExitoso() {
+            // Validar que los campos obligatorios estén llenos
+            const cliente = document.getElementById('nombreCliente').value;
+            const fono = document.getElementById('fonoCliente').value;
+            const direccion = document.getElementById('dirCliente').value;
+            const terminos = document.getElementById('aceptoTerminos').checked;
+
+            if (!cliente || !fono || !direccion) {
+                alert('Por favor completa los datos de envío y contacto general.');
+                return;
+            }
+            if (!terminos) {
+                alert('Debes aceptar los Términos y Condiciones.');
                 return;
             }
 
+            ejecutarPago('simulacion');
+        }
+
+        async function ejecutarPago(tipo) {
             const btn = document.getElementById('btnPagar');
+            const btnSim = document.getElementById('btnSimularPago');
             btn.disabled = true;
-            btn.textContent = 'Conectando con Webpay...';
+            btnSim.disabled = true;
+            
+            if(tipo === 'webpay') {
+                btn.textContent = 'Conectando con Webpay...';
+            } else {
+                btnSim.textContent = 'Procesando simulación de compra...';
+            }
 
             const tarjetas = document.querySelectorAll('.placa-card');
             const detallePlacas = [];
@@ -304,29 +326,41 @@
                 });
 
                 const data = await response.json();
-                if (data.url && data.token) {
-                    const form = document.createElement('form');
-                    form.method = 'POST';
-                    form.action = data.url;
+                
+                if (tipo === 'webpay') {
+                    if (data.url && data.token) {
+                        const form = document.createElement('form');
+                        form.method = 'POST';
+                        form.action = data.url;
 
-                    const inputToken = document.createElement('input');
-                    inputToken.type = 'hidden';
-                    inputToken.name = 'token_ws';
-                    inputToken.value = data.token;
+                        const inputToken = document.createElement('input');
+                        inputToken.type = 'hidden';
+                        inputToken.name = 'token_ws';
+                        inputToken.value = data.token;
 
-                    form.appendChild(inputToken);
-                    document.body.appendChild(form);
-                    form.submit();
+                        form.appendChild(inputToken);
+                        document.body.appendChild(form);
+                        form.submit();
+                    } else {
+                        alert('Error al iniciar el pago con Webpay.');
+                        btn.disabled = false;
+                        btn.textContent = 'Pagar de forma segura con Webpay ➔';
+                        btnSim.disabled = false;
+                        btnSim.textContent = '⚡ Simular Pago Exitoso (Prueba Directa)';
+                    }
                 } else {
-                    alert('Error al iniciar el pago con Webpay.');
-                    btn.disabled = false;
-                    btn.textContent = 'Pagar de forma segura con Webpay ➔';
+                    // Si es simulación, saltamos directo a la respuesta de éxito simulando el token
+                    alert('¡Simulación de pago exitosa! Redirigiendo a la confirmación del pedido y envío de correo...');
+                    localStorage.removeItem('chapitas_carrito');
+                    window.location.href = `respuesta-pago.html?order=SIMULACION_EXITOSA`;
                 }
             } catch (err) {
                 console.error(err);
                 alert('No se pudo conectar con el servidor de pagos.');
                 btn.disabled = false;
                 btn.textContent = 'Pagar de forma segura con Webpay ➔';
+                btnSim.disabled = false;
+                btnSim.textContent = '⚡ Simular Pago Exitoso (Prueba Directa)';
             }
         }
     </script>
