@@ -39,7 +39,7 @@
         .form-group label { font-size: 11px; font-weight: 800; color: var(--primary-dark); }
         .form-group input { padding: 9px 12px; border: 2px solid #ddecde; border-radius: 8px; font-size: 13px; background: #fafdfa; }
 
-        /* Simulación de la Ficha en tiempo real */
+        /* Simulación de la Ficha en tiempo real con diseño diferenciado */
         .chip-preview-box { background: linear-gradient(135deg, #ffffff, var(--yellow-pastel)); border: 2px solid var(--primary-color); border-radius: 12px; padding: 15px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); position: relative; }
         .chip-avatar { width: 75px; height: 75px; border-radius: 50%; overflow: hidden; border: 3px solid var(--primary-dark); background: #eee; margin-bottom: 6px; position: relative; }
         .chip-avatar img { width: 100%; height: 100%; object-fit: cover; }
@@ -52,12 +52,18 @@
 
         .preview-controls { display: flex; flex-direction: column; gap: 4px; margin-top: 8px; font-size: 11px; width: 100%; }
         
-        /* Sección de Términos y Condiciones Colapsable */
-        .terminos-container { background: var(--light-color); border: 1px solid #ddecde; border-radius: 12px; padding: 15px; margin: 20px 0; font-size: 13px; }
-        .terminos-toggle { color: var(--primary-dark); background: none; border: none; font-weight: bold; cursor: pointer; padding: 0; text-decoration: underline; font-size: 13px; }
-        .terminos-content { display: none; margin-top: 10px; padding-top: 10px; border-top: 1px dashed #ddecde; font-size: 12px; color: #666; line-height: 1.4; text-align: left; }
-        .terminos-box { display: flex; align-items: center; gap: 10px; font-weight: bold; color: var(--text-color); }
+        /* Estilos para el Recuadro Flotante (Modal) de Términos y Condiciones */
+        .terminos-container { background: var(--light-color); border: 1px solid #ddecde; border-radius: 12px; padding: 15px; margin: 20px 0; font-size: 13px; display: flex; align-items: center; gap: 10px; font-weight: bold; }
+        .terminos-link { color: var(--primary-dark); background: none; border: none; font-weight: bold; cursor: pointer; padding: 0; text-decoration: underline; font-size: 13px; }
         
+        /* Modal flotante */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 1000; justify-content: center; align-items: center; }
+        .modal-box { background: white; width: 90%; max-width: 450px; padding: 25px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); border-top: 6px solid var(--secondary-color); text-align: left; position: relative; }
+        .modal-box h3 { margin-top: 0; color: var(--primary-dark); font-size: 16px; }
+        .modal-box p { font-size: 12px; color: #555; line-height: 1.5; }
+        .modal-close-btn { background: var(--primary-color); color: white; border: none; padding: 8px 16px; border-radius: 8px; font-weight: bold; cursor: pointer; display: block; margin: 15px auto 0 auto; }
+        .modal-close-btn:hover { background: var(--primary-dark); }
+
         .btn-webpay { background: #002d62; color: white; border: none; padding: 14px; border-radius: 12px; font-weight: 900; font-size: 15px; cursor: pointer; width: 100%; transition: background 0.2s; box-shadow: 0 4px 15px rgba(0,45,98,0.2); display: flex; align-items: center; justify-content: center; gap: 10px; }
         .btn-webpay:hover { background: #001f44; }
         .back-link { display: inline-block; margin-bottom: 20px; color: var(--primary-dark); text-decoration: none; font-weight: bold; background: var(--yellow-pastel); padding: 7px 14px; border-radius: 20px; font-size: 13px; border: 1px solid #f2ead0; }
@@ -86,16 +92,22 @@
 
             <div id="contenedorPlacasParaPersonalizar"></div>
 
+            <!-- Términos y Condiciones con Modal Flotante -->
             <div class="terminos-container">
-                <div class="terminos-box">
-                    <input type="checkbox" id="aceptoTerminos" required style="width: 18px; height: 18px;">
-                    <label for="aceptoTerminos" style="cursor: pointer;">
-                        Acepto los <button type="button" class="terminos-toggle" onclick="toggleTerminos()">Términos, Condiciones y Política de Privacidad (Ley N° 19.628)</button>.
-                    </label>
-                </div>
-                <div class="terminos-content" id="textoTerminos">
-                    <strong>🔒 Protección de Datos Personales (Ley N° 19.628):</strong><br>
-                    Los datos entregados (información de contacto, datos de mascotas y fotografías) serán utilizados exclusivamente por <strong>PAWMI</strong> para la confección, grabado de chapitas NFC y gestión de despacho. Garantizamos la confidencialidad y el manejo seguro de su información, la cual no será cedida a terceros bajo ninguna circunstancia.
+                <input type="checkbox" id="aceptoTerminos" required style="width: 18px; height: 18px;">
+                <label for="aceptoTerminos" style="cursor: pointer;">
+                    Acepto los <button type="button" class="terminos-link" onclick="abrirModalTerminos(event)">Términos, Condiciones y Política de Privacidad (Ley N° 19.628)</button>.
+                </label>
+            </div>
+
+            <!-- Ventana Modal Flotante -->
+            <div class="modal-overlay" id="modalTerminos">
+                <div class="modal-box">
+                    <h3>🔒 Protección de Datos (Ley N° 19.628)</h3>
+                    <p>
+                        Los datos entregados (información de contacto, datos de mascotas y fotografías) serán utilizados exclusivamente por <strong>PAWMI</strong> para la confección, grabado de chapitas NFC y gestión de despacho. Garantizamos la confidencialidad y el manejo seguro de su información, la cual no será cedida a terceros bajo ninguna circunstancia.
+                    </p>
+                    <button type="button" class="modal-close-btn" onclick="cerrarModalTerminos()">Entendido</button>
                 </div>
             </div>
 
@@ -106,13 +118,14 @@
     </div>
 
     <script>
-        function toggleTerminos() {
-            const contenido = document.getElementById('textoTerminos');
-            if (contenido.style.display === 'block') {
-                contenido.style.display = 'none';
-            } else {
-                contenido.style.display = 'block';
-            }
+        // Funciones para abrir y cerrar el recuadro flotante de términos
+        function abrirModalTerminos(e) {
+            e.preventDefault();
+            document.getElementById('modalTerminos').style.display = 'flex';
+        }
+
+        function cerrarModalTerminos() {
+            document.getElementById('modalTerminos').style.display = 'none';
         }
 
         let carrito = JSON.parse(localStorage.getItem('chapitas_carrito') || '[]');
@@ -126,7 +139,7 @@
             contenedorPlacas.innerHTML = `
                 <div style="text-align: center; padding: 30px; background: #faf8f5; border-radius: 12px; border: 2px dashed #ddecde; margin-bottom: 20px;">
                     <p style="font-size: 16px; color: #628773; font-weight: bold;">🛒 Tu carrito está vacío</p>
-                    <p style="font-size: 13px; color: #666;">Debes agregar al menos una placa (de perro o gato) desde la tienda para poder personalizarla aquí.</p>
+                    <p style="font-size: 13px; color: #666;">Debes agregar al menos una placa desde la tienda.</p>
                     <a href="index.html" style="background: var(--primary-color); color: white; padding: 10px 20px; border-radius: 10px; text-decoration: none; font-weight: bold; display: inline-block; margin-top: 10px;">Ir a la Tienda ➔</a>
                 </div>
             `;
@@ -135,6 +148,7 @@
             carrito.forEach((item, index) => {
                 total += item.precio || 0;
 
+                // Detección estricta e individual por cada producto en el carrito
                 let tipoItem = (item.tipo || item.categoria || item.producto || item.nombre || '').toLowerCase();
                 let esGato = tipoItem.includes('gato') || tipoItem.includes('minino') || tipoItem.includes('felino');
                 
@@ -280,7 +294,7 @@
 
             const datosCliente = {
                 cliente: document.getElementById('nombreCliente').value,
-                fono: document.getElementById('fonoCliente').value,
+                fono: document.getElementById('fonoCliente',).value,
                 direccion: document.getElementById('dirCliente').value,
                 placasPersonalizadas: detallePlacas,
                 productos: carrito
