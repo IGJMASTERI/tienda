@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultado del Pago - PAWMI</title>
+    <link rel="icon" href="logo.jpeg">
+    <style>
+        :root {
+            --primary-color: #8dae9b;
+            --primary-dark: #628773;
+            --secondary-color: #fbd3db;
+            --accent-color: #c4e4d3;
+            --yellow-pastel: #fef7e2;
+            --light-color: #faf8f5;
+            --bg-color: #f4f0eb;
+            --card-bg: #ffffff;
+            --text-color: #4a554f;
+        }
+
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg-color); color: var(--text-color); margin: 0; padding: 40px 20px; box-sizing: border-box; text-align: center; }
+        .box { max-width: 600px; margin: 0 auto; background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(141, 174, 155, 0.1); border-top: 9px solid var(--secondary-color); }
+        h2 { color: var(--primary-dark); margin-top: 0; }
+        .nfc-link-display { background: var(--light-color); padding: 12px; border-radius: 8px; font-family: monospace; font-size: 13px; word-break: break-all; border: 1px solid #ddecde; margin: 15px 0; display: block; text-align: left; }
+        .btn-action { background: var(--primary-color); color: white; border: none; padding: 12px 24px; border-radius: 12px; font-weight: bold; cursor: pointer; text-decoration: none; display: inline-block; margin-top: 15px; box-shadow: 0 4px 15px rgba(141,174,155,0.3); }
+        .btn-action:hover { background: var(--primary-dark); }
+    </style>
+</head>
+<body>
+
+    <div class="box" id="resultadoBox">
+        <h2>Verificando pago con Webpay...</h2>
+        <p>Por favor espera un momento mientras confirmamos la transacción de forma segura.</p>
+    </div>
+
+    <script>
+        async function confirmarTransaccion() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const tokenWs = urlParams.get('token_ws');
+            const box = document.getElementById('resultadoBox');
+
+            if (!tokenWs) {
+                box.innerHTML = `
+                    <h2 style="color: #d9534f;">⚠️ Pago Cancelado o Inválido</h2>
+                    <p>La transacción no se completó o fue cancelada por el usuario.</p>
+                    <a href="checkout.html" class="btn-action">Volver al Checkout</a>
+                `;
+                return;
+            }
+
+            try {
+                // Confirmando transacción con tu servidor backend en Render
+                const response = await fetch('https://pawmi-backend.onrender.com/api/confirmar-pago', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ token_ws })
+                });
+
+                const data = await response.json();
+
+                if (data.ok && data.response.status === 'AUTHORIZED') {
+                    // Limpiar carrito de compras local
+                    localStorage.removeItem('chapitas_carrito');
+
+                    box.innerHTML = `
+                        <h2>🎉 ¡Pago Aprobado con Éxito!</h2>
+                        <p>El pedido ha sido confirmado y se ha enviado la notificación automática a <strong>pawmi.tienda@gmail.com</strong>.</p>
+                        <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+                        <p style="font-weight: bold; color: var(--primary-dark);">Monto pagado: $${data.response.amount.toLocaleString('es-CL')}</p>
+                        <p style="font-size: 13px;">Ya puedes revisar el estado de tu pedido y el link NFC en tu panel de seguimiento.</p>
+                        <a href="mis-pedidos.html" class="btn-action">Ver Mis Pedidos y Link NFC ➔</a>
+                    `;
+                } else {
+                    box.innerHTML = `
+                        <h2 style="color: #d9534f;">❌ Pago Rechazado</h2>
+                        <p>Lo sentimos, tu pago no pudo ser autorizado por Webpay.</p>
+                        <a href="checkout.html" class="btn-action">Intentar Nuevamente</a>
+                    `;
+                }
+            } catch (err) {
+                console.error(err);
+                box.innerHTML = `
+                    <h2 style="color: #d9534f;">❌ Error de Conexión</h2>
+                    <p>Ocurrió un error al verificar el pago con el servidor backend.</p>
+                    <a href="index.html" class="btn-action">Volver al Inicio</a>
+                `;
+            }
+        }
+
+        confirmarTransaccion();
+    </script>
+</body>
+</html>
