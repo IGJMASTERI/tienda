@@ -39,7 +39,7 @@
         .form-group label { font-size: 11px; font-weight: 800; color: var(--primary-dark); }
         .form-group input { padding: 9px 12px; border: 2px solid #ddecde; border-radius: 8px; font-size: 13px; background: #fafdfa; }
 
-        /* Simulación de la Ficha en tiempo real con diseño diferenciado */
+        /* Simulación de la Ficha en tiempo real */
         .chip-preview-box { background: linear-gradient(135deg, #ffffff, var(--yellow-pastel)); border: 2px solid var(--primary-color); border-radius: 12px; padding: 15px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); position: relative; }
         .chip-avatar { width: 75px; height: 75px; border-radius: 50%; overflow: hidden; border: 3px solid var(--primary-dark); background: #eee; margin-bottom: 6px; position: relative; }
         .chip-avatar img { width: 100%; height: 100%; object-fit: cover; }
@@ -52,11 +52,10 @@
 
         .preview-controls { display: flex; flex-direction: column; gap: 4px; margin-top: 8px; font-size: 11px; width: 100%; }
         
-        /* Estilos para el Recuadro Flotante (Modal) de Términos y Condiciones */
+        /* Términos y Condiciones y Modal Flotante */
         .terminos-container { background: var(--light-color); border: 1px solid #ddecde; border-radius: 12px; padding: 15px; margin: 20px 0; font-size: 13px; display: flex; align-items: center; gap: 10px; font-weight: bold; }
         .terminos-link { color: var(--primary-dark); background: none; border: none; font-weight: bold; cursor: pointer; padding: 0; text-decoration: underline; font-size: 13px; }
         
-        /* Modal flotante */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 1000; justify-content: center; align-items: center; }
         .modal-box { background: white; width: 90%; max-width: 450px; padding: 25px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); border-top: 6px solid var(--secondary-color); text-align: left; position: relative; }
         .modal-box h3 { margin-top: 0; color: var(--primary-dark); font-size: 16px; }
@@ -92,7 +91,6 @@
 
             <div id="contenedorPlacasParaPersonalizar"></div>
 
-            <!-- Términos y Condiciones con Modal Flotante -->
             <div class="terminos-container">
                 <input type="checkbox" id="aceptoTerminos" required style="width: 18px; height: 18px;">
                 <label for="aceptoTerminos" style="cursor: pointer;">
@@ -100,7 +98,6 @@
                 </label>
             </div>
 
-            <!-- Ventana Modal Flotante -->
             <div class="modal-overlay" id="modalTerminos">
                 <div class="modal-box">
                     <h3>🔒 Protección de Datos (Ley N° 19.628)</h3>
@@ -118,7 +115,6 @@
     </div>
 
     <script>
-        // Funciones para abrir y cerrar el recuadro flotante de términos
         function abrirModalTerminos(e) {
             e.preventDefault();
             document.getElementById('modalTerminos').style.display = 'flex';
@@ -148,8 +144,8 @@
             carrito.forEach((item, index) => {
                 total += item.precio || 0;
 
-                // Detección estricta e individual por cada producto en el carrito
-                let tipoItem = (item.tipo || item.categoria || item.producto || item.nombre || '').toLowerCase();
+                // Detectar con precisión si es gato o perro según el tipo guardado
+                let tipoItem = (item.tipo || item.producto || item.nombre || '').toLowerCase();
                 let esGato = tipoItem.includes('gato') || tipoItem.includes('minino') || tipoItem.includes('felino');
                 
                 let tipoTexto = esGato ? 'Placa de Gato' : 'Placa de Perro';
@@ -294,7 +290,7 @@
 
             const datosCliente = {
                 cliente: document.getElementById('nombreCliente').value,
-                fono: document.getElementById('fonoCliente',).value,
+                fono: document.getElementById('fonoCliente').value,
                 direccion: document.getElementById('dirCliente').value,
                 placasPersonalizadas: detallePlacas,
                 productos: carrito
