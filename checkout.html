@@ -52,9 +52,11 @@
 
         .preview-controls { display: flex; flex-direction: column; gap: 4px; margin-top: 8px; font-size: 11px; width: 100%; }
         
-        /* Caja de Términos y Condiciones Ley 19.628 */
-        .terminos-container { background: var(--light-color); border: 1px solid #ddecde; border-radius: 12px; padding: 15px; margin: 20px 0; font-size: 12px; color: #555; text-align: left; }
-        .terminos-box { display: flex; align-items: flex-start; gap: 10px; margin-top: 10px; font-size: 13px; font-weight: bold; color: var(--text-color); }
+        /* Sección de Términos y Condiciones Colapsable */
+        .terminos-container { background: var(--light-color); border: 1px solid #ddecde; border-radius: 12px; padding: 15px; margin: 20px 0; font-size: 13px; }
+        .terminos-toggle { color: var(--primary-dark); background: none; border: none; font-weight: bold; cursor: pointer; padding: 0; text-decoration: underline; font-size: 13px; }
+        .terminos-content { display: none; margin-top: 10px; padding-top: 10px; border-top: 1px dashed #ddecde; font-size: 12px; color: #666; line-height: 1.4; text-align: left; }
+        .terminos-box { display: flex; align-items: center; gap: 10px; font-weight: bold; color: var(--text-color); }
         
         .btn-webpay { background: #002d62; color: white; border: none; padding: 14px; border-radius: 12px; font-weight: 900; font-size: 15px; cursor: pointer; width: 100%; transition: background 0.2s; box-shadow: 0 4px 15px rgba(0,45,98,0.2); display: flex; align-items: center; justify-content: center; gap: 10px; }
         .btn-webpay:hover { background: #001f44; }
@@ -84,15 +86,17 @@
 
             <div id="contenedorPlacasParaPersonalizar"></div>
 
-            <!-- Términos y Condiciones - Ley de Protección de Datos -->
+            <!-- Términos y Condiciones colapsables con validación obligatoria -->
             <div class="terminos-container">
-                <strong>🔒 Protección de Datos Personales (Ley N° 19.628):</strong>
-                <p style="margin: 5px 0 0 0; line-height: 1.4;">
-                    Los datos entregados (información de contacto, datos de mascotas y fotografías) serán utilizados exclusivamente por <strong>PAWMI</strong> para la confección, grabado de chapitas NFC y gestión de despacho. Garantizamos la confidencialidad y el manejo seguro de su información, la cual no será cedida a terceros bajo ninguna circunstancia.
-                </p>
                 <div class="terminos-box">
-                    <input type="checkbox" id="aceptoTerminos" required style="width: 18px; height: 18px; margin-top: 2px;">
-                    <label for="aceptoTerminos" style="cursor: pointer;">He leído y acepto los Términos, Condiciones y la Política de Privacidad de Datos de PAWMI.</label>
+                    <input type="checkbox" id="aceptoTerminos" required style="width: 18px; height: 18px;">
+                    <label for="aceptoTerminos" style="cursor: pointer;">
+                        Acepto los <button type="button" class="terminos-toggle" onclick="toggleTerminos()">Términos, Condiciones y Política de Privacidad (Ley N° 19.628)</button>.
+                    </label>
+                </div>
+                <div class="terminos-content" id="textoTerminos">
+                    <strong>🔒 Protección de Datos Personales (Ley N° 19.628):</strong><br>
+                    Los datos entregados (información de contacto, datos de mascotas y fotografías) serán utilizados exclusivamente por <strong>PAWMI</strong> para la confección, grabado de chapitas NFC y gestión de despacho. Garantizamos la confidencialidad y el manejo seguro de su información, la cual no será cedida a terceros bajo ninguna circunstancia.
                 </div>
             </div>
 
@@ -103,6 +107,16 @@
     </div>
 
     <script>
+        // Función para mostrar/ocultar los términos y condiciones
+        function toggleTerminos() {
+            const contenido = document.getElementById('textoTerminos');
+            if (contenido.style.display === 'block') {
+                contenido.style.display = 'none';
+            } else {
+                contenido.style.display = 'block';
+            }
+        }
+
         let carrito = JSON.parse(localStorage.getItem('chapitas_carrito') || '[]');
         const resumenLista = document.getElementById('resumenCarrito');
         const totalSpan = document.getElementById('totalPagar');
@@ -137,7 +151,6 @@
                     </div>
 
                     <div class="form-grid">
-                        <!-- Campos separados: Nombre, Detalle (Raza / Edad), Dueño, Teléfono, Alergias -->
                         <div class="form-fields">
                             <div class="form-group">
                                 <label>NOMBRE DE LA MASCOTA</label>
@@ -165,7 +178,6 @@
                             </div>
                         </div>
 
-                        <!-- Tarjeta de Previsualización dinámica con icono flotante correcto -->
                         <div class="chip-preview-box">
                             <div class="chip-icon-overlay" id="overlayIcon_${index}">${emojiOverlay}</div>
                             <div class="chip-avatar">
