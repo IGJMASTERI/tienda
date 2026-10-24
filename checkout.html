@@ -95,7 +95,7 @@
                 </div>
                 <div class="terminos-content" id="textoTerminos">
                     <strong>🔒 Protección de Datos Personales (Ley N° 19.628):</strong><br>
-                    Los datos entregados (información de contacto, datos de mascotas y fotografías) serão utilizados exclusivamente por <strong>PAWMI</strong> para la confección, grabado de chapitas NFC y gestión de despacho. Garantizamos la confidencialidad y el manejo seguro de su información, la cual no será cedida a terceros bajo ninguna circunstancia.
+                    Los datos entregados (información de contacto, datos de mascotas y fotografías) serán utilizados exclusivamente por <strong>PAWMI</strong> para la confección, grabado de chapitas NFC y gestión de despacho. Garantizamos la confidencialidad y el manejo seguro de su información, la cual no será cedida a terceros bajo ninguna circunstancia.
                 </div>
             </div>
 
@@ -123,13 +123,18 @@
 
         if (carrito.length === 0) {
             resumenLista.innerHTML = '<li>Tu carrito está vacío.</li>';
-            contenedorPlacas.innerHTML = '<p>Agrega productos al carrito para continuar.</p>';
+            contenedorPlacas.innerHTML = `
+                <div style="text-align: center; padding: 30px; background: #faf8f5; border-radius: 12px; border: 2px dashed #ddecde; margin-bottom: 20px;">
+                    <p style="font-size: 16px; color: #628773; font-weight: bold;">🛒 Tu carrito está vacío</p>
+                    <p style="font-size: 13px; color: #666;">Debes agregar al menos una placa (de perro o gato) desde la tienda para poder personalizarla aquí.</p>
+                    <a href="index.html" style="background: var(--primary-color); color: white; padding: 10px 20px; border-radius: 10px; text-decoration: none; font-weight: bold; display: inline-block; margin-top: 10px;">Ir a la Tienda ➔</a>
+                </div>
+            `;
         } else {
             let contadorPlaca = 1;
             carrito.forEach((item, index) => {
-                total += item.precio;
+                total += item.precio || 0;
 
-                // Detección precisa evaluando tanto el tipo guardado como el nombre o categoría del producto
                 let tipoItem = (item.tipo || item.categoria || item.producto || item.nombre || '').toLowerCase();
                 let esGato = tipoItem.includes('gato') || tipoItem.includes('minino') || tipoItem.includes('felino');
                 
@@ -138,7 +143,7 @@
                 let emojiOverlay = esGato ? '🐱' : '🐶';
 
                 const li = document.createElement('li');
-                li.innerHTML = `<span>${item.producto || item.nombre}</span> <span>$${item.precio.toLocaleString('es-CL')}</span>`;
+                li.innerHTML = `<span>${item.producto || item.nombre}</span> <span>$${(item.precio || 0).toLocaleString('es-CL')}</span>`;
                 resumenLista.appendChild(li);
 
                 const card = document.createElement('div');
@@ -208,7 +213,4 @@
             const nombre = document.getElementById(`inputNombre_${index}`).value || 'Nombre Mascota';
             const detalle = document.getElementById(`inputDetalle_${index}`).value || 'Raza / Edad';
             const dueno = document.getElementById(`inputDueno_${index}`).value || 'Dueño';
-            const fono = document.getElementById(`inputFono_${index}`).value || 'Teléfono';
-            const alergias = document.getElementById(`inputAlergias_${index}`).value || 'Ninguna';
-
-            
+            const fono = document.getElementById
