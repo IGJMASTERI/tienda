@@ -86,7 +86,6 @@
 
             <div id="contenedorPlacasParaPersonalizar"></div>
 
-            <!-- Términos y Condiciones colapsables con validación obligatoria -->
             <div class="terminos-container">
                 <div class="terminos-box">
                     <input type="checkbox" id="aceptoTerminos" required style="width: 18px; height: 18px;">
@@ -96,7 +95,7 @@
                 </div>
                 <div class="terminos-content" id="textoTerminos">
                     <strong>🔒 Protección de Datos Personales (Ley N° 19.628):</strong><br>
-                    Los datos entregados (información de contacto, datos de mascotas y fotografías) serán utilizados exclusivamente por <strong>PAWMI</strong> para la confección, grabado de chapitas NFC y gestión de despacho. Garantizamos la confidencialidad y el manejo seguro de su información, la cual no será cedida a terceros bajo ninguna circunstancia.
+                    Los datos entregados (información de contacto, datos de mascotas y fotografías) serão utilizados exclusivamente por <strong>PAWMI</strong> para la confección, grabado de chapitas NFC y gestión de despacho. Garantizamos la confidencialidad y el manejo seguro de su información, la cual no será cedida a terceros bajo ninguna circunstancia.
                 </div>
             </div>
 
@@ -107,7 +106,6 @@
     </div>
 
     <script>
-        // Función para mostrar/ocultar los términos y condiciones
         function toggleTerminos() {
             const contenido = document.getElementById('textoTerminos');
             if (contenido.style.display === 'block') {
@@ -131,8 +129,11 @@
             carrito.forEach((item, index) => {
                 total += item.precio;
 
-                let nombreProd = (item.producto || item.nombre || '').toLowerCase();
-                let esGato = nombreProd.includes('gato') || nombreProd.includes('minino') || nombreProd.includes('felino');
+                // Detección precisa evaluando tanto el tipo guardado como el nombre o categoría del producto
+                let tipoItem = (item.tipo || item.categoria || item.producto || item.nombre || '').toLowerCase();
+                let esGato = tipoItem.includes('gato') || tipoItem.includes('minino') || tipoItem.includes('felino');
+                
+                let tipoTexto = esGato ? 'Placa de Gato' : 'Placa de Perro';
                 let tipoIcono = esGato ? '🐱 Gato' : '🐶 Perro';
                 let emojiOverlay = esGato ? '🐱' : '🐶';
 
@@ -146,7 +147,7 @@
                 
                 card.innerHTML = `
                     <div class="placa-header">
-                        <h4>Placa #${contadorPlaca}: ${item.producto || item.nombre}</h4>
+                        <h4>Placa #${contadorPlaca}: ${tipoTexto}</h4>
                         <div class="pet-badge-tag" id="badgeTipo_${index}">${tipoIcono}</div>
                     </div>
 
@@ -210,104 +211,4 @@
             const fono = document.getElementById(`inputFono_${index}`).value || 'Teléfono';
             const alergias = document.getElementById(`inputAlergias_${index}`).value || 'Ninguna';
 
-            document.getElementById(`prevNombre_${index}`).textContent = nombre;
-            document.getElementById(`prevDetalle_${index}`).textContent = detalle;
-            document.getElementById(`prevDueno_${index}`).textContent = '👤 ' + dueno;
-            document.getElementById(`prevFono_${index}`).textContent = fono ? '📞 ' + fono : '📞 Teléfono';
-            document.getElementById(`prevAlergias_${index}`).textContent = '⚠️ Alergias: ' + alergias;
-        }
-
-        function cargarPrevisualizacion(event, index) {
-            const archivo = event.target.files[0];
-            if (archivo) {
-                const lector = new FileReader();
-                lector.onload = function(e) {
-                    const img = document.getElementById(`imgPreview_${index}`);
-                    img.src = e.target.result;
-                    document.getElementById(`zoom_${index}`).disabled = false;
-                }
-                lector.readAsDataURL(archivo);
-            }
-        }
-
-        function ajustarZoom(event, index) {
-            const escala = event.target.value;
-            const img = document.getElementById(`imgPreview_${index}`);
-            img.style.transform = `scale(${escala})`;
-        }
-
-        async function iniciarPagoWebpay(e) {
-            e.preventDefault();
-            const btn = document.getElementById('btnPagar');
-            btn.disabled = true;
-            btn.textContent = 'Conectando con Webpay...';
-
-            const tarjetas = document.querySelectorAll('.placa-card');
-            const detallePlacas = [];
-
-            tarjetas.forEach((card, idx) => {
-                const nombre = card.querySelector('.mascota-nombre').value;
-                const detalle = card.querySelector('.mascota-detalle').value;
-                const dueno = card.querySelector('.mascota-dueno').value;
-                const fono = card.querySelector('.mascota-fono').value;
-                const alergias = card.querySelector('.mascota-alergias').value;
-                const tipoPet = card.dataset.tipoMascota;
-                const mascotaIdSlug = nombre.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '_') + '_' + Math.floor(Math.random() * 9000 + 1000);
-                
-                detallePlacas.push({
-                    placaNumero: idx + 1,
-                    tipo: tipoPet,
-                    producto: carrito[idx].producto || carrito[idx].nombre,
-                    nombreMascota: nombre,
-                    detalleMascota: detalle,
-                    dueno: dueno,
-                    fonoEmergencia: fono,
-                    alergias: alergias,
-                    nfcUrl: `https://pawmi.cl/pet.html?mascota=${mascotaIdSlug}&tel=${fono}`
-                });
-            });
-
-            const datosCliente = {
-                cliente: document.getElementById('nombreCliente').value,
-                fono: document.getElementById('fonoCliente').value,
-                direccion: document.getElementById('dirCliente').value,
-                placasPersonalizadas: detallePlacas,
-                productos: carrito
-            };
-
-            try {
-                const response = await fetch('https://pawmi-backend.onrender.com/api/iniciar-pago', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ total, datosCliente })
-                });
-
-                const data = await response.json();
-                if (data.url && data.token) {
-                    const form = document.createElement('form');
-                    form.method = 'POST';
-                    form.action = data.url;
-
-                    const inputToken = document.createElement('input');
-                    inputToken.type = 'hidden';
-                    inputToken.name = 'token_ws';
-                    inputToken.value = data.token;
-
-                    form.appendChild(inputToken);
-                    document.body.appendChild(form);
-                    form.submit();
-                } else {
-                    alert('Error al iniciar el pago con Webpay.');
-                    btn.disabled = false;
-                    btn.textContent = 'Pagar de forma segura con Webpay ➔';
-                }
-            } catch (err) {
-                console.error(err);
-                alert('No se pudo conectar con el servidor de pagos.');
-                btn.disabled = false;
-                btn.textContent = 'Pagar de forma segura con Webpay ➔';
-            }
-        }
-    </script>
-</body>
-</html>
+            
