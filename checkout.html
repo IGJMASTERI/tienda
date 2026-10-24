@@ -40,9 +40,13 @@
         .form-group input { padding: 9px 12px; border: 2px solid #ddecde; border-radius: 8px; font-size: 13px; background: #fafdfa; }
 
         /* Simulación de la Ficha en tiempo real */
-        .chip-preview-box { background: linear-gradient(135deg, #ffffff, var(--yellow-pastel)); border: 2px solid var(--primary-color); border-radius: 12px; padding: 15px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        .chip-avatar { width: 75px; height: 75px; border-radius: 50%; overflow: hidden; border: 3px solid var(--primary-dark); background: #eee; margin-bottom: 6px; }
+        .chip-preview-box { background: linear-gradient(135deg, #ffffff, var(--yellow-pastel)); border: 2px solid var(--primary-color); border-radius: 12px; padding: 15px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); position: relative; }
+        .chip-avatar { width: 75px; height: 75px; border-radius: 50%; overflow: hidden; border: 3px solid var(--primary-dark); background: #eee; margin-bottom: 6px; position: relative; }
         .chip-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        
+        /* Icono flotante de perro o gato en la previsualización */
+        .chip-icon-overlay { position: absolute; top: 10px; right: 10px; font-size: 18px; background: white; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.15); }
+
         .chip-name { font-weight: 900; font-size: 15px; color: var(--primary-dark); margin-bottom: 2px; }
         .chip-info { font-size: 11px; color: #555; margin-bottom: 2px; }
         .chip-badge { background: var(--primary-color); color: white; font-size: 10px; padding: 2px 8px; border-radius: 10px; font-weight: bold; margin-top: 5px; }
@@ -104,10 +108,11 @@
             carrito.forEach((item, index) => {
                 total += item.precio;
 
-                // Detectar automáticamente si es perro o gato en base al nombre o categoría del producto en el carrito
+                // Detectar automáticamente si es perro o gato
                 let nombreProd = (item.producto || item.nombre || '').toLowerCase();
                 let esGato = nombreProd.includes('gato') || nombreProd.includes('minino') || nombreProd.includes('felino');
                 let tipoIcono = esGato ? '🐱 Gato' : '🐶 Perro';
+                let emojiOverlay = esGato ? '🐱' : '🐶';
 
                 const li = document.createElement('li');
                 li.innerHTML = `<span>${item.producto || item.nombre}</span> <span>$${item.precio.toLocaleString('es-CL')}</span>`;
@@ -124,11 +129,15 @@
                     </div>
 
                     <div class="form-grid">
-                        <!-- Campos solicitados: DETALLE, DUEÑO, TELEFONO, ALERGIAS -->
+                        <!-- Campos: NOMBRE, DETALLE (raza/edad), DUEÑO, TELEFONO, ALERGIAS -->
                         <div class="form-fields">
                             <div class="form-group">
-                                <label>DETALLE (Nombre de la Mascota)</label>
-                                <input type="text" class="mascota-detalle" id="inputDetalle_${index}" required placeholder="Ej: Toby" oninput="actualizarPrevisualizacion(${index})">
+                                <label>NOMBRE DE LA MASCOTA</label>
+                                <input type="text" class="mascota-nombre" id="inputNombre_${index}" required placeholder="Ej: Toby" oninput="actualizarPrevisualizacion(${index})">
+                            </div>
+                            <div class="form-group">
+                                <label>DETALLE</label>
+                                <input type="text" class="mascota-detalle" id="inputDetalle_${index}" placeholder="raza / edad /" oninput="actualizarPrevisualizacion(${index})">
                             </div>
                             <div class="form-group">
                                 <label>DUEÑO</label>
@@ -150,10 +159,12 @@
 
                         <!-- Tarjeta de Previsualización en tiempo real -->
                         <div class="chip-preview-box">
+                            <div class="chip-icon-overlay">${emojiOverlay}</div>
                             <div class="chip-avatar">
                                 <img id="imgPreview_${index}" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='75' height='75'><rect width='100%' height='100%' fill='%23eee'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%23aaa' font-size='10'>Foto</text></svg>">
                             </div>
-                            <div class="chip-name" id="prevDetalle_${index}">Nombre Mascota</div>
+                            <div class="chip-name" id="prevNombre_${index}">Nombre Mascota</div>
+                            <div class="chip-info" id="prevDetalle_${index}" style="font-size: 10px; color: #666;">raza / edad /</div>
                             <div class="chip-info" id="prevDueno_${index}">👤 Dueño: -</div>
                             <div class="chip-info" id="prevFono_${index}">📞 Teléfono</div>
                             <div class="chip-info" id="prevAlergias_${index}" style="font-size: 10px; color: #d9534f;">⚠️ Alergias: Ninguna</div>
@@ -173,11 +184,13 @@
         totalSpan.textContent = total.toLocaleString('es-CL');
 
         function actualizarPrevisualizacion(index) {
-            const detalle = document.getElementById(`inputDetalle_${index}`).value || 'Nombre Mascota';
+            const nombre = document.getElementById(`inputNombre_${index}`).value || 'Nombre Mascota';
+            const detalle = document.getElementById(`inputDetalle_${index}`).value || 'raza / edad /';
             const dueno = document.getElementById(`inputDueno_${index}`).value || 'Dueño';
             const fono = document.getElementById(`inputFono_${index}`).value || 'Teléfono';
             const alergias = document.getElementById(`inputAlergias_${index}`).value || 'Ninguna';
 
+            document.getElementById(`prevNombre_${index}`).textContent = nombre;
             document.getElementById(`prevDetalle_${index}`).textContent = detalle;
             document.getElementById(`prevDueno_${index}`).textContent = '👤 ' + dueno;
             document.getElementById(`prevFono_${index}`).textContent = fono ? '📞 ' + fono : '📞 Teléfono';
@@ -213,17 +226,19 @@
             const detallePlacas = [];
 
             tarjetas.forEach((card, idx) => {
+                const nombre = card.querySelector('.mascota-nombre').value;
                 const detalle = card.querySelector('.mascota-detalle').value;
                 const dueno = card.querySelector('.mascota-dueno').value;
                 const fono = card.querySelector('.mascota-fono').value;
                 const alergias = card.querySelector('.mascota-alergias').value;
                 const tipoPet = card.dataset.tipoMascota;
-                const mascotaIdSlug = detalle.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '_') + '_' + Math.floor(Math.random() * 9000 + 1000);
+                const mascotaIdSlug = nombre.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '_') + '_' + Math.floor(Math.random() * 9000 + 1000);
                 
                 detallePlacas.push({
                     placaNumero: idx + 1,
                     tipo: tipoPet,
                     producto: carrito[idx].producto || carrito[idx].nombre,
+                    nombreMascota: nombre,
                     detalleMascota: detalle,
                     dueno: dueno,
                     fonoEmergencia: fono,
