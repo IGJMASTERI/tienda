@@ -153,8 +153,8 @@
                 <img id="mainProductImg" src="CHAPAPERRO.jpg" alt="Placa Estándar" class="product-image-main">
             </div>
             <div class="variant-buttons" id="variantButtons" style="display: none;">
-                <button class="btn-variant active" id="btnPerro" onclick="cambiarVariante('perro')" title="Chapaperro">🐶</button>
-                <button class="btn-variant" id="btnGato" onclick="cambiarVariante('gato')" title="Chapagato">🐱</button>
+                <button class="btn-variant active" id="btnPerro" onclick="cambiarVariante('perro')" title="Placa de Perro">🐶</button>
+                <button class="btn-variant" id="btnGato" onclick="cambiarVariante('gato')" title="Placa de Gato">🐱</button>
             </div>
         </div>
 
@@ -164,7 +164,7 @@
             <div class="price" id="prodPrecio">$0</div>
             <p id="prodDesc">Cargando descripción detallada...</p>
             <ul style="font-size: 13px; line-height: 1.8;">
-                <li>Tecnología NFC yde alta durabilidad.</li>
+                <li>Tecnología NFC y de alta durabilidad.</li>
                 <li>Sin aplicaciones necesarias para escanear.</li>
                 <li>Actualización de datos en tiempo real.</li>
             </ul>
@@ -174,14 +174,15 @@
 
     <script>
         const productosDB = {
-            'estandar': { nombre: 'Placa Estándar', precio: 0, desc: 'Resistente al agua, golpes y diseñada para el uso diario de mascotas activas con chip NFC integrado.', esEstandar: true },
-            'premium': { nombre: 'Placa Premium Metálica', precio: 0, desc: 'Aleación de zinc ultrarresistente con acabado elegante, alta durabilidad y estética superior.', imagen: 'logo.jpeg' },
-            'bicicleta': { nombre: 'Placa Bicicleta NFC', precio: 0, desc: 'Diseñada específicamente para proteger tu bicicleta frente a robos con alerta de ubicación directa.', imagen: 'logo.jpeg' }
+            'estandar': { nombre: 'Placa Estándar', precio: 0, desc: 'Resistente al agua, golpes y diseñada para el uso diario de mascotas activas con chip NFC integrado.' },
+            'premium': { nombre: 'Placa Premium Metálica', precio: 0, desc: 'Aleación de zinc ultrarresistente con acabado elegante, alta durabilidad y estética superior.', imagen: 'logo.jpeg', tipo: 'premium' },
+            'bicicleta': { nombre: 'Placa Bicicleta NFC', precio: 0, desc: 'Diseñada específicamente para proteger tu bicicleta frente a robos con alerta de ubicación directa.', imagen: 'logo.jpeg', tipo: 'bicicleta' }
         };
 
         const urlParams = new URLSearchParams(window.location.search);
         const productoId = urlParams.get('id') || 'estandar';
         let productoActual = Object.assign({}, productosDB[productoId] || productosDB['estandar']);
+        let varianteSeleccionada = 'perro'; // Por defecto para estándar
 
         const mainImg = document.getElementById('mainProductImg');
         const variantDiv = document.getElementById('variantButtons');
@@ -198,6 +199,7 @@
         document.getElementById('prodDesc').textContent = productoActual.desc;
 
         function cambiarVariante(tipo) {
+            varianteSeleccionada = tipo;
             const btnP = document.getElementById('btnPerro');
             const btnG = document.getElementById('btnGato');
 
@@ -227,7 +229,15 @@
         }
 
         function agregarAlCarrito() {
-            carrito.push(Object.assign({}, productoActual));
+            let itemParaAgregar = Object.assign({}, productoActual);
+            
+            // Si es la placa estándar, guardamos el tipo exacto (perro o gato)
+            if (productoId === 'estandar') {
+                itemParaAgregar.tipo = varianteSeleccionada;
+                itemParaAgregar.producto = varianteSeleccionada === 'gato' ? 'Placa de Gato' : 'Placa de Perro';
+            }
+
+            carrito.push(itemParaAgregar);
             localStorage.setItem('chapitas_carrito', JSON.stringify(carrito));
             actualizarCarritoUI();
             mostrarToast();
