@@ -44,8 +44,7 @@
         .chip-avatar { width: 75px; height: 75px; border-radius: 50%; overflow: hidden; border: 3px solid var(--primary-dark); background: #eee; margin-bottom: 6px; position: relative; }
         .chip-avatar img { width: 100%; height: 100%; object-fit: cover; }
         
-        /* Icono flotante de perro o gato en la previsualización */
-        .chip-icon-overlay { position: absolute; top: 10px; right: 10px; font-size: 18px; background: white; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.15); }
+        .chip-icon-overlay { position: absolute; top: 10px; right: 10px; font-size: 20px; background: white; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.2); z-index: 5; }
 
         .chip-name { font-weight: 900; font-size: 15px; color: var(--primary-dark); margin-bottom: 2px; }
         .chip-info { font-size: 11px; color: #555; margin-bottom: 2px; }
@@ -53,7 +52,10 @@
 
         .preview-controls { display: flex; flex-direction: column; gap: 4px; margin-top: 8px; font-size: 11px; width: 100%; }
         
-        .terminos-box { display: flex; align-items: center; gap: 10px; margin: 20px 0; font-size: 14px; font-weight: bold; }
+        /* Caja de Términos y Condiciones Ley 19.628 */
+        .terminos-container { background: var(--light-color); border: 1px solid #ddecde; border-radius: 12px; padding: 15px; margin: 20px 0; font-size: 12px; color: #555; text-align: left; }
+        .terminos-box { display: flex; align-items: flex-start; gap: 10px; margin-top: 10px; font-size: 13px; font-weight: bold; color: var(--text-color); }
+        
         .btn-webpay { background: #002d62; color: white; border: none; padding: 14px; border-radius: 12px; font-weight: 900; font-size: 15px; cursor: pointer; width: 100%; transition: background 0.2s; box-shadow: 0 4px 15px rgba(0,45,98,0.2); display: flex; align-items: center; justify-content: center; gap: 10px; }
         .btn-webpay:hover { background: #001f44; }
         .back-link { display: inline-block; margin-bottom: 20px; color: var(--primary-dark); text-decoration: none; font-weight: bold; background: var(--yellow-pastel); padding: 7px 14px; border-radius: 20px; font-size: 13px; border: 1px solid #f2ead0; }
@@ -82,9 +84,16 @@
 
             <div id="contenedorPlacasParaPersonalizar"></div>
 
-            <div class="terminos-box">
-                <input type="checkbox" id="aceptoTerminos" required style="width: 18px; height: 18px;">
-                <label for="aceptoTerminos" style="cursor: pointer;">Acepto los términos, condiciones y políticas de personalización de PAWMI.</label>
+            <!-- Términos y Condiciones - Ley de Protección de Datos -->
+            <div class="terminos-container">
+                <strong>🔒 Protección de Datos Personales (Ley N° 19.628):</strong>
+                <p style="margin: 5px 0 0 0; line-height: 1.4;">
+                    Los datos entregados (información de contacto, datos de mascotas y fotografías) serán utilizados exclusivamente por <strong>PAWMI</strong> para la confección, grabado de chapitas NFC y gestión de despacho. Garantizamos la confidencialidad y el manejo seguro de su información, la cual no será cedida a terceros bajo ninguna circunstancia.
+                </p>
+                <div class="terminos-box">
+                    <input type="checkbox" id="aceptoTerminos" required style="width: 18px; height: 18px; margin-top: 2px;">
+                    <label for="aceptoTerminos" style="cursor: pointer;">He leído y acepto los Términos, Condiciones y la Política de Privacidad de Datos de PAWMI.</label>
+                </div>
             </div>
 
             <button type="submit" class="btn-webpay" id="btnPagar">
@@ -108,7 +117,6 @@
             carrito.forEach((item, index) => {
                 total += item.precio;
 
-                // Detectar automáticamente si es perro o gato
                 let nombreProd = (item.producto || item.nombre || '').toLowerCase();
                 let esGato = nombreProd.includes('gato') || nombreProd.includes('minino') || nombreProd.includes('felino');
                 let tipoIcono = esGato ? '🐱 Gato' : '🐶 Perro';
@@ -129,7 +137,7 @@
                     </div>
 
                     <div class="form-grid">
-                        <!-- Campos: NOMBRE, DETALLE (raza/edad), DUEÑO, TELEFONO, ALERGIAS -->
+                        <!-- Campos separados: Nombre, Detalle (Raza / Edad), Dueño, Teléfono, Alergias -->
                         <div class="form-fields">
                             <div class="form-group">
                                 <label>NOMBRE DE LA MASCOTA</label>
@@ -137,7 +145,7 @@
                             </div>
                             <div class="form-group">
                                 <label>DETALLE</label>
-                                <input type="text" class="mascota-detalle" id="inputDetalle_${index}" placeholder="raza / edad /" oninput="actualizarPrevisualizacion(${index})">
+                                <input type="text" class="mascota-detalle" id="inputDetalle_${index}" placeholder="Raza / Edad" oninput="actualizarPrevisualizacion(${index})">
                             </div>
                             <div class="form-group">
                                 <label>DUEÑO</label>
@@ -157,14 +165,14 @@
                             </div>
                         </div>
 
-                        <!-- Tarjeta de Previsualización en tiempo real -->
+                        <!-- Tarjeta de Previsualización dinámica con icono flotante correcto -->
                         <div class="chip-preview-box">
-                            <div class="chip-icon-overlay">${emojiOverlay}</div>
+                            <div class="chip-icon-overlay" id="overlayIcon_${index}">${emojiOverlay}</div>
                             <div class="chip-avatar">
                                 <img id="imgPreview_${index}" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='75' height='75'><rect width='100%' height='100%' fill='%23eee'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%23aaa' font-size='10'>Foto</text></svg>">
                             </div>
                             <div class="chip-name" id="prevNombre_${index}">Nombre Mascota</div>
-                            <div class="chip-info" id="prevDetalle_${index}" style="font-size: 10px; color: #666;">raza / edad /</div>
+                            <div class="chip-info" id="prevDetalle_${index}" style="font-size: 10px; color: #666;">Raza / Edad</div>
                             <div class="chip-info" id="prevDueno_${index}">👤 Dueño: -</div>
                             <div class="chip-info" id="prevFono_${index}">📞 Teléfono</div>
                             <div class="chip-info" id="prevAlergias_${index}" style="font-size: 10px; color: #d9534f;">⚠️ Alergias: Ninguna</div>
@@ -185,7 +193,7 @@
 
         function actualizarPrevisualizacion(index) {
             const nombre = document.getElementById(`inputNombre_${index}`).value || 'Nombre Mascota';
-            const detalle = document.getElementById(`inputDetalle_${index}`).value || 'raza / edad /';
+            const detalle = document.getElementById(`inputDetalle_${index}`).value || 'Raza / Edad';
             const dueno = document.getElementById(`inputDueno_${index}`).value || 'Dueño';
             const fono = document.getElementById(`inputFono_${index}`).value || 'Teléfono';
             const alergias = document.getElementById(`inputAlergias_${index}`).value || 'Ninguna';
