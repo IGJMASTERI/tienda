@@ -37,7 +37,7 @@
         .form-fields { display: flex; flex-direction: column; gap: 10px; }
         .form-group { display: flex; flex-direction: column; gap: 4px; }
         .form-group label { font-size: 11px; font-weight: 800; color: var(--primary-dark); }
-        .form-group input { padding: 9px 12px; border: 2px solid #ddecde; border-radius: 8px; font-size: 13px; background: #fafdfa; }
+        .form-group input, .form-group select { padding: 9px 12px; border: 2px solid #ddecde; border-radius: 8px; font-size: 13px; background: #fafdfa; font-family: inherit; }
 
         .chip-preview-box { background: linear-gradient(135deg, #ffffff, var(--yellow-pastel)); border: 2px solid var(--primary-color); border-radius: 12px; padding: 15px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); position: relative; }
         .chip-avatar { width: 75px; height: 75px; border-radius: 50%; overflow: hidden; border: 3px solid var(--primary-dark); background: #eee; margin-bottom: 6px; position: relative; }
@@ -49,8 +49,6 @@
         .chip-info { font-size: 11px; color: #555; margin-bottom: 2px; }
         .chip-badge { background: var(--primary-color); color: white; font-size: 10px; padding: 2px 8px; border-radius: 10px; font-weight: bold; margin-top: 5px; }
 
-        .preview-controls { display: flex; flex-direction: column; gap: 4px; margin-top: 8px; font-size: 11px; width: 100%; }
-        
         .terminos-container { background: var(--light-color); border: 1px solid #ddecde; border-radius: 12px; padding: 15px; margin: 20px 0; font-size: 13px; display: flex; align-items: center; gap: 10px; font-weight: bold; }
         .terminos-link { color: var(--primary-dark); background: none; border: none; font-weight: bold; cursor: pointer; padding: 0; text-decoration: underline; font-size: 13px; }
         
@@ -87,7 +85,12 @@
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
                     <div class="form-group"><label>NOMBRE DEL CLIENTE</label><input type="text" id="nombreCliente" required placeholder="Tu nombre y apellido"></div>
                     <div class="form-group"><label>TELÉFONO DE CONTACTO</label><input type="tel" id="fonoCliente" required placeholder="+569xxxxxxxx"></div>
-                    <div class="form-group" style="grid-column: 1 / -1;"><label>DIRECCIÓN DE ENVÍO</label><input type="text" id="dirCliente" required placeholder="Calle, número, comuna, ciudad"></div>
+                    
+                    <!-- Dirección detallada -->
+                    <div class="form-group" style="grid-column: 1 / 2;"><label>CALLE / AVENIDA</label><input type="text" id="dirCalle" required placeholder="Ej: Volcán Llaima"></div>
+                    <div class="form-group" style="grid-column: 2 / 3;"><label>NÚMERO DE DIRECCIÓN / DEPTO</label><input type="text" id="dirNumero" required placeholder="Ej: #5870, Dpto 42"></div>
+                    <div class="form-group"><label>COMUNA</label><input type="text" id="dirComuna" required placeholder="Ej: La Florida"></div>
+                    <div class="form-group"><label>REGIÓN</label><input type="text" id="dirRegion" required placeholder="Ej: Región Metropolitana"></div>
                 </div>
             </div>
 
@@ -114,7 +117,6 @@
                 <span>Pagar de forma segura con Webpay ➔</span>
             </button>
 
-            <!-- Botón de prueba directa para saltarse Transbank -->
             <button type="button" class="btn-simular" id="btnSimularPago" onclick="simularPagoExitoso()">
                 <span>⚡ Simular Pago Exitoso (Prueba Directa)</span>
             </button>
@@ -247,22 +249,22 @@
             }
         }
 
-        // Flujo normal de Webpay
         document.getElementById('checkoutForm').onsubmit = async function(e) {
             e.preventDefault();
             ejecutarPago('webpay');
         };
 
-        // Función para simular el pago de inmediato sin pasar por Webpay
         async function simularPagoExitoso() {
-            // Validar que los campos obligatorios estén llenos
             const cliente = document.getElementById('nombreCliente').value;
             const fono = document.getElementById('fonoCliente').value;
-            const direccion = document.getElementById('dirCliente').value;
+            const calle = document.getElementById('dirCalle').value;
+            const numero = document.getElementById('dirNumero').value;
+            const comuna = document.getElementById('dirComuna').value;
+            const region = document.getElementById('dirRegion').value;
             const terminos = document.getElementById('aceptoTerminos').checked;
 
-            if (!cliente || !fono || !direccion) {
-                alert('Por favor completa los datos de envío y contacto general.');
+            if (!cliente || !fono || !calle || !numero || !comuna || !region) {
+                alert('Por favor completa todos los campos de envío y contacto general.');
                 return;
             }
             if (!terminos) {
@@ -310,10 +312,17 @@
                 });
             });
 
+            // Consolidamos la dirección completa desglosada
+            const direccionCompleta = `${document.getElementById('dirCalle').value} ${document.getElementById('dirNumero').value}, ${document.getElementById('dirComuna').value}, ${document.getElementById('dirRegion').value}`;
+
             const datosCliente = {
                 cliente: document.getElementById('nombreCliente').value,
                 fono: document.getElementById('fonoCliente').value,
-                direccion: document.getElementById('dirCliente').value,
+                direccion: direccionCompleta,
+                calle: document.getElementById('dirCalle').value,
+                numero: document.getElementById('dirNumero').value,
+                comuna: document.getElementById('dirComuna').value,
+                region: document.getElementById('dirRegion').value,
                 placasPersonalizadas: detallePlacas,
                 productos: carrito
             };
@@ -349,8 +358,7 @@
                         btnSim.textContent = '⚡ Simular Pago Exitoso (Prueba Directa)';
                     }
                 } else {
-                    // Si es simulación, saltamos directo a la respuesta de éxito simulando el token
-                    alert('¡Simulación de pago exitosa! Redirigiendo a la confirmación del pedido y envío de correo...');
+                    alert('¡Simulación de pago exitosa! Redirigiendo...');
                     localStorage.removeItem('chapitas_carrito');
                     window.location.href = `respuesta-pago.html?order=SIMULACION_EXITOSA`;
                 }
