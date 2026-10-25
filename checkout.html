@@ -39,34 +39,37 @@
         .form-group label { font-size: 11px; font-weight: 800; color: var(--primary-dark); }
         .form-group input, .form-group select { padding: 9px 12px; border: 2px solid #ddecde; border-radius: 8px; font-size: 13px; background: #fafdfa; font-family: inherit; }
 
-        .btn-quitar-foto { background: #d9534f; color: white; border: none; padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: bold; cursor: pointer; margin-top: 5px; display: none; width: fit-content; }
+        .btn-quitar-foto { background: #d9534f; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 11px; font-weight: bold; cursor: pointer; margin-top: 6px; display: inline-block; width: fit-content; transition: background 0.2s; }
         .btn-quitar-foto:hover { background: #c9302c; }
 
-        /* Ficha con rectángulo, bordes finos y color negro */
+        /* Rectángulo horizontal con bordes finos de color negro y fondo negro para mantener proporciones */
         .chip-preview-box { background: linear-gradient(135deg, #ffffff, var(--yellow-pastel)); border: 2px solid var(--primary-color); border-radius: 12px; padding: 15px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); position: relative; }
         
         .chip-avatar { 
-            width: 90px; 
-            height: 90px; 
-            border-radius: 6px; /* Rectángulo con esquinas ligeramente redondeadas */
+            width: 110px; 
+            height: 75px; 
+            border-radius: 4px; 
             overflow: hidden; 
-            border: 1px solid #000000; /* Borde fino de color negro */
-            background: #eee; 
+            border: 1px solid #000000; /* Borde fino color negro */
+            background: #000000; /* Fondo negro para rellenar espacios si la imagen no es 100% rectangular */
             margin-bottom: 6px; 
             position: relative; 
-            cursor: grab; /* Indica que se puede arrastrar */
+            cursor: grab;
             touch-action: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .chip-avatar:active { cursor: grabbing; }
 
         .chip-avatar img { 
-            width: 100%; 
-            height: 100%; 
-            object-fit: cover; 
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: contain; /* Mantiene la proporción sin deformar */
             position: absolute;
-            top: 0;
-            left: 0;
-            transition: transform 0.1s ease-out;
+            transition: transform 0.05s ease-out;
         }
         
         .chip-icon-overlay { position: absolute; top: 10px; right: 10px; font-size: 20px; background: white; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.2); z-index: 5; }
@@ -224,14 +227,14 @@
                             <div class="form-group">
                                 <label>SUBIR FOTO DE LA MASCOTA</label>
                                 <input type="file" accept="image/*" class="input-foto" id="inputFile_${index}" onchange="cargarPrevisualizacion(event, ${index})">
-                                <button type="button" class="btn-quitar-foto" id="btnQuitar_${index}" onclick="quitarFoto(${index})">🗑️ Quitar foto</button>
+                                <button type="button" class="btn-quitar-foto" id="btnQuitar_${index}" onclick="quitarFoto(${index})" style="display: none;">🗑️ Quitar foto</button>
                             </div>
                         </div>
 
                         <div class="chip-preview-box">
                             <div class="chip-icon-overlay" id="overlayIcon_${index}">${emojiOverlay}</div>
-                            <div class="chip-avatar" id="avatarBox_${index}" title="Mantén presionado y arrastra para ajustar el encuadre">
-                                <img id="imgPreview_${index}" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='90' height='90'><rect width='100%' height='100%' fill='%23eee'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%23aaa' font-size='10'>Foto</text></svg>" style="transform: translate(0px, 0px) scale(1);">
+                            <div class="chip-avatar" id="avatarBox_${index}" title="Mantén presionado y arrastra para ajustar la posición">
+                                <img id="imgPreview_${index}" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='110' height='75'><rect width='100%' height='100%' fill='%23eee'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%23aaa' font-size='10'>Foto</text></svg>" style="transform: translate(0px, 0px);">
                             </div>
                             <div style="font-size: 10px; color: #777; margin-bottom: 6px;">💡 Arrastra la foto para encuadrar</div>
                             <div class="chip-name" id="prevNombre_${index}">Nombre Mascota</div>
@@ -245,7 +248,6 @@
                 `;
                 contenedorPlacas.appendChild(card);
                 
-                // Inicializamos el comportamiento de arrastre (drag/touch) para ajustar encuadre
                 configurarArrastreFoto(index);
                 contadorPlaca++;
             });
@@ -266,7 +268,6 @@
             document.getElementById(`prevAlergias_${index}`).textContent = '⚠️ Alergias: ' + alergias;
         }
 
-        // Variables globales para el manejo de posición de la imagen
         let posX = {};
         let posY = {};
 
@@ -280,7 +281,7 @@
                     posX[index] = 0;
                     posY[index] = 0;
                     img.style.transform = `translate(0px, 0px)`;
-                    document.getElementById(`btnQuitar_${index}`).style.display = 'block';
+                    document.getElementById(`btnQuitar_${index}`).style.display = 'inline-block';
                 }
                 lector.readAsDataURL(archivo);
             }
@@ -288,7 +289,7 @@
 
         function quitarFoto(index) {
             const img = document.getElementById(`imgPreview_${index}`);
-            img.src = `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='90' height='90'><rect width='100%' height='100%' fill='%23eee'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%23aaa' font-size='10'>Foto</text></svg>`;
+            img.src = `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='110' height='75'><rect width='100%' height='100%' fill='%23eee'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%23aaa' font-size='10'>Foto</text></svg>`;
             document.getElementById(`inputFile_${index}`).value = '';
             document.getElementById(`btnQuitar_${index}`).style.display = 'none';
             posX[index] = 0;
@@ -296,7 +297,6 @@
             img.style.transform = `translate(0px, 0px)`;
         }
 
-        // Lógica para arrastrar y ajustar el encuadre con mouse o tacto
         function configurarArrastreFoto(index) {
             const box = document.getElementById(`avatarBox_${index}`);
             const img = document.getElementById(`imgPreview_${index}`);
