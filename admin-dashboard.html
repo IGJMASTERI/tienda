@@ -151,8 +151,8 @@
             alert(`¡Precio actualizado con éxito a $${Number(nuevoPrecio).toLocaleString('es-CL')}!`);
         }
 
-        // Datos de ejemplo para prueba
-        let pedidosGlobales = [
+        // CARGA DE PEDIDOS PERSISTENTES (LOCALSTORAGE)[span_5](start_span)[span_5](end_span)
+        let pedidosGlobales = JSON.parse(localStorage.getItem('pawmi_pedidos_admin') || JSON.stringify([
             {
                 orden: '#O_94821',
                 cliente: 'Anais Zapata',
@@ -169,16 +169,21 @@
                 estado: 'Recibido / Pendiente',
                 nfcUrl: 'https://ficha-animales.pages.dev/pet.html?mascota=andy_94821&tel=+56972930605'
             }
-        ];
+        ]));
 
         let pedidoSeleccionadoIndex = null;
+
+        // Función para guardar los cambios en la memoria persistente[span_6](start_span)[span_6](end_span)
+        function guardarPedidosEnMemoria() {
+            localStorage.setItem('pawmi_pedidos_admin', JSON.stringify(pedidosGlobales));
+        }
 
         function cargarPedidosAdmin() {
             const tbody = document.getElementById('listaPedidosAdmin');
             tbody.innerHTML = '';
 
             if(pedidosGlobales.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: #888;">No hay pedidos registrados.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: #888; padding: 20px;">No hay pedidos registrados.</td></tr>';
                 return;
             }
 
@@ -195,7 +200,7 @@
                         🐾 <strong>${p.mascota}</strong><br>
                         <small>${p.producto}</small>
                     </td>
-                    <td>$${p.total.toLocaleString('es-CL')}</td>
+                    <td>$${(p.total || 0).toLocaleString('es-CL')}</td>
                     <td><span class="badge-estado" id="badgeEstado_${index}">${p.estado}</span></td>
                     <td>
                         <div class="acciones-grupo">
@@ -208,7 +213,7 @@
             });
         }
 
-        // Función de doble confirmación para eliminar un pedido
+        // Función de doble confirmación para eliminar un pedido de forma permanente[span_7](start_span)[span_7](end_span)
         function confirmarEliminarPedido(index) {
             const p = pedidosGlobales[index];
             
@@ -217,13 +222,14 @@
             if (!paso1) return;
 
             // Segunda confirmación (Doble seguridad)
-            const paso2 = confirm(`🚨 ADVERTENCIA: Esta acción es irreversible y borrará el pedido de la lista. ¿Confirmar eliminación definitiva?`);
+            const paso2 = confirm(`🚨 ADVERTENCIA: Esta acción es irreversible y borrará el pedido permanentemente. ¿Confirmar eliminación definitiva?`);
             if (!paso2) return;
 
-            // Si pasa ambas confirmaciones, eliminamos el pedido del arreglo y recargamos la tabla
+            // Si pasa ambas confirmaciones, eliminamos y guardamos el cambio en memoria[span_8](start_span)[span_8](end_span)
             pedidosGlobales.splice(index, 1);
+            guardarPedidosEnMemoria();
             cargarPedidosAdmin();
-            alert('✅ Pedido eliminado correctamente.');
+            alert('✅ Pedido eliminado permanentemente.');
         }
 
         function abrirModalAdmin(index) {
@@ -269,6 +275,7 @@
             if (pedidoSeleccionadoIndex !== null) {
                 const nuevoEstado = document.getElementById('selectEstadoPedido').value;
                 pedidosGlobales[pedidoSeleccionadoIndex].estado = nuevoEstado;
+                guardarPedidosEnMemoria(); // Sincronizamos también al cambiar el estado[span_9](start_span)[span_9](end_span)
                 
                 cargarPedidosAdmin();
                 cerrarModalAdmin();
