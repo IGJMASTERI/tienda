@@ -39,10 +39,12 @@
         .form-group label { font-size: 11px; font-weight: 800; color: var(--primary-dark); }
         .form-group input, .form-group select { padding: 9px 12px; border: 2px solid #ddecde; border-radius: 8px; font-size: 13px; background: #fafdfa; font-family: inherit; }
 
-        .btn-quitar-foto { background: #d9534f; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 11px; font-weight: bold; cursor: pointer; margin-top: 6px; display: inline-block; width: fit-content; transition: background 0.2s; }
+        /* Estilo mejorado para el botón de quitar foto */
+        .btn-quitar-foto { background: #d9534f; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 11px; font-weight: bold; cursor: pointer; margin-top: 6px; display: none; width: fit-content; transition: background 0.2s; }
+        .btn-quitar-foto.visible { display: inline-block; }
         .btn-quitar-foto:hover { background: #c9302c; }
 
-        /* Rectángulo horizontal con bordes finos de color negro y fondo negro para mantener proporciones */
+        /* Rectángulo horizontal con bordes finos de color negro y fondo negro */
         .chip-preview-box { background: linear-gradient(135deg, #ffffff, var(--yellow-pastel)); border: 2px solid var(--primary-color); border-radius: 12px; padding: 15px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); position: relative; }
         
         .chip-avatar { 
@@ -50,12 +52,12 @@
             height: 80px; 
             border-radius: 4px; 
             overflow: hidden; 
-            border: 1px solid #000000; /* Borde fino color negro */
-            background: #000000; /* Fondo negro */
+            border: 1px solid #000000; 
+            background: #000000; 
             margin-bottom: 6px; 
             position: relative; 
             cursor: grab;
-            touch-action: none; /* Vital para permitir el arrastre táctil sin hacer scroll en celulares */
+            touch-action: none; /* Evita que la tablet haga scroll al intentar mover la foto */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -65,7 +67,7 @@
         .chip-avatar img { 
             width: 100%;
             height: 100%;
-            object-fit: contain; /* Mantiene proporciones con bandas negras automáticas */
+            object-fit: contain; 
             position: absolute;
             user-select: none;
             pointer-events: none;
@@ -226,14 +228,14 @@
                             <div class="form-group">
                                 <label>SUBIR FOTO DE LA MASCOTA</label>
                                 <input type="file" accept="image/*" class="input-foto" id="inputFile_${index}" onchange="cargarPrevisualizacion(event, ${index})">
-                                <button type="button" class="btn-quitar-foto" id="btnQuitar_${index}" onclick="quitarFoto(${index})" style="display: none;">🗑️ Quitar foto</button>
+                                <button type="button" class="btn-quitar-foto" id="btnQuitar_${index}" onclick="quitarFoto(${index})">🗑️ Quitar foto</button>
                             </div>
                         </div>
 
                         <div class="chip-preview-box">
                             <div class="chip-icon-overlay" id="overlayIcon_${index}">${emojiOverlay}</div>
                             <div class="chip-avatar" id="avatarBox_${index}" title="Mantén presionado y arrastra para ajustar la posición">
-                                <img id="imgPreview_${index}" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='80'><rect width='100%' height='100%' fill='%23eee'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%23aaa' font-size='10'>Foto</text></svg>" style="transform: translate(0px, 0px) scale(1);">
+                                <img id="imgPreview_${index}" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='80'><rect width='100%' height='100%' fill='%23eee'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%23aaa' font-size='10'>Foto</text></svg>" style="transform: translate(0px, 0px) scale(1.2);">
                             </div>
                             <div style="font-size: 10px; color: #777; margin-bottom: 6px;">💡 Arrastra la foto para encuadrar</div>
                             <div class="chip-name" id="prevNombre_${index}">Nombre Mascota</div>
@@ -280,12 +282,12 @@
                     img.src = e.target.result;
                     posX[index] = 0;
                     posY[index] = 0;
-                    escalaImg[index] = 1.2; // Zoom base para permitir moverla libremente
+                    escalaImg[index] = 1.2;
                     img.style.transform = `translate(0px, 0px) scale(${escalaImg[index]})`;
                     
-                    // Mostramos el botón de quitar foto
+                    // Activamos la clase visible para mostrar el botón de quitar foto sin fallos
                     const btnQ = document.getElementById(`btnQuitar_${index}`);
-                    if(btnQ) btnQ.style.display = 'inline-block';
+                    if(btnQ) btnQ.classList.add('visible');
                 }
                 lector.readAsDataURL(archivo);
             }
@@ -295,7 +297,11 @@
             const img = document.getElementById(`imgPreview_${index}`);
             img.src = `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='80'><rect width='100%' height='100%' fill='%23eee'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%23aaa' font-size='10'>Foto</text></svg>`;
             document.getElementById(`inputFile_${index}`).value = '';
-            document.getElementById(`btnQuitar_${index}`).style.display = 'none';
+            
+            // Ocultamos el botón removiendo la clase
+            const btnQ = document.getElementById(`btnQuitar_${index}`);
+            if(btnQ) btnQ.classList.remove('visible');
+
             posX[index] = 0;
             posY[index] = 0;
             escalaImg[index] = 1;
@@ -308,7 +314,7 @@
             
             posX[index] = 0;
             posY[index] = 0;
-            escalaImg[index] = 1;
+            escalaImg[index] = 1.2;
 
             let isDragging = false;
             let startX, startY;
@@ -319,7 +325,7 @@
                 const clientY = e.clientY || (e.touches ? e.touches[0].clientY : 0);
                 startX = clientX - posX[index];
                 startY = clientY - posY[index];
-                e.preventDefault();
+                if (e.type === 'touchstart') e.preventDefault();
             }
 
             function onDrag(e) {
@@ -330,34 +336,23 @@
                 posX[index] = clientX - startX;
                 posY[index] = clientY - startY;
 
-                img.style.transform = `translate(${posX[index]}px, ${posY[index]}px) scale(${escalaImg[index] || 1})`;
+                img.style.transform = `translate(${posX[index]}px, ${posY[index]}px) scale(${escalaImg[index]})`;
+                if (e.type === 'touchmove') e.preventDefault();
             }
 
             function stopDrag() {
                 isDragging = false;
             }
 
-            // Eventos de Mouse
+            // Eventos de Mouse (PC)
             box.addEventListener('mousedown', startDrag);
             window.addEventListener('mousemove', onDrag);
             window.addEventListener('mouseup', stopDrag);
 
-            // Eventos Táctiles (Móviles / Tablets)
+            // Eventos Táctiles optimizados para Tablets (Android / iPad)
             box.addEventListener('touchstart', startDrag, {passive: false});
             window.addEventListener('touchmove', onDrag, {passive: false});
             window.addEventListener('touchend', stopDrag);
-
-            // Permitir zoom con la rueda del mouse para encuadrar mejor
-            box.addEventListener('wheel', function(e) {
-                e.preventDefault();
-                if (!escalaImg[index]) escalaImg[index] = 1;
-                if (e.deltaY < 0) {
-                    escalaImg[index] += 0.1;
-                } else {
-                    escalaImg[index] = Math.max(0.5, escalaImg[index] - 0.1);
-                }
-                img.style.transform = `translate(${posX[index] || 0}px, ${posY[index] || 0}px) scale(${escalaImg[index]})`;
-            });
         }
 
         document.getElementById('checkoutForm').onsubmit = async function(e) {
