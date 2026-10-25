@@ -19,7 +19,7 @@
         }
 
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg-color); color: var(--text-color); margin: 0; padding: 20px; box-sizing: border-box; }
-        .admin-container { max-width: 1100px; margin: 0 auto; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(141, 174, 155, 0.1); border-top: 9px solid var(--primary-dark); }
+        .admin-container { max-width: 1000px; margin: 0 auto; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(141, 174, 155, 0.1); border-top: 9px solid var(--primary-dark); }
         
         .admin-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--light-color); padding-bottom: 15px; margin-bottom: 25px; }
         .admin-header h2 { color: var(--primary-dark); margin: 0; font-size: 22px; }
@@ -30,28 +30,15 @@
         .section-box h3 { margin-top: 0; color: var(--primary-dark); font-size: 16px; }
 
         table { width: 100%; border-collapse: collapse; margin-top: 10px; background: white; border-radius: 10px; overflow: hidden; font-size: 13px; }
-        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; vertical-align: middle; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
         th { background: var(--primary-color); color: white; font-weight: bold; }
         
-        .badge-estado { background: var(--yellow-pastel); color: var(--primary-dark); padding: 5px 10px; border-radius: 8px; font-weight: bold; font-size: 11px; border: 1px solid #f2ead0; display: inline-block; }
+        .badge-estado { background: var(--yellow-pastel); color: var(--primary-dark); padding: 4px 10px; border-radius: 8px; font-weight: bold; font-size: 11px; border: 1px solid #f2ead0; }
         
         .form-inline { display: flex; gap: 10px; align-items: center; margin-top: 10px; }
         .form-inline input { padding: 8px 12px; border: 2px solid #ddecde; border-radius: 8px; font-size: 13px; }
         .btn-accion { background: var(--primary-dark); color: white; border: none; padding: 8px 14px; border-radius: 8px; font-weight: bold; cursor: pointer; }
         .btn-accion:hover { background: #4e6e5d; }
-
-        .btn-ver-ficha { background: var(--primary-color); color: white; border: none; padding: 6px 12px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 12px; }
-        .btn-ver-ficha:hover { background: var(--primary-dark); }
-
-        /* Estilos del Modal / Ventana Emergente de Previsualización */
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; }
-        .modal-box { background: white; width: 100%; max-width: 500px; padding: 25px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); position: relative; max-height: 90vh; overflow-y: auto; border-top: 8px solid var(--primary-color); text-align: left; }
-        .close-x { position: absolute; top: 15px; right: 20px; font-size: 22px; cursor: pointer; color: #888; font-weight: bold; }
-        
-        /* Simulación visual de la Ficha NFC */
-        .preview-ficha-card { background: linear-gradient(135deg, #ffffff, var(--yellow-pastel)); border: 2px solid var(--primary-color); border-radius: 15px; padding: 20px; text-align: center; margin: 15px 0; }
-        .preview-avatar { width: 80px; height: 80px; border-radius: 50%; overflow: hidden; border: 3px solid var(--primary-dark); margin: 0 auto 10px auto; background: #eee; }
-        .preview-avatar img { width: 100%; height: 100%; object-fit: cover; }
     </style>
 </head>
 <body>
@@ -62,9 +49,10 @@
             <button class="btn-salir" onclick="cerrarSesionAdmin()">Cerrar Sesión</button>
         </div>
 
-        <!-- Control de Precios -->
+        <!-- Sección de Control de Precios / Productos -->
         <div class="section-box">
             <h3>🏷️ Control de Precios de Productos</h3>
+            <p style="font-size: 12px; color: #666;">Modifica el valor actual de las placas para las pruebas o ventas de la tienda.</p>
             <div class="form-inline">
                 <label style="font-size: 12px; font-weight: bold;">Precio General de Placas ($):</label>
                 <input type="number" id="inputNuevoPrecio" value="100">
@@ -72,58 +60,33 @@
             </div>
         </div>
 
-        <!-- Listado de Pedidos -->
+        <!-- Sección de Listado de Pedidos -->
         <div class="section-box">
             <h3>📦 Pedidos y Solicitudes Recibidas</h3>
+            <p style="font-size: 12px; color: #666;">Aquí visualizarás los pedidos pagados listos para grabar y despachar.</p>
             <div id="tablaPedidosContainer">
                 <table>
                     <thead>
                         <tr>
                             <th>Orden</th>
-                            <th>Cliente y Dirección de Envío</th>
-                            <th>Mascota & Producto</th>
+                            <th>Cliente</th>
+                            <th>Mascota & NFC</th>
                             <th>Total</th>
-                            <th>Estado Actual</th>
-                            <th>Acción</th>
+                            <th>Estado</th>
                         </tr>
                     </thead>
                     <tbody id="listaPedidosAdmin">
-                        <!-- Se llena dinámicamente -->
+                        <tr>
+                            <td colspan="5" style="text-align: center; color: #888;">Cargando pedidos recientes...</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 
-    <!-- MODAL DE PREVISUALIZACIÓN DE FICHA Y GESTIÓN DE ESTADO -->
-    <div class="modal-overlay" id="modalFichaAdmin">
-        <div class="modal-box">
-            <span class="close-x" onclick="cerrarModalAdmin()">&times;</span>
-            <h3 id="modalTituloPedido">Detalle del Pedido #--</h3>
-            
-            <div style="margin-bottom: 15px;">
-                <label style="font-size: 11px; font-weight: 800; color: var(--primary-dark);">CAMBIAR ESTADO DEL PEDIDO:</label>
-                <div style="display: flex; gap: 10px; margin-top: 5px;">
-                    <select id="selectEstadoPedido" style="padding: 8px; border-radius: 8px; border: 2px solid #ddecde; font-weight: bold; flex: 1;">
-                        <option value="Recibido / Pendiente">Recibido / Pendiente</option>
-                        <option value="En Grabación NFC">En Grabación NFC</option>
-                        <option value="Despachado">Despachado</option>
-                        <option value="Entregado">Entregado</option>
-                    </select>
-                    <button class="btn-accion" onclick="guardarNuevoEstado()">Guardar Estado</button>
-                </div>
-            </div>
-
-            <hr style="border: 0; border-top: 1px dashed #eee; margin: 15px 0;">
-
-            <h4 style="color: var(--primary-dark); margin-bottom: 5px; font-size: 14px;">👁️ Previsualización de la Ficha NFC del Cliente:</h4>
-            <div class="preview-ficha-card" id="previewFichaContenido">
-                <!-- Contenido de la ficha renderizado en tiempo real -->
-            </div>
-        </div>
-    </div>
-
     <script>
+        // Verificamos si el admin tiene token activo al cargar la página
         const adminToken = localStorage.getItem('pawmi_admin_token');
         if (!adminToken) {
             alert('Acceso no autorizado. Inicia sesión como administrador.');
@@ -141,97 +104,19 @@
             alert(`¡Precio actualizado con éxito a $${Number(nuevoPrecio).toLocaleString('es-CL')}!`);
         }
 
-        // Datos simulados de prueba (aquí luego se conectará con el backend/base de datos)
-        let pedidosGlobales = [
-            {
-                orden: '#O_94821',
-                cliente: 'Anais Zapata',
-                telefono: '+56972930605',
-                direccion: 'Volcán Llaima #5870, La Florida, Región Metropolitana',
-                producto: 'Placa de Perro (Estándar)',
-                mascota: 'Andy',
-                detalle: 'Pincher, 6 años',
-                dueno: 'Anais Zapata',
-                fonoEmergencia: '+56972930605',
-                alergias: 'Alérgico al pollo',
-                foto: 'CHAPAPERRO.jpg',
-                total: 100,
-                estado: 'Recibido / Pendiente',
-                nfcUrl: 'https://pawmi.cl/pet.html?mascota=andy_1001'
-            }
-        ];
-
-        let pedidoSeleccionadoIndex = null;
-
+        // Cargar pedidos simulados o reales desde el almacenamiento local / backend
         function cargarPedidosAdmin() {
             const tbody = document.getElementById('listaPedidosAdmin');
-            tbody.innerHTML = '';
-
-            if(pedidosGlobales.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: #888;">No hay pedidos registrados.</td></tr>';
-                return;
-            }
-
-            pedidosGlobales.forEach((p, index) => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td><strong>${p.orden}</strong></td>
-                    <td>
-                        <strong>${p.cliente}</strong><br>
-                        <small>📞 ${p.telefono}</small><br>
-                        <small style="color: #666;">📍 <strong>Despacho:</strong> ${p.direccion}</small>
-                    </td>
-                    <td>
-                        🐾 <strong>${p.mascota}</strong><br>
-                        <small>${p.producto}</small>
-                    </td>
-                    <td>$${p.total.toLocaleString('es-CL')}</td>
-                    <td><span class="badge-estado" id="badgeEstado_${index}">${p.estado}</span></td>
-                    <td>
-                        <button class="btn-ver-ficha" onclick="abrirModalAdmin(${index})">👁️ Ver Ficha y Estado</button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        function abrirModalAdmin(index) {
-            pedidoSeleccionadoIndex = index;
-            const p = pedidosGlobales[index];
-
-            document.getElementById('modalTituloPedido').textContent = `Gestión de Pedido ${p.orden}`;
-            document.getElementById('selectEstadoPedido').value = p.estado;
-
-            const previewBox = document.getElementById('previewFichaContenido');
-            previewBox.innerHTML = `
-                <div class="preview-avatar">
-                    <img src="${p.foto || 'logo.jpeg'}" alt="Foto mascota">
-                </div>
-                <div style="font-weight: 900; font-size: 16px; color: var(--primary-dark);">¡Hola, soy ${p.mascota}!</div>
-                <div style="font-size: 12px; color: #555; margin: 4px 0;">🐾 Detalle: ${p.detalle}</div>
-                <div style="font-size: 12px; color: #555; margin: 4px 0;">👤 Dueño/a: ${p.dueno}</div>
-                <div style="font-size: 12px; color: #555; margin: 4px 0;">📞 Teléfono: ${p.fonoEmergencia}</div>
-                <div style="font-size: 12px; color: #d9534f; margin: 4px 0;">⚠️ Alergias: ${p.alergias}</div>
-                <div style="font-size: 10px; color: #888; margin-top: 8px; word-break: break-all;">🔗 ${p.nfcUrl}</div>
+            // Aquí puedes conectar luego con tu base de datos o almacenamiento de pedidos
+            tbody.innerHTML = `
+                <tr>
+                    <td>#O_94821</td>
+                    <td>Anais Zapata<br><small>+56972930605</small></td>
+                    <td>🐾 <strong>Andy</strong> (Pincher)<br><small>Link NFC generado</small></td>
+                    <td>$100</td>
+                    <td><span class="badge-estado">Pagado / Listo para Grabar</span></td>
+                </tr>
             `;
-
-            document.getElementById('modalFichaAdmin').style.display = 'flex';
-        }
-
-        function cerrarModalAdmin() {
-            document.getElementById('modalFichaAdmin').style.display = 'none';
-        }
-
-        function guardarNuevoEstado() {
-            if (pedidoSeleccionadoIndex !== null) {
-                const nuevoEstado = document.getElementById('selectEstadoPedido').value;
-                pedidosGlobales[pedidoSeleccionadoIndex].estado = nuevoEstado;
-                
-                // Actualizamos la tabla visualmente
-                cargarPedidosAdmin();
-                cerrarModalAdmin();
-                alert(`¡Estado del pedido actualizado a: "${nuevoEstado}" con éxito!`);
-            }
         }
 
         cargarPedidosAdmin();
