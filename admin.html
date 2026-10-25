@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - PAWMI</title>
+    <link rel="icon" href="logo.jpeg">
+    <style>
+        :root {
+            --primary-color: #8dae9b;
+            --primary-dark: #628773;
+            --secondary-color: #fbd3db;
+            --accent-color: #c4e4d3;
+            --yellow-pastel: #fef7e2;
+            --light-color: #faf8f5;
+            --bg-color: #f4f0eb;
+            --card-bg: #ffffff;
+            --text-color: #4a554f;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .admin-login-container {
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 420px;
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(141, 174, 155, 0.15);
+            border-top: 9px solid var(--primary-dark);
+            text-align: center;
+        }
+
+        .admin-logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--accent-color);
+            margin-bottom: 15px;
+        }
+
+        h2 { color: var(--primary-dark); margin-top: 0; font-size: 22px; }
+        p.subtitle { font-size: 13px; color: #666; margin-bottom: 25px; }
+
+        .form-group { text-align: left; margin-bottom: 15px; display: flex; flex-direction: column; gap: 5px; }
+        .form-group label { font-size: 11px; font-weight: 800; color: var(--primary-dark); letter-spacing: 0.04em; }
+        .form-group input { padding: 12px; border: 2px solid #ddecde; border-radius: 10px; font-size: 14px; background: #fafdfa; outline: none; }
+        .form-group input:focus { border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(141, 174, 155, 0.2); }
+
+        .msg-error { color: #d9534f; font-size: 12px; font-weight: 700; min-height: 18px; margin: 8px 0; }
+
+        .btn-admin-login {
+            background: var(--primary-dark);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 900;
+            font-size: 15px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(98, 135, 115, 0.3);
+        }
+        .btn-admin-login:hover { background: #4e6e5d; }
+        .back-store { display: inline-block; margin-top: 20px; font-size: 12px; color: var(--primary-dark); text-decoration: none; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="admin-login-container">
+        <img src="logo.jpeg" alt="Logo PAWMI" class="admin-logo">
+        <h2>Panel de Control PAWMI</h2>
+        <p class="subtitle">Acceso exclusivo para administración y gestión de pedidos.</p>
+
+        <form id="adminLoginForm" onsubmit="manejarLoginAdmin(event)">
+            <div class="form-group">
+                <label for="adminEmail">CORREO DE ADMINISTRADOR</label>
+                <input type="email" id="adminEmail" required placeholder="admin@pawmi.cl" autocomplete="email">
+            </div>
+
+            <div class="form-group">
+                <label for="adminPass">CONTRASEÑA</label>
+                <input type="password" id="adminPass" required placeholder="••••••••••••" autocomplete="current-password">
+            </div>
+
+            <p id="adminError" class="msg-error" role="alert"></p>
+
+            <button type="submit" class="btn-admin-login" id="btnIngresar">Ingresar al Panel 🚀</button>
+        </form>
+
+        <a href="index.html" class="back-store">← Volver a la Tienda</a>
+    </div>
+
+    <script>
+        // Limpiamos cualquier token al entrar al login
+        localStorage.removeItem('pawmi_admin_token');
+
+        async function manejarLoginAdmin(e) {
+            e.preventDefault();
+            const email = document.getElementById('adminEmail').value.trim();
+            const pass = document.getElementById('adminPass').value;
+            const errorEl = document.getElementById('adminError');
+            const btn = document.getElementById('btnIngresar');
+
+            errorEl.textContent = '';
+            btn.disabled = true;
+            btn.textContent = 'Verificando credenciales...';
+
+            try {
+                const response = await fetch('https://pawmi-backend.onrender.com/api/admin/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, pass })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.token) {
+                    localStorage.setItem('pawmi_admin_token', data.token);
+                    alert('¡Acceso concedido! Redirigiendo al panel...');
+                    window.location.href = 'admin-dashboard.html';
+                } else {
+                    errorEl.textContent = data.error || 'Credenciales de administrador inválidas.';
+                    btn.disabled = false;
+                    btn.textContent = 'Ingresar al Panel 🚀';
+                }
+            } catch (err) {
+                console.error(err);
+                errorEl.textContent = 'No se pudo conectar con el servidor de autenticación.';
+                btn.disabled = false;
+                btn.textContent = 'Ingresar al Panel 🚀';
+            }
+        }
+    </script>
+</body>
+</html>
