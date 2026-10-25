@@ -49,8 +49,8 @@
         .close-x { position: absolute; top: 15px; right: 20px; font-size: 22px; cursor: pointer; color: #888; font-weight: bold; }
         
         .preview-ficha-card { background: linear-gradient(135deg, #ffffff, var(--yellow-pastel)); border: 2px solid var(--primary-color); border-radius: 15px; padding: 20px; text-align: center; margin: 15px 0; }
-        .preview-avatar { width: 80px; height: 80px; border-radius: 50%; overflow: hidden; border: 3px solid var(--primary-dark); margin: 0 auto 10px auto; background: #eee; }
-        .preview-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .preview-avatar { width: 80px; height: 80px; border-radius: 6px; overflow: hidden; border: 1px solid #000; margin: 0 auto 10px auto; background: #eee; }
+        .preview-avatar img { width: 100%; height: 100%; object-fit: contain; background: #000; }
     </style>
 </head>
 <body>
@@ -94,7 +94,7 @@
         </div>
     </div>
 
-    <!-- MODAL DE PREVISUALIZACIÓN DE FICHA Y GESTIÓN DE ESTADO -->
+    <!-- MODAL DE PREVISUALIZACIÓN Y ENLACE NFC -->
     <div class="modal-overlay" id="modalFichaAdmin">
         <div class="modal-box">
             <span class="close-x" onclick="cerrarModalAdmin()">&times;</span>
@@ -109,13 +109,22 @@
                         <option value="Despachado">Despachado</option>
                         <option value="Entregado">Entregado</option>
                     </select>
-                    <button class="btn-accion" onclick="guardarNuevoEstado()">Guardar Estado</button>
+                    <button class="btn-accion" onclick="guardarNuevoEstado()">Guardar</button>
                 </div>
             </div>
 
             <hr style="border: 0; border-top: 1px dashed #eee; margin: 15px 0;">
 
-            <h4 style="color: var(--primary-dark); margin-bottom: 5px; font-size: 14px;">👁️ Previsualización de la Ficha NFC del Cliente:</h4>
+            <!-- SECCIÓN DEL ENLACE NFC CON BOTÓN DE COPIADO RÁPIDO -->
+            <div style="background: var(--light-color); padding: 12px; border-radius: 10px; border: 1px solid #ddecde; margin-bottom: 15px;">
+                <label style="font-size: 11px; font-weight: 800; color: var(--primary-dark);">ENLACE NFC PARA GRABAR (NFC Tools):</label>
+                <div style="display: flex; gap: 8px; margin-top: 5px; align-items: center;">
+                    <input type="text" id="inputUrlNfcModal" readonly style="flex: 1; padding: 6px 10px; font-size: 11px; border: 1px solid #ccc; border-radius: 6px; background: #fff; color: #333;">
+                    <button class="btn-accion" style="padding: 6px 12px; font-size: 12px;" onclick="copiarEnlaceNfc()">📋 Copiar</button>
+                </div>
+            </div>
+
+            <h4 style="color: var(--primary-dark); margin-bottom: 5px; font-size: 13px;">👁️ Previsualización de la Ficha NFC:</h4>
             <div class="preview-ficha-card" id="previewFichaContenido"></div>
         </div>
     </div>
@@ -138,7 +147,7 @@
             alert(`¡Precio actualizado con éxito a $${Number(nuevoPrecio).toLocaleString('es-CL')}!`);
         }
 
-        // Datos de ejemplo para probar la tabla y la previsualización
+        // Datos de ejemplo para prueba (aquí conectaremos con tu base de datos de pedidos reales)
         let pedidosGlobales = [
             {
                 orden: '#O_94821',
@@ -151,10 +160,10 @@
                 dueno: 'Anais Zapata',
                 fonoEmergencia: '+56972930605',
                 alergias: 'Alérgico al pollo',
-                foto: 'CHAPAPERRO.jpg',
+                foto: 'logo.jpeg',
                 total: 100,
                 estado: 'Recibido / Pendiente',
-                nfcUrl: 'https://pawmi.cl/pet.html?mascota=andy_1001'
+                nfcUrl: 'https://ficha-animales.pages.dev/pet.html?mascota=andy_94821&tel=+56972930605'
             }
         ];
 
@@ -185,7 +194,7 @@
                     <td>$${p.total.toLocaleString('es-CL')}</td>
                     <td><span class="badge-estado" id="badgeEstado_${index}">${p.estado}</span></td>
                     <td>
-                        <button class="btn-ver-ficha" onclick="abrirModalAdmin(${index})">👁️ Ver Ficha y Estado</button>
+                        <button class="btn-ver-ficha" onclick="abrirModalAdmin(${index})">👁️ Ver Ficha y Link</button>
                     </td>
                 `;
                 tbody.appendChild(tr);
@@ -198,18 +207,18 @@
 
             document.getElementById('modalTituloPedido').textContent = `Gestión de Pedido ${p.orden}`;
             document.getElementById('selectEstadoPedido').value = p.estado;
+            document.getElementById('inputUrlNfcModal').value = p.nfcUrl || 'https://ficha-animales.pages.dev/pet.html?mascota=' + p.mascota.toLowerCase();
 
             const previewBox = document.getElementById('previewFichaContenido');
             previewBox.innerHTML = `
                 <div class="preview-avatar">
                     <img src="${p.foto || 'logo.jpeg'}" alt="Foto mascota">
                 </div>
-                <div style="font-weight: 900; font-size: 16px; color: var(--primary-dark);">¡Hola, soy ${p.mascota}!</div>
-                <div style="font-size: 12px; color: #555; margin: 4px 0;">🐾 Detalle: ${p.detalle}</div>
-                <div style="font-size: 12px; color: #555; margin: 4px 0;">👤 Dueño/a: ${p.dueno}</div>
-                <div style="font-size: 12px; color: #555; margin: 4px 0;">📞 Teléfono: ${p.fonoEmergencia}</div>
-                <div style="font-size: 12px; color: #d9534f; margin: 4px 0;">⚠️ Alergias: ${p.alergias}</div>
-                <div style="font-size: 10px; color: #888; margin-top: 8px; word-break: break-all;">🔗 ${p.nfcUrl}</div>
+                <div style="font-weight: 900; font-size: 15px; color: var(--primary-dark);">¡Hola, soy ${p.mascota}!</div>
+                <div style="font-size: 11px; color: #555; margin: 3px 0;">🐾 Detalle: ${p.detalle}</div>
+                <div style="font-size: 11px; color: #555; margin: 3px 0;">👤 Dueño/a: ${p.dueno}</div>
+                <div style="font-size: 11px; color: #555; margin: 3px 0;">📞 Teléfono: ${p.fonoEmergencia}</div>
+                <div style="font-size: 11px; color: #d9534f; margin: 3px 0;">⚠️ Alergias: ${p.alergias}</div>
             `;
 
             document.getElementById('modalFichaAdmin').style.display = 'flex';
@@ -217,6 +226,18 @@
 
         function cerrarModalAdmin() {
             document.getElementById('modalFichaAdmin').style.display = 'none';
+        }
+
+        function copiarEnlaceNfc() {
+            const inputLink = document.getElementById('inputUrlNfcModal');
+            inputLink.select();
+            inputLink.setSelectionRange(0, 99999); // Para móviles y tablets
+            navigator.clipboard.writeText(inputLink.value).then(() => {
+                alert('¡Enlace NFC copiado al portapapeles con éxito! Ya puedes pegarlo en NFC Tools.');
+            }).catch(err => {
+                console.error('Error al copiar: ', err);
+                alert('No se pudo copiar automáticamente. Selecciónalo y cópialo manualmente.');
+            });
         }
 
         function guardarNuevoEstado() {
