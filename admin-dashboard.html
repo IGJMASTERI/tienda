@@ -40,8 +40,12 @@
         .btn-accion { background: var(--primary-dark); color: white; border: none; padding: 8px 14px; border-radius: 8px; font-weight: bold; cursor: pointer; }
         .btn-accion:hover { background: #4e6e5d; }
 
-        .btn-ver-ficha { background: var(--primary-color); color: white; border: none; padding: 6px 12px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 12px; }
+        .acciones-grupo { display: flex; gap: 6px; align-items: center; }
+        .btn-ver-ficha { background: var(--primary-color); color: white; border: none; padding: 6px 10px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 11px; }
         .btn-ver-ficha:hover { background: var(--primary-dark); }
+
+        .btn-eliminar-pedido { background: #d9534f; color: white; border: none; padding: 6px 10px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 11px; }
+        .btn-eliminar-pedido:hover { background: #c9302c; }
 
         /* Estilos del Modal de Previsualización */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; }
@@ -83,7 +87,7 @@
                             <th>Mascota & Producto</th>
                             <th>Total</th>
                             <th>Estado Actual</th>
-                            <th>Acción</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody id="listaPedidosAdmin">
@@ -147,7 +151,7 @@
             alert(`¡Precio actualizado con éxito a $${Number(nuevoPrecio).toLocaleString('es-CL')}!`);
         }
 
-        // Datos de ejemplo para prueba (aquí conectaremos con tu base de datos de pedidos reales)
+        // Datos de ejemplo para prueba
         let pedidosGlobales = [
             {
                 orden: '#O_94821',
@@ -194,11 +198,32 @@
                     <td>$${p.total.toLocaleString('es-CL')}</td>
                     <td><span class="badge-estado" id="badgeEstado_${index}">${p.estado}</span></td>
                     <td>
-                        <button class="btn-ver-ficha" onclick="abrirModalAdmin(${index})">👁️ Ver Ficha y Link</button>
+                        <div class="acciones-grupo">
+                            <button class="btn-ver-ficha" onclick="abrirModalAdmin(${index})">👁️ Ver</button>
+                            <button class="btn-eliminar-pedido" onclick="confirmarEliminarPedido(${index})">🗑️ Eliminar</button>
+                        </div>
                     </td>
                 `;
                 tbody.appendChild(tr);
             });
+        }
+
+        // Función de doble confirmación para eliminar un pedido
+        function confirmarEliminarPedido(index) {
+            const p = pedidosGlobales[index];
+            
+            // Primera confirmación
+            const paso1 = confirm(`⚠️ ¿Estás seguro de que deseas eliminar el pedido ${p.orden} de ${p.cliente}?`);
+            if (!paso1) return;
+
+            // Segunda confirmación (Doble seguridad)
+            const paso2 = confirm(`🚨 ADVERTENCIA: Esta acción es irreversible y borrará el pedido de la lista. ¿Confirmar eliminación definitiva?`);
+            if (!paso2) return;
+
+            // Si pasa ambas confirmaciones, eliminamos el pedido del arreglo y recargamos la tabla
+            pedidosGlobales.splice(index, 1);
+            cargarPedidosAdmin();
+            alert('✅ Pedido eliminado correctamente.');
         }
 
         function abrirModalAdmin(index) {
@@ -231,12 +256,12 @@
         function copiarEnlaceNfc() {
             const inputLink = document.getElementById('inputUrlNfcModal');
             inputLink.select();
-            inputLink.setSelectionRange(0, 99999); // Para móviles y tablets
+            inputLink.setSelectionRange(0, 99999);
             navigator.clipboard.writeText(inputLink.value).then(() => {
-                alert('¡Enlace NFC copiado al portapapeles con éxito! Ya puedes pegarlo en NFC Tools.');
+                alert('¡Enlace NFC copiado al portapapeles con éxito!');
             }).catch(err => {
                 console.error('Error al copiar: ', err);
-                alert('No se pudo copiar automáticamente. Selecciónalo y cópialo manualmente.');
+                alert('No se pudo copiar automáticamente.');
             });
         }
 
