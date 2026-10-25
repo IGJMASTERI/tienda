@@ -46,16 +46,16 @@
         .chip-preview-box { background: linear-gradient(135deg, #ffffff, var(--yellow-pastel)); border: 2px solid var(--primary-color); border-radius: 12px; padding: 15px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); position: relative; }
         
         .chip-avatar { 
-            width: 110px; 
-            height: 75px; 
+            width: 120px; 
+            height: 80px; 
             border-radius: 4px; 
             overflow: hidden; 
             border: 1px solid #000000; /* Borde fino color negro */
-            background: #000000; /* Fondo negro para rellenar espacios si la imagen no es 100% rectangular */
+            background: #000000; /* Fondo negro */
             margin-bottom: 6px; 
             position: relative; 
             cursor: grab;
-            touch-action: none;
+            touch-action: none; /* Vital para permitir el arrastre táctil sin hacer scroll en celulares */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -63,13 +63,12 @@
         .chip-avatar:active { cursor: grabbing; }
 
         .chip-avatar img { 
-            max-width: 100%;
-            max-height: 100%;
-            width: auto;
-            height: auto;
-            object-fit: contain; /* Mantiene la proporción sin deformar */
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Mantiene proporciones con bandas negras automáticas */
             position: absolute;
-            transition: transform 0.05s ease-out;
+            user-select: none;
+            pointer-events: none;
         }
         
         .chip-icon-overlay { position: absolute; top: 10px; right: 10px; font-size: 20px; background: white; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.2); z-index: 5; }
@@ -234,7 +233,7 @@
                         <div class="chip-preview-box">
                             <div class="chip-icon-overlay" id="overlayIcon_${index}">${emojiOverlay}</div>
                             <div class="chip-avatar" id="avatarBox_${index}" title="Mantén presionado y arrastra para ajustar la posición">
-                                <img id="imgPreview_${index}" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='110' height='75'><rect width='100%' height='100%' fill='%23eee'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%23aaa' font-size='10'>Foto</text></svg>" style="transform: translate(0px, 0px);">
+                                <img id="imgPreview_${index}" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='80'><rect width='100%' height='100%' fill='%23eee'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%23aaa' font-size='10'>Foto</text></svg>" style="transform: translate(0px, 0px) scale(1);">
                             </div>
                             <div style="font-size: 10px; color: #777; margin-bottom: 6px;">💡 Arrastra la foto para encuadrar</div>
                             <div class="chip-name" id="prevNombre_${index}">Nombre Mascota</div>
@@ -270,6 +269,7 @@
 
         let posX = {};
         let posY = {};
+        let escalaImg = {};
 
         function cargarPrevisualizacion(event, index) {
             const archivo = event.target.files[0];
@@ -280,8 +280,12 @@
                     img.src = e.target.result;
                     posX[index] = 0;
                     posY[index] = 0;
-                    img.style.transform = `translate(0px, 0px)`;
-                    document.getElementById(`btnQuitar_${index}`).style.display = 'inline-block';
+                    escalaImg[index] = 1.2; // Zoom base para permitir moverla libremente
+                    img.style.transform = `translate(0px, 0px) scale(${escalaImg[index]})`;
+                    
+                    // Mostramos el botón de quitar foto
+                    const btnQ = document.getElementById(`btnQuitar_${index}`);
+                    if(btnQ) btnQ.style.display = 'inline-block';
                 }
                 lector.readAsDataURL(archivo);
             }
@@ -289,12 +293,13 @@
 
         function quitarFoto(index) {
             const img = document.getElementById(`imgPreview_${index}`);
-            img.src = `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='110' height='75'><rect width='100%' height='100%' fill='%23eee'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%23aaa' font-size='10'>Foto</text></svg>`;
+            img.src = `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='80'><rect width='100%' height='100%' fill='%23eee'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%23aaa' font-size='10'>Foto</text></svg>`;
             document.getElementById(`inputFile_${index}`).value = '';
             document.getElementById(`btnQuitar_${index}`).style.display = 'none';
             posX[index] = 0;
             posY[index] = 0;
-            img.style.transform = `translate(0px, 0px)`;
+            escalaImg[index] = 1;
+            img.style.transform = `translate(0px, 0px) scale(1)`;
         }
 
         function configurarArrastreFoto(index) {
@@ -303,14 +308,17 @@
             
             posX[index] = 0;
             posY[index] = 0;
+            escalaImg[index] = 1;
 
             let isDragging = false;
             let startX, startY;
 
             function startDrag(e) {
                 isDragging = true;
-                startX = (e.clientX || e.touches[0].clientX) - posX[index];
-                startY = (e.clientY || e.touches[0].clientY) - posY[index];
+                const clientX = e.clientX || (e.touches ? e.touches[0].clientX : 0);
+                const clientY = e.clientY || (e.touches ? e.touches[0].clientY : 0);
+                startX = clientX - posX[index];
+                startY = clientY - posY[index];
                 e.preventDefault();
             }
 
@@ -322,20 +330,34 @@
                 posX[index] = clientX - startX;
                 posY[index] = clientY - startY;
 
-                img.style.transform = `translate(${posX[index]}px, ${posY[index]}px)`;
+                img.style.transform = `translate(${posX[index]}px, ${posY[index]}px) scale(${escalaImg[index] || 1})`;
             }
 
             function stopDrag() {
                 isDragging = false;
             }
 
+            // Eventos de Mouse
             box.addEventListener('mousedown', startDrag);
             window.addEventListener('mousemove', onDrag);
             window.addEventListener('mouseup', stopDrag);
 
-            box.addEventListener('touchstart', startDrag);
-            window.addEventListener('touchmove', onDrag);
+            // Eventos Táctiles (Móviles / Tablets)
+            box.addEventListener('touchstart', startDrag, {passive: false});
+            window.addEventListener('touchmove', onDrag, {passive: false});
             window.addEventListener('touchend', stopDrag);
+
+            // Permitir zoom con la rueda del mouse para encuadrar mejor
+            box.addEventListener('wheel', function(e) {
+                e.preventDefault();
+                if (!escalaImg[index]) escalaImg[index] = 1;
+                if (e.deltaY < 0) {
+                    escalaImg[index] += 0.1;
+                } else {
+                    escalaImg[index] = Math.max(0.5, escalaImg[index] - 0.1);
+                }
+                img.style.transform = `translate(${posX[index] || 0}px, ${posY[index] || 0}px) scale(${escalaImg[index]})`;
+            });
         }
 
         document.getElementById('checkoutForm').onsubmit = async function(e) {
