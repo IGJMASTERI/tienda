@@ -39,9 +39,35 @@
         .form-group label { font-size: 11px; font-weight: 800; color: var(--primary-dark); }
         .form-group input, .form-group select { padding: 9px 12px; border: 2px solid #ddecde; border-radius: 8px; font-size: 13px; background: #fafdfa; font-family: inherit; }
 
+        .btn-quitar-foto { background: #d9534f; color: white; border: none; padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: bold; cursor: pointer; margin-top: 5px; display: none; width: fit-content; }
+        .btn-quitar-foto:hover { background: #c9302c; }
+
+        /* Ficha con rectángulo, bordes finos y color negro */
         .chip-preview-box { background: linear-gradient(135deg, #ffffff, var(--yellow-pastel)); border: 2px solid var(--primary-color); border-radius: 12px; padding: 15px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); position: relative; }
-        .chip-avatar { width: 75px; height: 75px; border-radius: 50%; overflow: hidden; border: 3px solid var(--primary-dark); background: #eee; margin-bottom: 6px; position: relative; }
-        .chip-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .chip-avatar { 
+            width: 90px; 
+            height: 90px; 
+            border-radius: 6px; /* Rectángulo con esquinas ligeramente redondeadas */
+            overflow: hidden; 
+            border: 1px solid #000000; /* Borde fino de color negro */
+            background: #eee; 
+            margin-bottom: 6px; 
+            position: relative; 
+            cursor: grab; /* Indica que se puede arrastrar */
+            touch-action: none;
+        }
+        .chip-avatar:active { cursor: grabbing; }
+
+        .chip-avatar img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: transform 0.1s ease-out;
+        }
         
         .chip-icon-overlay { position: absolute; top: 10px; right: 10px; font-size: 20px; background: white; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.2); z-index: 5; }
 
@@ -85,8 +111,6 @@
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
                     <div class="form-group"><label>NOMBRE DEL CLIENTE</label><input type="text" id="nombreCliente" required placeholder="Tu nombre y apellido"></div>
                     <div class="form-group"><label>TELÉFONO DE CONTACTO</label><input type="tel" id="fonoCliente" required placeholder="+569xxxxxxxx"></div>
-                    
-                    <!-- Dirección detallada -->
                     <div class="form-group" style="grid-column: 1 / 2;"><label>CALLE / AVENIDA</label><input type="text" id="dirCalle" required placeholder="Ej: Volcán Llaima"></div>
                     <div class="form-group" style="grid-column: 2 / 3;"><label>NÚMERO DE DIRECCIÓN / DEPTO</label><input type="text" id="dirNumero" required placeholder="Ej: #5870, Dpto 42"></div>
                     <div class="form-group"><label>COMUNA</label><input type="text" id="dirComuna" required placeholder="Ej: La Florida"></div>
@@ -199,15 +223,17 @@
                             </div>
                             <div class="form-group">
                                 <label>SUBIR FOTO DE LA MASCOTA</label>
-                                <input type="file" accept="image/*" class="input-foto" onchange="cargarPrevisualizacion(event, ${index})">
+                                <input type="file" accept="image/*" class="input-foto" id="inputFile_${index}" onchange="cargarPrevisualizacion(event, ${index})">
+                                <button type="button" class="btn-quitar-foto" id="btnQuitar_${index}" onclick="quitarFoto(${index})">🗑️ Quitar foto</button>
                             </div>
                         </div>
 
                         <div class="chip-preview-box">
                             <div class="chip-icon-overlay" id="overlayIcon_${index}">${emojiOverlay}</div>
-                            <div class="chip-avatar">
-                                <img id="imgPreview_${index}" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='75' height='75'><rect width='100%' height='100%' fill='%23eee'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%23aaa' font-size='10'>Foto</text></svg>">
+                            <div class="chip-avatar" id="avatarBox_${index}" title="Mantén presionado y arrastra para ajustar el encuadre">
+                                <img id="imgPreview_${index}" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='90' height='90'><rect width='100%' height='100%' fill='%23eee'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%23aaa' font-size='10'>Foto</text></svg>" style="transform: translate(0px, 0px) scale(1);">
                             </div>
+                            <div style="font-size: 10px; color: #777; margin-bottom: 6px;">💡 Arrastra la foto para encuadrar</div>
                             <div class="chip-name" id="prevNombre_${index}">Nombre Mascota</div>
                             <div class="chip-info" id="prevDetalle_${index}" style="font-size: 10px; color: #666;">Raza / Edad</div>
                             <div class="chip-info" id="prevDueno_${index}">👤 Dueño: -</div>
@@ -218,6 +244,9 @@
                     </div>
                 `;
                 contenedorPlacas.appendChild(card);
+                
+                // Inicializamos el comportamiento de arrastre (drag/touch) para ajustar encuadre
+                configurarArrastreFoto(index);
                 contadorPlaca++;
             });
         }
@@ -237,6 +266,10 @@
             document.getElementById(`prevAlergias_${index}`).textContent = '⚠️ Alergias: ' + alergias;
         }
 
+        // Variables globales para el manejo de posición de la imagen
+        let posX = {};
+        let posY = {};
+
         function cargarPrevisualizacion(event, index) {
             const archivo = event.target.files[0];
             if (archivo) {
@@ -244,9 +277,65 @@
                 lector.onload = function(e) {
                     const img = document.getElementById(`imgPreview_${index}`);
                     img.src = e.target.result;
+                    posX[index] = 0;
+                    posY[index] = 0;
+                    img.style.transform = `translate(0px, 0px)`;
+                    document.getElementById(`btnQuitar_${index}`).style.display = 'block';
                 }
                 lector.readAsDataURL(archivo);
             }
+        }
+
+        function quitarFoto(index) {
+            const img = document.getElementById(`imgPreview_${index}`);
+            img.src = `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='90' height='90'><rect width='100%' height='100%' fill='%23eee'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%23aaa' font-size='10'>Foto</text></svg>`;
+            document.getElementById(`inputFile_${index}`).value = '';
+            document.getElementById(`btnQuitar_${index}`).style.display = 'none';
+            posX[index] = 0;
+            posY[index] = 0;
+            img.style.transform = `translate(0px, 0px)`;
+        }
+
+        // Lógica para arrastrar y ajustar el encuadre con mouse o tacto
+        function configurarArrastreFoto(index) {
+            const box = document.getElementById(`avatarBox_${index}`);
+            const img = document.getElementById(`imgPreview_${index}`);
+            
+            posX[index] = 0;
+            posY[index] = 0;
+
+            let isDragging = false;
+            let startX, startY;
+
+            function startDrag(e) {
+                isDragging = true;
+                startX = (e.clientX || e.touches[0].clientX) - posX[index];
+                startY = (e.clientY || e.touches[0].clientY) - posY[index];
+                e.preventDefault();
+            }
+
+            function onDrag(e) {
+                if (!isDragging) return;
+                const clientX = e.clientX || (e.touches ? e.touches[0].clientX : 0);
+                const clientY = e.clientY || (e.touches ? e.touches[0].clientY : 0);
+                
+                posX[index] = clientX - startX;
+                posY[index] = clientY - startY;
+
+                img.style.transform = `translate(${posX[index]}px, ${posY[index]}px)`;
+            }
+
+            function stopDrag() {
+                isDragging = false;
+            }
+
+            box.addEventListener('mousedown', startDrag);
+            window.addEventListener('mousemove', onDrag);
+            window.addEventListener('mouseup', stopDrag);
+
+            box.addEventListener('touchstart', startDrag);
+            window.addEventListener('touchmove', onDrag);
+            window.addEventListener('touchend', stopDrag);
         }
 
         document.getElementById('checkoutForm').onsubmit = async function(e) {
@@ -312,7 +401,6 @@
                 });
             });
 
-            // Consolidamos la dirección completa desglosada
             const direccionCompleta = `${document.getElementById('dirCalle').value} ${document.getElementById('dirNumero').value}, ${document.getElementById('dirComuna').value}, ${document.getElementById('dirRegion').value}`;
 
             const datosCliente = {
